@@ -1,0 +1,54 @@
+name: optimos
+description: Lifestyle Performance Tracker
+version: 1.0.0+1
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Routing
+  go_router: ^14.0.0
+
+  # State management
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
+
+  # Local database (Drift)
+  drift: ^2.28.2
+  sqlite3_flutter_libs: ^0.5.42
+  path_provider: ^2.1.0
+  path: ^1.9.0
+
+  # Supabase (optional sync)
+  supabase_flutter: ^2.0.0
+
+  # Local database (Hive)
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+
+  # UI & Icons
+  google_fonts: ^6.2.0
+  phosphor_flutter: ^2.0.0
+  fl_chart: ^0.66.0
+  intl: ^0.18.0
+
+  # Notifications (local)
+  flutter_local_notifications: ^22.0.0
+  timezone: ^0.11.0
+
+  # Charts & heatmap
+  syncfusion_flutter_charts: ^24.1.41
+  calendar_view: ^2.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  build_runner: ^2.5.4
+  drift_dev: ^2.28.0
+  riverpod_generator: ^2.6.5
+
+flutter:
+  uses-material-design: true
