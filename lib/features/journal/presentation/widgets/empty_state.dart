@@ -42,7 +42,7 @@ class _EmptyStateWidgetState extends State<EmptyStateWidget> with SingleTickerPr
                 width: 120,
                 height: 120,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF9b51e0).withOpacity(0.15),
+                  color: const Color(0xFF9b51e0).withValues(alpha: 0.15),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(

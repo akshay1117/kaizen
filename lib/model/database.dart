@@ -20,6 +20,8 @@ class Habits extends Table {
   BoolColumn get isQuantitative => boolean().withDefault(const Constant(false))();
   IntColumn get targetValue => integer().withDefault(const Constant(1))();
   TextColumn get unit => text().nullable()();
+  TextColumn get categories => text().nullable()(); // comma-separated
+  TextColumn get streakGoalInterval => text().withDefault(const Constant('none'))(); // none, daily, weekly, monthly
   DateTimeColumn get archivedAt => dateTime().nullable()();
   DateTimeColumn get createdAt => dateTime().clientDefault(() => DateTime.now())();
 }
@@ -49,7 +51,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -62,6 +64,10 @@ class AppDatabase extends _$AppDatabase {
             await m.addColumn(habits, habits.targetValue);
             await m.addColumn(habits, habits.unit);
             await m.addColumn(habitLogs, habitLogs.progress);
+          }
+          if (from < 3) {
+            await m.addColumn(habits, habits.categories);
+            await m.addColumn(habits, habits.streakGoalInterval);
           }
         },
       );

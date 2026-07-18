@@ -108,7 +108,7 @@ class HabitsDao extends DatabaseAccessor<AppDatabase> with _$HabitsDaoMixin {
         .get();
 
     if (logs.isEmpty) {
-      await (update(habits)..where((h) => h.id.equals(habitId))).write(HabitsCompanion(currentStreak: const Value(0)));
+      await (update(habits)..where((h) => h.id.equals(habitId))).write(const HabitsCompanion(currentStreak: Value(0)));
       return;
     }
 

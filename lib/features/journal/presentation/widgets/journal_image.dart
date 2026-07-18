@@ -19,7 +19,7 @@ class JournalImageWidget extends StatelessWidget {
             opaque: false,
             pageBuilder: (context, animation, secondaryAnimation) {
               return Scaffold(
-                backgroundColor: Colors.black.withOpacity(0.9),
+                backgroundColor: Colors.black.withValues(alpha: 0.9),
                 body: Stack(
                   children: [
                     Center(

@@ -39,13 +39,13 @@ class _FloatingCreateButtonState extends State<FloatingCreateButton> with Single
           color: const Color(0xFF9b51e0),
           shape: const CircleBorder(),
           elevation: 8,
-          shadowColor: const Color(0xFF9b51e0).withOpacity(0.5),
+          shadowColor: const Color(0xFF9b51e0).withValues(alpha: 0.5),
           child: InkWell(
             onTap: () {
               context.push('/journal/create');
             },
             customBorder: const CircleBorder(),
-            splashColor: Colors.white.withOpacity(0.3),
+            splashColor: Colors.white.withValues(alpha: 0.3),
             child: const SizedBox(
               width: 64,
               height: 64,

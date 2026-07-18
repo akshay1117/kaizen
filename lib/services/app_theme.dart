@@ -14,19 +14,19 @@ class AppTheme {
       error: DesignTokens.accentBoxing,
     ),
     textTheme: TextTheme(
-      displayLarge: GoogleFonts.syne(fontSize: 28, fontWeight: FontWeight.w700, color: DesignTokens.textPrimary),
-      displayMedium: GoogleFonts.syne(fontSize: 22, fontWeight: FontWeight.w600),
-      displaySmall: GoogleFonts.syne(fontSize: 18, fontWeight: FontWeight.w600),
-      bodyLarge: GoogleFonts.instrumentSans(fontSize: 14, color: DesignTokens.textSecondary),
-      bodyMedium: GoogleFonts.instrumentSans(fontSize: 13, color: DesignTokens.textSecondary),
-      labelLarge: GoogleFonts.dmMono(fontSize: 12, color: DesignTokens.textPrimary),
-      labelMedium: GoogleFonts.dmMono(fontSize: 11, color: DesignTokens.textTertiary),
+      displayLarge: GoogleFonts.inter(fontSize: 28, fontWeight: FontWeight.w700, color: DesignTokens.textPrimary),
+      displayMedium: GoogleFonts.inter(fontSize: 22, fontWeight: FontWeight.w600),
+      displaySmall: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w600),
+      bodyLarge: GoogleFonts.inter(fontSize: 14, color: DesignTokens.textSecondary),
+      bodyMedium: GoogleFonts.inter(fontSize: 13, color: DesignTokens.textSecondary),
+      labelLarge: GoogleFonts.inter(fontSize: 12, color: DesignTokens.textPrimary),
+      labelMedium: GoogleFonts.inter(fontSize: 11, color: DesignTokens.textTertiary),
     ),
     cardTheme: CardThemeData(
       color: DesignTokens.bgSecondary,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
-        side: BorderSide(color: DesignTokens.borderPrimary, width: 0.5),
+        side: const BorderSide(color: DesignTokens.borderPrimary, width: 0.5),
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(

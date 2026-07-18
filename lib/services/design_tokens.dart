@@ -10,9 +10,9 @@ class DesignTokens {
   static const Color accentDiet = Color(0xFFB57BFF);
 
   // Background colors
-  static const Color bgPrimary = Color(0xFF0A0A0A);
-  static const Color bgSecondary = Color(0xFF121212);
-  static const Color bgTertiary = Color(0xFF1C1C1E);
+  static const Color bgPrimary = Color(0xFF121212);
+  static const Color bgSecondary = Color(0xFF1E1E1E);
+  static const Color bgTertiary = Color(0xFF2C2C2C);
 
   // Text colors
   static const Color textPrimary = Color(0xFFFFFFFF);
@@ -23,6 +23,6 @@ class DesignTokens {
   static const Color borderPrimary = Color(0xFF2C2C2C);
   static const Color borderSecondary = Color(0xFF3A3A3A);
 
-  static const double radiusLarge = 12.0;
-  static const double radiusMedium = 8.0;
+  static const double radiusLarge = 24.0;
+  static const double radiusMedium = 16.0;
 }

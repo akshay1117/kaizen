@@ -124,7 +124,7 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
                       child: Row(
                         children: [
                           Icon(Icons.delete_sweep, color: Colors.redAccent, size: 20),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           Text('Delete All', style: TextStyle(color: Colors.redAccent)),
                         ],
                       ),
@@ -134,7 +134,7 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
                       child: Row(
                         children: [
                           Icon(Icons.settings_outlined, color: Colors.white, size: 20),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           Text('Settings', style: TextStyle(color: Colors.white)),
                         ],
                       ),

@@ -8,15 +8,15 @@ class MoodChip extends StatelessWidget {
   Color _getMoodColor() {
     switch (mood) {
       case Mood.happy:
-        return Colors.amber.withOpacity(0.2);
+        return Colors.amber.withValues(alpha: 0.2);
       case Mood.calm:
-        return Colors.blue.withOpacity(0.2);
+        return Colors.blue.withValues(alpha: 0.2);
       case Mood.excited:
-        return Colors.purple.withOpacity(0.2);
+        return Colors.purple.withValues(alpha: 0.2);
       case Mood.sad:
-        return Colors.indigo.withOpacity(0.2);
+        return Colors.indigo.withValues(alpha: 0.2);
       case Mood.angry:
-        return Colors.red.withOpacity(0.2);
+        return Colors.red.withValues(alpha: 0.2);
     }
   }
 
@@ -42,7 +42,7 @@ class MoodChip extends StatelessWidget {
       decoration: BoxDecoration(
         color: _getMoodColor(),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: _getTextColor().withOpacity(0.5)),
+        border: Border.all(color: _getTextColor().withValues(alpha: 0.5)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

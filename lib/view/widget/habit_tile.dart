@@ -26,18 +26,30 @@ class HabitTile extends ConsumerWidget {
             progressAsync.when(
               data: (progress) {
                 if (habit.isQuantitative) {
+                  final completed = progress >= habit.targetValue;
+                  if (completed) {
+                    return IconButton(
+                      icon: Icon(Icons.check_circle, color: color),
+                      onPressed: () => ref.read(habitNotifierProvider.notifier).updateProgress(habit.id, date, progress - 1),
+                    );
+                  }
+
                   return Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
+                        visualDensity: VisualDensity.compact,
+                        padding: EdgeInsets.zero,
                         icon: const Icon(Icons.remove_circle_outline),
                         onPressed: progress > 0 ? () => ref.read(habitNotifierProvider.notifier).updateProgress(habit.id, date, progress - 1) : null,
                       ),
-                      SizedBox(
-                        width: 60,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Text('$progress / ${habit.targetValue}\n${habit.unit ?? ""}', textAlign: TextAlign.center, style: const TextStyle(fontSize: 12)),
                       ),
                       IconButton(
+                        visualDensity: VisualDensity.compact,
+                        padding: EdgeInsets.zero,
                         icon: const Icon(Icons.add_circle_outline),
                         onPressed: () => ref.read(habitNotifierProvider.notifier).updateProgress(habit.id, date, progress + 1),
                       ),
@@ -53,33 +65,6 @@ class HabitTile extends ConsumerWidget {
               },
               loading: () => const SizedBox(width: 24, height: 24, child: CircularProgressIndicator()),
               error: (_, __) => const Icon(Icons.error),
-            ),
-            PopupMenuButton<String>(
-              icon: const Icon(Icons.more_vert),
-              onSelected: (value) async {
-                if (value == 'delete') {
-                  final confirm = await showDialog<bool>(
-                    context: context,
-                    builder: (ctx) => AlertDialog(
-                      title: const Text('Delete Habit'),
-                      content: const Text('Are you sure you want to delete this habit and all its history?'),
-                      actions: [
-                        TextButton(onPressed: () => Navigator.of(ctx).pop(false), child: const Text('Cancel')),
-                        TextButton(
-                          onPressed: () => Navigator.of(ctx).pop(true),
-                          child: const Text('Delete', style: TextStyle(color: Colors.red)),
-                        ),
-                      ],
-                    ),
-                  );
-                  if (confirm == true) {
-                    ref.read(habitNotifierProvider.notifier).deleteHabit(habit.id);
-                  }
-                }
-              },
-              itemBuilder: (context) => [
-                const PopupMenuItem(value: 'delete', child: Text('Delete')),
-              ],
             ),
           ],
         ),

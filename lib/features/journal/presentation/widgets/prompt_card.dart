@@ -18,7 +18,7 @@ class PromptCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFF2C2C2E),
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: const Color(0xFF9b51e0).withOpacity(0.4)),
+        border: Border.all(color: const Color(0xFF9b51e0).withValues(alpha: 0.4)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -61,7 +61,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with SingleTicker
       decoration: BoxDecoration(
         color: const Color(0xFF2C2C2E),
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: Colors.blueAccent.withOpacity(0.4)),
+        border: Border.all(color: Colors.blueAccent.withValues(alpha: 0.4)),
       ),
       child: Column(
         children: [
@@ -114,7 +114,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with SingleTicker
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
-                    color: Colors.blueAccent.withOpacity(0.2),
+                    color: Colors.blueAccent.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(14),
                     border: Border.all(color: Colors.blueAccent),
                   ),

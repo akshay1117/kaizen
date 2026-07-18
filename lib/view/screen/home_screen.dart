@@ -110,7 +110,7 @@ class HomeScreen extends ConsumerWidget {
                             Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: DesignTokens.accentGym.withOpacity(0.2),
+                                color: DesignTokens.accentGym.withValues(alpha: 0.2),
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(Icons.local_fire_department,
@@ -193,7 +193,7 @@ class HomeScreen extends ConsumerWidget {
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                   color:
-                                      DesignTokens.accentHabit.withOpacity(0.2),
+                                      DesignTokens.accentHabit.withValues(alpha: 0.2),
                                   shape: BoxShape.circle,
                                 ),
                                 child: const Icon(Icons.check_circle_outline,
@@ -236,7 +236,7 @@ class HomeScreen extends ConsumerWidget {
                                   borderRadius: BorderRadius.circular(20),
                                   border: Border.all(
                                       color: DesignTokens.accentHabit
-                                          .withOpacity(0.5)),
+                                          .withValues(alpha: 0.5)),
                                 ),
                                 child: const Center(
                                   child: Text(
@@ -272,7 +272,7 @@ class HomeScreen extends ConsumerWidget {
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                   color:
-                                      DesignTokens.accentDiet.withOpacity(0.2),
+                                      DesignTokens.accentDiet.withValues(alpha: 0.2),
                                   shape: BoxShape.circle,
                                 ),
                                 child: const Icon(Icons.edit_note,
@@ -315,7 +315,7 @@ class HomeScreen extends ConsumerWidget {
                                   borderRadius: BorderRadius.circular(20),
                                   border: Border.all(
                                       color: DesignTokens.accentDiet
-                                          .withOpacity(0.5)),
+                                          .withValues(alpha: 0.5)),
                                 ),
                                 child: const Center(
                                   child: Text(
@@ -352,13 +352,13 @@ class HomeScreen extends ConsumerWidget {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.5),
+                      color: Colors.black.withValues(alpha: 0.5),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
                   ],
                 ),
-                child: Stack(
+                child: const Stack(
                   alignment: Alignment.center,
                   children: [
                     SizedBox(
@@ -371,7 +371,7 @@ class HomeScreen extends ConsumerWidget {
                         color: DesignTokens.accentGym,
                       ),
                     ),
-                    const Column(
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(

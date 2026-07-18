@@ -63,6 +63,8 @@ class HabitNotifier extends AsyncNotifier<void> {
     bool isQuantitative = false,
     int targetValue = 1,
     String? unit,
+    String? categories,
+    String streakGoalInterval = 'none',
   }) async {
     state = const AsyncLoading();
     final dao = ref.read(habitsDaoProvider);
@@ -75,6 +77,8 @@ class HabitNotifier extends AsyncNotifier<void> {
       isQuantitative: Value(isQuantitative),
       targetValue: Value(targetValue),
       unit: unit == null ? const Value.absent() : Value(unit),
+      categories: categories == null ? const Value.absent() : Value(categories),
+      streakGoalInterval: Value(streakGoalInterval),
     );
     await dao.insertHabit(companion);
     state = const AsyncData(null);

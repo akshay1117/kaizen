@@ -56,7 +56,7 @@ class FitnessHubScreen extends StatelessWidget {
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
-        side: BorderSide(color: color.withOpacity(0.3), width: 1),
+        side: BorderSide(color: color.withValues(alpha: 0.3), width: 1),
       ),
       elevation: 0,
       color: DesignTokens.bgSecondary,

@@ -73,6 +73,20 @@ class $HabitsTable extends Habits with TableInfo<$HabitsTable, Habit> {
   late final GeneratedColumn<String> unit = GeneratedColumn<String>(
       'unit', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _categoriesMeta =
+      const VerificationMeta('categories');
+  @override
+  late final GeneratedColumn<String> categories = GeneratedColumn<String>(
+      'categories', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _streakGoalIntervalMeta =
+      const VerificationMeta('streakGoalInterval');
+  @override
+  late final GeneratedColumn<String> streakGoalInterval =
+      GeneratedColumn<String>('streak_goal_interval', aliasedName, false,
+          type: DriftSqlType.string,
+          requiredDuringInsert: false,
+          defaultValue: const Constant('none'));
   static const VerificationMeta _archivedAtMeta =
       const VerificationMeta('archivedAt');
   @override
@@ -99,6 +113,8 @@ class $HabitsTable extends Habits with TableInfo<$HabitsTable, Habit> {
         isQuantitative,
         targetValue,
         unit,
+        categories,
+        streakGoalInterval,
         archivedAt,
         createdAt
       ];
@@ -167,6 +183,18 @@ class $HabitsTable extends Habits with TableInfo<$HabitsTable, Habit> {
       context.handle(
           _unitMeta, unit.isAcceptableOrUnknown(data['unit']!, _unitMeta));
     }
+    if (data.containsKey('categories')) {
+      context.handle(
+          _categoriesMeta,
+          categories.isAcceptableOrUnknown(
+              data['categories']!, _categoriesMeta));
+    }
+    if (data.containsKey('streak_goal_interval')) {
+      context.handle(
+          _streakGoalIntervalMeta,
+          streakGoalInterval.isAcceptableOrUnknown(
+              data['streak_goal_interval']!, _streakGoalIntervalMeta));
+    }
     if (data.containsKey('archived_at')) {
       context.handle(
           _archivedAtMeta,
@@ -206,6 +234,10 @@ class $HabitsTable extends Habits with TableInfo<$HabitsTable, Habit> {
           .read(DriftSqlType.int, data['${effectivePrefix}target_value'])!,
       unit: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}unit']),
+      categories: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}categories']),
+      streakGoalInterval: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}streak_goal_interval'])!,
       archivedAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}archived_at']),
       createdAt: attachedDatabase.typeMapping
@@ -230,6 +262,8 @@ class Habit extends DataClass implements Insertable<Habit> {
   final bool isQuantitative;
   final int targetValue;
   final String? unit;
+  final String? categories;
+  final String streakGoalInterval;
   final DateTime? archivedAt;
   final DateTime createdAt;
   const Habit(
@@ -243,6 +277,8 @@ class Habit extends DataClass implements Insertable<Habit> {
       required this.isQuantitative,
       required this.targetValue,
       this.unit,
+      this.categories,
+      required this.streakGoalInterval,
       this.archivedAt,
       required this.createdAt});
   @override
@@ -262,6 +298,10 @@ class Habit extends DataClass implements Insertable<Habit> {
     if (!nullToAbsent || unit != null) {
       map['unit'] = Variable<String>(unit);
     }
+    if (!nullToAbsent || categories != null) {
+      map['categories'] = Variable<String>(categories);
+    }
+    map['streak_goal_interval'] = Variable<String>(streakGoalInterval);
     if (!nullToAbsent || archivedAt != null) {
       map['archived_at'] = Variable<DateTime>(archivedAt);
     }
@@ -283,6 +323,10 @@ class Habit extends DataClass implements Insertable<Habit> {
       isQuantitative: Value(isQuantitative),
       targetValue: Value(targetValue),
       unit: unit == null && nullToAbsent ? const Value.absent() : Value(unit),
+      categories: categories == null && nullToAbsent
+          ? const Value.absent()
+          : Value(categories),
+      streakGoalInterval: Value(streakGoalInterval),
       archivedAt: archivedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(archivedAt),
@@ -304,6 +348,9 @@ class Habit extends DataClass implements Insertable<Habit> {
       isQuantitative: serializer.fromJson<bool>(json['isQuantitative']),
       targetValue: serializer.fromJson<int>(json['targetValue']),
       unit: serializer.fromJson<String?>(json['unit']),
+      categories: serializer.fromJson<String?>(json['categories']),
+      streakGoalInterval:
+          serializer.fromJson<String>(json['streakGoalInterval']),
       archivedAt: serializer.fromJson<DateTime?>(json['archivedAt']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
@@ -322,6 +369,8 @@ class Habit extends DataClass implements Insertable<Habit> {
       'isQuantitative': serializer.toJson<bool>(isQuantitative),
       'targetValue': serializer.toJson<int>(targetValue),
       'unit': serializer.toJson<String?>(unit),
+      'categories': serializer.toJson<String?>(categories),
+      'streakGoalInterval': serializer.toJson<String>(streakGoalInterval),
       'archivedAt': serializer.toJson<DateTime?>(archivedAt),
       'createdAt': serializer.toJson<DateTime>(createdAt),
     };
@@ -338,6 +387,8 @@ class Habit extends DataClass implements Insertable<Habit> {
           bool? isQuantitative,
           int? targetValue,
           Value<String?> unit = const Value.absent(),
+          Value<String?> categories = const Value.absent(),
+          String? streakGoalInterval,
           Value<DateTime?> archivedAt = const Value.absent(),
           DateTime? createdAt}) =>
       Habit(
@@ -352,6 +403,8 @@ class Habit extends DataClass implements Insertable<Habit> {
         isQuantitative: isQuantitative ?? this.isQuantitative,
         targetValue: targetValue ?? this.targetValue,
         unit: unit.present ? unit.value : this.unit,
+        categories: categories.present ? categories.value : this.categories,
+        streakGoalInterval: streakGoalInterval ?? this.streakGoalInterval,
         archivedAt: archivedAt.present ? archivedAt.value : this.archivedAt,
         createdAt: createdAt ?? this.createdAt,
       );
@@ -374,6 +427,11 @@ class Habit extends DataClass implements Insertable<Habit> {
       targetValue:
           data.targetValue.present ? data.targetValue.value : this.targetValue,
       unit: data.unit.present ? data.unit.value : this.unit,
+      categories:
+          data.categories.present ? data.categories.value : this.categories,
+      streakGoalInterval: data.streakGoalInterval.present
+          ? data.streakGoalInterval.value
+          : this.streakGoalInterval,
       archivedAt:
           data.archivedAt.present ? data.archivedAt.value : this.archivedAt,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
@@ -393,6 +451,8 @@ class Habit extends DataClass implements Insertable<Habit> {
           ..write('isQuantitative: $isQuantitative, ')
           ..write('targetValue: $targetValue, ')
           ..write('unit: $unit, ')
+          ..write('categories: $categories, ')
+          ..write('streakGoalInterval: $streakGoalInterval, ')
           ..write('archivedAt: $archivedAt, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
@@ -411,6 +471,8 @@ class Habit extends DataClass implements Insertable<Habit> {
       isQuantitative,
       targetValue,
       unit,
+      categories,
+      streakGoalInterval,
       archivedAt,
       createdAt);
   @override
@@ -427,6 +489,8 @@ class Habit extends DataClass implements Insertable<Habit> {
           other.isQuantitative == this.isQuantitative &&
           other.targetValue == this.targetValue &&
           other.unit == this.unit &&
+          other.categories == this.categories &&
+          other.streakGoalInterval == this.streakGoalInterval &&
           other.archivedAt == this.archivedAt &&
           other.createdAt == this.createdAt);
 }
@@ -442,6 +506,8 @@ class HabitsCompanion extends UpdateCompanion<Habit> {
   final Value<bool> isQuantitative;
   final Value<int> targetValue;
   final Value<String?> unit;
+  final Value<String?> categories;
+  final Value<String> streakGoalInterval;
   final Value<DateTime?> archivedAt;
   final Value<DateTime> createdAt;
   final Value<int> rowid;
@@ -456,6 +522,8 @@ class HabitsCompanion extends UpdateCompanion<Habit> {
     this.isQuantitative = const Value.absent(),
     this.targetValue = const Value.absent(),
     this.unit = const Value.absent(),
+    this.categories = const Value.absent(),
+    this.streakGoalInterval = const Value.absent(),
     this.archivedAt = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
@@ -471,6 +539,8 @@ class HabitsCompanion extends UpdateCompanion<Habit> {
     this.isQuantitative = const Value.absent(),
     this.targetValue = const Value.absent(),
     this.unit = const Value.absent(),
+    this.categories = const Value.absent(),
+    this.streakGoalInterval = const Value.absent(),
     this.archivedAt = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
@@ -489,6 +559,8 @@ class HabitsCompanion extends UpdateCompanion<Habit> {
     Expression<bool>? isQuantitative,
     Expression<int>? targetValue,
     Expression<String>? unit,
+    Expression<String>? categories,
+    Expression<String>? streakGoalInterval,
     Expression<DateTime>? archivedAt,
     Expression<DateTime>? createdAt,
     Expression<int>? rowid,
@@ -504,6 +576,9 @@ class HabitsCompanion extends UpdateCompanion<Habit> {
       if (isQuantitative != null) 'is_quantitative': isQuantitative,
       if (targetValue != null) 'target_value': targetValue,
       if (unit != null) 'unit': unit,
+      if (categories != null) 'categories': categories,
+      if (streakGoalInterval != null)
+        'streak_goal_interval': streakGoalInterval,
       if (archivedAt != null) 'archived_at': archivedAt,
       if (createdAt != null) 'created_at': createdAt,
       if (rowid != null) 'rowid': rowid,
@@ -521,6 +596,8 @@ class HabitsCompanion extends UpdateCompanion<Habit> {
       Value<bool>? isQuantitative,
       Value<int>? targetValue,
       Value<String?>? unit,
+      Value<String?>? categories,
+      Value<String>? streakGoalInterval,
       Value<DateTime?>? archivedAt,
       Value<DateTime>? createdAt,
       Value<int>? rowid}) {
@@ -535,6 +612,8 @@ class HabitsCompanion extends UpdateCompanion<Habit> {
       isQuantitative: isQuantitative ?? this.isQuantitative,
       targetValue: targetValue ?? this.targetValue,
       unit: unit ?? this.unit,
+      categories: categories ?? this.categories,
+      streakGoalInterval: streakGoalInterval ?? this.streakGoalInterval,
       archivedAt: archivedAt ?? this.archivedAt,
       createdAt: createdAt ?? this.createdAt,
       rowid: rowid ?? this.rowid,
@@ -574,6 +653,12 @@ class HabitsCompanion extends UpdateCompanion<Habit> {
     if (unit.present) {
       map['unit'] = Variable<String>(unit.value);
     }
+    if (categories.present) {
+      map['categories'] = Variable<String>(categories.value);
+    }
+    if (streakGoalInterval.present) {
+      map['streak_goal_interval'] = Variable<String>(streakGoalInterval.value);
+    }
     if (archivedAt.present) {
       map['archived_at'] = Variable<DateTime>(archivedAt.value);
     }
@@ -599,6 +684,8 @@ class HabitsCompanion extends UpdateCompanion<Habit> {
           ..write('isQuantitative: $isQuantitative, ')
           ..write('targetValue: $targetValue, ')
           ..write('unit: $unit, ')
+          ..write('categories: $categories, ')
+          ..write('streakGoalInterval: $streakGoalInterval, ')
           ..write('archivedAt: $archivedAt, ')
           ..write('createdAt: $createdAt, ')
           ..write('rowid: $rowid')
@@ -1325,6 +1412,8 @@ typedef $$HabitsTableCreateCompanionBuilder = HabitsCompanion Function({
   Value<bool> isQuantitative,
   Value<int> targetValue,
   Value<String?> unit,
+  Value<String?> categories,
+  Value<String> streakGoalInterval,
   Value<DateTime?> archivedAt,
   Value<DateTime> createdAt,
   Value<int> rowid,
@@ -1340,6 +1429,8 @@ typedef $$HabitsTableUpdateCompanionBuilder = HabitsCompanion Function({
   Value<bool> isQuantitative,
   Value<int> targetValue,
   Value<String?> unit,
+  Value<String?> categories,
+  Value<String> streakGoalInterval,
   Value<DateTime?> archivedAt,
   Value<DateTime> createdAt,
   Value<int> rowid,
@@ -1403,6 +1494,13 @@ class $$HabitsTableFilterComposer
 
   ColumnFilters<String> get unit => $composableBuilder(
       column: $table.unit, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get categories => $composableBuilder(
+      column: $table.categories, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get streakGoalInterval => $composableBuilder(
+      column: $table.streakGoalInterval,
+      builder: (column) => ColumnFilters(column));
 
   ColumnFilters<DateTime> get archivedAt => $composableBuilder(
       column: $table.archivedAt, builder: (column) => ColumnFilters(column));
@@ -1474,6 +1572,13 @@ class $$HabitsTableOrderingComposer
   ColumnOrderings<String> get unit => $composableBuilder(
       column: $table.unit, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<String> get categories => $composableBuilder(
+      column: $table.categories, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get streakGoalInterval => $composableBuilder(
+      column: $table.streakGoalInterval,
+      builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<DateTime> get archivedAt => $composableBuilder(
       column: $table.archivedAt, builder: (column) => ColumnOrderings(column));
 
@@ -1519,6 +1624,12 @@ class $$HabitsTableAnnotationComposer
 
   GeneratedColumn<String> get unit =>
       $composableBuilder(column: $table.unit, builder: (column) => column);
+
+  GeneratedColumn<String> get categories => $composableBuilder(
+      column: $table.categories, builder: (column) => column);
+
+  GeneratedColumn<String> get streakGoalInterval => $composableBuilder(
+      column: $table.streakGoalInterval, builder: (column) => column);
 
   GeneratedColumn<DateTime> get archivedAt => $composableBuilder(
       column: $table.archivedAt, builder: (column) => column);
@@ -1581,6 +1692,8 @@ class $$HabitsTableTableManager extends RootTableManager<
             Value<bool> isQuantitative = const Value.absent(),
             Value<int> targetValue = const Value.absent(),
             Value<String?> unit = const Value.absent(),
+            Value<String?> categories = const Value.absent(),
+            Value<String> streakGoalInterval = const Value.absent(),
             Value<DateTime?> archivedAt = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
             Value<int> rowid = const Value.absent(),
@@ -1596,6 +1709,8 @@ class $$HabitsTableTableManager extends RootTableManager<
             isQuantitative: isQuantitative,
             targetValue: targetValue,
             unit: unit,
+            categories: categories,
+            streakGoalInterval: streakGoalInterval,
             archivedAt: archivedAt,
             createdAt: createdAt,
             rowid: rowid,
@@ -1611,6 +1726,8 @@ class $$HabitsTableTableManager extends RootTableManager<
             Value<bool> isQuantitative = const Value.absent(),
             Value<int> targetValue = const Value.absent(),
             Value<String?> unit = const Value.absent(),
+            Value<String?> categories = const Value.absent(),
+            Value<String> streakGoalInterval = const Value.absent(),
             Value<DateTime?> archivedAt = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
             Value<int> rowid = const Value.absent(),
@@ -1626,6 +1743,8 @@ class $$HabitsTableTableManager extends RootTableManager<
             isQuantitative: isQuantitative,
             targetValue: targetValue,
             unit: unit,
+            categories: categories,
+            streakGoalInterval: streakGoalInterval,
             archivedAt: archivedAt,
             createdAt: createdAt,
             rowid: rowid,
