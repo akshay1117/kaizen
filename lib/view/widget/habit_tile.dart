@@ -11,7 +11,7 @@ class HabitTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final progressAsync = ref.watch(habitProgressProvider((habit.id, date)));
+    final progressAsync = ref.watch(habitProgressProvider((habit, date)));
     final color = Color(int.parse(habit.color.replaceFirst('#', '0xFF')));
 
     return Card(
@@ -59,7 +59,9 @@ class HabitTile extends ConsumerWidget {
                   final completed = progress > 0;
                   return IconButton(
                     icon: Icon(completed ? Icons.check_circle : Icons.radio_button_unchecked, color: completed ? color : null),
-                    onPressed: () => ref.read(habitNotifierProvider.notifier).updateProgress(habit.id, date, completed ? 0 : 1),
+                    onPressed: () {
+                      ref.read(habitNotifierProvider.notifier).toggleCompletion(habit, date, completed);
+                    },
                   );
                 }
               },

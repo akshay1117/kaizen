@@ -235,6 +235,7 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _nameCtrl,
+                      textCapitalization: TextCapitalization.words,
                       decoration: const InputDecoration(),
                       style: const TextStyle(color: Colors.white),
                       validator: (v) => v!.isEmpty ? 'Required' : null,

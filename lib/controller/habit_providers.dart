@@ -15,10 +15,27 @@ final activeHabitsProvider = StreamProvider.family<List<Habit>, DateTime>((ref, 
   return dao.watchActiveHabits(date);
 });
 
-final habitProgressProvider = StreamProvider.family<int, (String, DateTime)>((ref, args) {
-  final (habitId, date) = args;
+final habitProgressProvider = StreamProvider.family<int, (Habit, DateTime)>((ref, args) {
+  final (habit, date) = args;
   final dao = ref.watch(habitsDaoProvider);
-  return dao.watchProgress(habitId, date);
+  return dao.watchProgress(habit, date);
+});
+
+final habitYearlyProgressProvider = StreamProvider.family<Map<DateTime, int>, String>((ref, habitId) {
+  final dao = ref.watch(habitsDaoProvider);
+  final end = DateTime.now();
+  final start = end.subtract(const Duration(days: 378)); // 54 weeks * 7 days
+  
+  return dao.watchLogsBetweenAll(start, end).map((logs) {
+    final Map<DateTime, int> report = {};
+    for (var log in logs) {
+      if (log.habitId == habitId) {
+        final d = DateTime(log.completedDate.year, log.completedDate.month, log.completedDate.day);
+        report[d] = log.progress;
+      }
+    }
+    return report;
+  });
 });
 
 final weeklyReportProvider = StreamProvider<Map<DateTime, int>>((ref) {
@@ -84,12 +101,12 @@ class HabitNotifier extends AsyncNotifier<void> {
     state = const AsyncData(null);
   }
 
-  Future<void> toggleCompletion(String habitId, DateTime date, bool currentlyCompleted) async {
+  Future<void> toggleCompletion(Habit habit, DateTime date, bool currentlyCompleted) async {
     final dao = ref.read(habitsDaoProvider);
     if (!currentlyCompleted) {
-      await dao.logCompletion(habitId, date);
+      await dao.logCompletion(habit.id, date);
     } else {
-      await dao.removeCompletion(habitId, date);
+      await dao.removeCompletionForPeriod(habit, date);
     }
     state = const AsyncData(null);
   }

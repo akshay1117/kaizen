@@ -52,11 +52,55 @@ class HabitsDao extends DatabaseAccessor<AppDatabase> with _$HabitsDaoMixin {
     await _recalculateStreak(habitId);
   }
 
-  // Watch progress for a specific day
-  Stream<int> watchProgress(String habitId, DateTime date) {
-    return (select(habitLogs)..where((l) => l.habitId.equals(habitId) & l.completedDate.equals(date)))
-        .watchSingleOrNull()
-        .map((log) => log?.progress ?? 0);
+  // Remove completion for a specific period
+  Future<void> removeCompletionForPeriod(Habit habit, DateTime date) async {
+    DateTime start;
+    DateTime end;
+    
+    if (habit.frequency == 'weekly') {
+      final int diff = date.weekday - DateTime.monday;
+      start = date.subtract(Duration(days: diff));
+      end = start.add(const Duration(days: 6));
+    } else if (habit.frequency == 'monthly') {
+      start = DateTime(date.year, date.month, 1);
+      end = DateTime(date.year, date.month + 1, 0); 
+    } else {
+      start = date;
+      end = date;
+    }
+
+    await (delete(habitLogs)
+          ..where((l) => l.habitId.equals(habit.id) & l.completedDate.isBetweenValues(start, end)))
+        .go();
+    await _recalculateStreak(habit.id);
+  }
+
+  // Watch progress for the habit's period
+  Stream<int> watchProgress(Habit habit, DateTime date) {
+    DateTime start;
+    DateTime end;
+    
+    if (habit.frequency == 'weekly') {
+      final int diff = date.weekday - DateTime.monday;
+      start = date.subtract(Duration(days: diff));
+      end = start.add(const Duration(days: 6));
+    } else if (habit.frequency == 'monthly') {
+      start = DateTime(date.year, date.month, 1);
+      end = DateTime(date.year, date.month + 1, 0); 
+    } else {
+      start = date;
+      end = date;
+    }
+
+    return (select(habitLogs)..where((l) => l.habitId.equals(habit.id) & l.completedDate.isBetweenValues(start, end)))
+        .watch()
+        .map((logs) {
+          int totalProgress = 0;
+          for (final log in logs) {
+            totalProgress += log.progress;
+          }
+          return totalProgress;
+        });
   }
 
   // Save/Update progress
