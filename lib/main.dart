@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:optimos/services/app.dart';
+import 'package:kaizen/services/app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  runApp(const ProviderScope(child: OptimosApp()));
+  runApp(const ProviderScope(child: KaizenApp()));
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:optimos/services/design_tokens.dart';
+import 'package:kaizen/services/design_tokens.dart';
 
 class FitnessHubScreen extends StatelessWidget {
   const FitnessHubScreen({super.key});

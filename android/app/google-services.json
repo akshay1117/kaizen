@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "246844775999",
+    "project_id": "optimos-c1b7d",
+    "storage_bucket": "optimos-c1b7d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:246844775999:android:100b680dcddd931f54628a",
+        "android_client_info": {
+          "package_name": "com.example.optimos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCl3S0Zk9ykVykz2r-uQATLrJQb1DM2yoU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

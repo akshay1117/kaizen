@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:optimos/services/design_tokens.dart';
+import 'package:kaizen/services/design_tokens.dart';
 
 class CustomOptionTile extends StatelessWidget {
   final String title;
@@ -20,9 +20,8 @@ class CustomOptionTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          color: DesignTokens.bgPrimary,
-          borderRadius: BorderRadius.circular(DesignTokens.radiusMedium),
-          border: Border.all(color: DesignTokens.borderPrimary, width: 1),
+          color: const Color(0xFF0F0F11),
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

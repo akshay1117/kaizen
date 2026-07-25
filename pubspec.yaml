@@ -1,4 +1,4 @@
-name: optimos
+name: kaizen
 description: Lifestyle Performance Tracker
 version: 1.0.0+1
 environment:
@@ -30,7 +30,6 @@ dependencies:
 
   # UI & Icons
   google_fonts: ^6.2.0
-  phosphor_flutter: ^2.0.0
   fl_chart: ^0.66.0
   intl: ^0.18.0
 
@@ -41,6 +40,11 @@ dependencies:
   # Charts & heatmap
   syncfusion_flutter_charts: ^24.1.41
   calendar_view: ^2.0.0
+  http: ^1.6.0
+  cached_network_image: ^3.4.1
+
+  shared_preferences: ^2.5.5
+  lucide_icons_flutter: ^3.1.15
 
 dev_dependencies:
   flutter_test:
@@ -52,3 +56,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/

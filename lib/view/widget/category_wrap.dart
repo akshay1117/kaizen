@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:optimos/services/design_tokens.dart';
 
 class CategoryWrap extends StatelessWidget {
   final List<String> availableCategories;
@@ -27,12 +26,12 @@ class CategoryWrap extends StatelessWidget {
             onTap: () => onToggleCategory(cat),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: isSelected ? DesignTokens.bgTertiary : DesignTokens.bgPrimary,
-                borderRadius: BorderRadius.circular(20),
+                color: isSelected ? const Color(0xFF2C2C2E) : const Color(0xFF0F0F11),
+                borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: isSelected ? Colors.white : DesignTokens.borderPrimary,
+                  color: isSelected ? Colors.white : const Color(0xFF2C2C2E),
                   width: 1,
                 ),
               ),
@@ -41,14 +40,14 @@ class CategoryWrap extends StatelessWidget {
                 children: [
                   Icon(
                     _getIconForCategory(cat),
-                    size: 14,
-                    color: isSelected ? Colors.white : DesignTokens.textSecondary,
+                    size: 16,
+                    color: isSelected ? Colors.white : Colors.white70,
                   ),
-                  const SizedBox(width: 6),
+                  const SizedBox(width: 8),
                   Text(
                     cat,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: isSelected ? Colors.white : DesignTokens.textSecondary,
+                          color: isSelected ? Colors.white : Colors.white70,
                           fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                         ),
                   ),
@@ -60,12 +59,12 @@ class CategoryWrap extends StatelessWidget {
         GestureDetector(
           onTap: onCreateNew,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(20),
+              color: const Color(0xFF0F0F11),
+              borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: DesignTokens.borderPrimary,
+                color: const Color(0xFF2C2C2E),
                 width: 1,
               ),
             ),
@@ -74,14 +73,14 @@ class CategoryWrap extends StatelessWidget {
               children: [
                 const Icon(
                   Icons.add,
-                  size: 14,
-                  color: DesignTokens.textSecondary,
+                  size: 16,
+                  color: Colors.white70,
                 ),
-                const SizedBox(width: 6),
+                const SizedBox(width: 8),
                 Text(
                   'Create your own',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: DesignTokens.textSecondary,
+                        color: Colors.white70,
                       ),
                 ),
               ],
@@ -97,27 +96,29 @@ class CategoryWrap extends StatelessWidget {
       case 'art':
         return Icons.palette_outlined;
       case 'finances':
-        return Icons.attach_money;
+        return Icons.account_balance_wallet_outlined;
       case 'fitness':
-        return Icons.directions_run;
+        return Icons.directions_bike_outlined;
       case 'health':
         return Icons.favorite_border;
       case 'nutrition':
-        return Icons.restaurant_menu;
+        return Icons.restaurant_outlined;
       case 'social':
         return Icons.people_outline;
       case 'study':
         return Icons.school_outlined;
       case 'work':
         return Icons.work_outline;
+      case 'other':
+        return Icons.diamond_outlined;
       case 'morning':
-        return Icons.wb_sunny_outlined;
+        return Icons.wb_cloudy_outlined;
       case 'day':
-        return Icons.brightness_high_outlined;
+        return Icons.light_mode_outlined;
       case 'evening':
-        return Icons.nights_stay_outlined;
+        return Icons.dark_mode_outlined;
       default:
-        return Icons.category_outlined;
+        return Icons.label_outline;
     }
   }
 }

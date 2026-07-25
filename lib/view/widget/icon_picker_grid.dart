@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:optimos/services/design_tokens.dart';
+import 'package:kaizen/services/design_tokens.dart';
 
 class IconPickerGrid extends StatelessWidget {
   final String selectedIcon;

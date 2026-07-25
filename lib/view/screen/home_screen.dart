@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:optimos/services/design_tokens.dart';
+import 'package:kaizen/services/design_tokens.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});

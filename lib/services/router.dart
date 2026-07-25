@@ -1,17 +1,17 @@
 import 'package:go_router/go_router.dart';
-import 'package:optimos/view/widget/scaffold_with_nav_bar.dart';
-import 'package:optimos/view/screen/home_screen.dart';
-import 'package:optimos/view/screen/fitness_hub_screen.dart';
-import 'package:optimos/view/screen/gym_home_screen.dart';
-import 'package:optimos/view/screen/boxing_home_screen.dart';
-import 'package:optimos/view/screen/running_home_screen.dart';
-import 'package:optimos/view/screen/diet_home_screen.dart';
-import 'package:optimos/view/screen/habits_home_screen.dart';
-import 'package:optimos/view/screen/add_habit_screen.dart';
-import 'package:optimos/view/screen/finance_home_screen.dart';
-import 'package:optimos/view/screen/journal_home_screen.dart';
-import 'package:optimos/features/journal/presentation/screens/create_journal_screen.dart';
-import 'package:optimos/features/journal/presentation/screens/journal_detail_screen.dart';
+import 'package:kaizen/view/widget/scaffold_with_nav_bar.dart';
+import 'package:kaizen/view/screen/home_screen.dart';
+import 'package:kaizen/view/screen/fitness_hub_screen.dart';
+import 'package:kaizen/view/screen/gym_screens.dart';
+import 'package:kaizen/view/screen/boxing_home_screen.dart';
+import 'package:kaizen/view/screen/running_home_screen.dart';
+import 'package:kaizen/view/screen/diet_home_screen.dart';
+import 'package:kaizen/view/screen/habits_home_screen.dart';
+import 'package:kaizen/view/screen/add_habit_screen.dart';
+import 'package:kaizen/view/screen/finance_home_screen.dart';
+import 'package:kaizen/view/screen/journal_home_screen.dart';
+import 'package:kaizen/features/journal/presentation/screens/create_journal_screen.dart';
+import 'package:kaizen/features/journal/presentation/screens/journal_detail_screen.dart';
 
 final router = GoRouter(
   initialLocation: '/home',

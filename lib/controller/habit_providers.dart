@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:optimos/model/database.dart';
-import 'package:optimos/model/habits_dao.dart';
+import 'package:kaizen/model/database.dart';
+import 'package:kaizen/model/habits_dao.dart';
 
 final databaseProvider = Provider<AppDatabase>((ref) => AppDatabase());
 

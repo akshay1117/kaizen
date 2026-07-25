@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
-import 'package:optimos/controller/habit_providers.dart';
-import 'package:optimos/model/database.dart';
-import 'package:optimos/services/design_tokens.dart';
-import 'package:optimos/view/widget/custom_bottom_nav_bar.dart';
-import 'package:optimos/view/widget/habit_heatmap_card.dart';
-import 'package:optimos/view/widget/habit_weekly_card.dart';
-import 'package:optimos/view/widget/habit_monthly_card.dart';
+import 'package:kaizen/controller/habit_providers.dart';
+import 'package:kaizen/model/database.dart';
+import 'package:kaizen/services/design_tokens.dart';
+import 'package:kaizen/view/widget/custom_bottom_nav_bar.dart';
+import 'package:kaizen/utils/habit_icons.dart';
+import 'package:kaizen/view/screen/habit_detail_screen.dart';
 
 class HabitsHomeScreen extends ConsumerStatefulWidget {
   const HabitsHomeScreen({super.key});
@@ -18,9 +16,16 @@ class HabitsHomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HabitsHomeScreenState extends ConsumerState<HabitsHomeScreen> {
-  final DateTime _selectedDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-  int _navIndex = 0;
-  String _selectedFilter = 'All';
+  DateTime _selectedDate = DateTime.now();
+  int _navIndex = 0; // 0: Today, 1: Habits
+  bool _isNavBarVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final now = DateTime.now();
+    _selectedDate = DateTime(now.year, now.month, now.day);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,237 +33,347 @@ class _HabitsHomeScreenState extends ConsumerState<HabitsHomeScreen> {
 
     return Scaffold(
       backgroundColor: DesignTokens.bgPrimary,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Custom App Bar
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'optimos',
-                        style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: -1,
-                            ),
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: DesignTokens.accentGym.withValues(alpha: 0.2),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: const Text(
-                              'PRO',
-                              style: TextStyle(
-                                color: DesignTokens.accentGym,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 10,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          const Icon(Icons.bar_chart_rounded, color: DesignTokens.textSecondary),
-                          const SizedBox(width: 16),
-                          GestureDetector(
-                            onTap: () => context.pushNamed('add-habit'),
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: const BoxDecoration(
-                                color: DesignTokens.bgTertiary,
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(Icons.add, color: Colors.white, size: 20),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+      body: Stack(
+        children: [
+          SafeArea(
+            bottom: false,
+            child: habitsAsync.when(
+              data: (allHabits) {
+                if (allHabits.isEmpty) {
+                  return Center(
+                    child: Text(
+                      'No habits found. Tap + to create one.',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  );
+                }
+
+                if (_navIndex == 0) {
+                  return _buildTodayView(context, ref, allHabits);
+                } else {
+                  return _buildHabitsView(context, ref, allHabits);
+                }
+              },
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (e, _) => Center(child: Text('Error: $e')),
+            ),
+          ),
+          
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOutCubic,
+            left: 0,
+            right: 0,
+            bottom: _isNavBarVisible ? 0 : -200, // Hide below screen completely
+            child: GestureDetector(
+              onVerticalDragUpdate: (details) {
+                if (details.primaryDelta! > 5) {
+                  setState(() => _isNavBarVisible = false); // Swipe down to hide
+                }
+              },
+              child: CustomBottomNavBar(
+                selectedIndex: _navIndex,
+                onItemSelected: (index) {
+                  setState(() {
+                    _navIndex = index;
+                    _isNavBarVisible = false; // Hide after selection
+                  });
+                },
+              ),
+            ),
+          ),
+          
+          // Drag handle at the bottom to reveal nav bar
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOutCubic,
+            left: 0,
+            right: 0,
+            bottom: _isNavBarVisible ? -100 : 0, // Hide when nav bar is visible
+            child: GestureDetector(
+              onVerticalDragUpdate: (details) {
+                if (details.primaryDelta! < -5) {
+                  setState(() => _isNavBarVisible = true); // Swipe up to reveal
+                }
+              },
+              onTap: () {
+                setState(() => _isNavBarVisible = true);
+              },
+              child: Container(
+                height: 40,
+                color: Colors.transparent, // expanded hit area
+                alignment: Alignment.bottomCenter,
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(2),
                   ),
                 ),
-                // Habits List
-                Expanded(
-                  child: habitsAsync.when(
-                    data: (allHabits) {
-                      // Extract categories dynamically
-                      final Set<String> activeCategories = {};
-                      for (var habit in allHabits) {
-                        if (habit.categories != null && habit.categories!.isNotEmpty) {
-                          activeCategories.addAll(habit.categories!.split(',').map((e) => e.trim()));
-                        }
+              ),
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 80.0), // Above nav bar
+        child: FloatingActionButton(
+          onPressed: () => context.pushNamed('add-habit'),
+          backgroundColor: DesignTokens.accentHabit,
+          child: const Icon(Icons.add, color: Colors.white),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTodayView(BuildContext context, WidgetRef ref, List<Habit> filteredHabits) {
+    return RefreshIndicator(
+      onRefresh: () async {
+        // Just triggering a rebuild for now
+        setState(() {});
+      },
+      child: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 24, top: 24, bottom: 24),
+              child: Text(
+                'Today',
+                style: Theme.of(context).textTheme.displaySmall?.copyWith(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.only(left: 24, right: 24, bottom: 120),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final habit = filteredHabits[index];
+                  return Column(
+                    children: [
+                      _TodayHabitItem(habit: habit, date: _selectedDate),
+                      const Divider(
+                        height: 1,
+                        thickness: 1,
+                        color: Color(0xFF2A2A2A),
+                        indent: 60,
+                      ),
+                    ],
+                  );
+                },
+                childCount: filteredHabits.length,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHabitsView(BuildContext context, WidgetRef ref, List<Habit> filteredHabits) {
+    return RefreshIndicator(
+      onRefresh: () async {
+        setState(() {});
+      },
+      child: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 24, top: 24, bottom: 24),
+              child: Text(
+                'Habits',
+                style: Theme.of(context).textTheme.displaySmall?.copyWith(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.only(left: 24, right: 24, bottom: 120),
+            sliver: SliverToBoxAdapter(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1E1E1E), // Dark theme grouped background
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: Column(
+                  children: [
+                    ...List.generate(filteredHabits.length, (index) {
+                      final habit = filteredHabits[index];
+                      
+                      String frequencyText = 'Every day';
+                      if (habit.frequency != 'daily') {
+                        frequencyText = habit.frequency;
                       }
-                      
-                      final List<String> dynamicFilters = ['All', ...activeCategories.toList()..sort()];
-                      
-                      // Filter habits based on selection
-                      final List<Habit> filteredHabits = _selectedFilter == 'All' || !dynamicFilters.contains(_selectedFilter)
-                          ? allHabits
-                          : allHabits.where((h) => h.categories != null && h.categories!.split(',').map((e) => e.trim()).contains(_selectedFilter)).toList();
 
                       return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Filters
-                          if (dynamicFilters.length > 1) // Only show if there's more than just 'All'
-                            SizedBox(
-                              height: 40,
-                              child: ListView.separated(
-                                padding: const EdgeInsets.symmetric(horizontal: 24),
-                                scrollDirection: Axis.horizontal,
-                                itemCount: dynamicFilters.length,
-                                separatorBuilder: (context, index) => const SizedBox(width: 8),
-                                itemBuilder: (context, index) {
-                                  final filter = dynamicFilters[index];
-                                  // Fallback to 'All' if selected filter no longer exists
-                                  final isSelected = filter == _selectedFilter || (_selectedFilter != 'All' && !dynamicFilters.contains(_selectedFilter) && filter == 'All');
-                                  
-                                  return GestureDetector(
-                                    onTap: () => setState(() => _selectedFilter = filter),
-                                    child: AnimatedContainer(
-                                      duration: const Duration(milliseconds: 200),
-                                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                      decoration: BoxDecoration(
-                                        color: isSelected ? Colors.white : DesignTokens.bgSecondary,
-                                        borderRadius: BorderRadius.circular(20),
-                                        border: Border.all(
-                                          color: isSelected ? Colors.white : DesignTokens.borderPrimary,
-                                          width: 1,
-                                        ),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          filter,
-                                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                                color: isSelected ? Colors.black : DesignTokens.textSecondary,
-                                                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                                              ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HabitDetailScreen(habit: habit),
+                                ),
+                              );
+                            },
+                            borderRadius: BorderRadius.vertical(
+                              top: index == 0 ? const Radius.circular(24) : Radius.zero,
                             ),
-                          if (_navIndex == 1 && dynamicFilters.length > 1) // Add some spacing before header
-                            const SizedBox(height: 8),
-                            
-                          if (_navIndex == 1) // Date header for weekly view
-                            Padding(
-                              padding: const EdgeInsets.only(left: 24.0, right: 24.0, bottom: 8.0, top: 16.0),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                                    decoration: BoxDecoration(
-                                      color: DesignTokens.bgSecondary,
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(
-                                        color: DesignTokens.borderPrimary,
-                                        width: 1,
-                                      ),
-                                    ),
-                                    child: Text(
-                                      'Last 5 days',
-                                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                            color: DesignTokens.textSecondary,
+                                  _buildIconWidget(habit.icon, _parseColor(habit.color)),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          habit.name,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 15,
                                             fontWeight: FontWeight.w500,
                                           ),
-                                    ),
-                                  ),
-                                  Row(
-                                    children: List.generate(5, (index) {
-                                      final date = _selectedDate.subtract(Duration(days: 4 - index));
-                                      return Container(
-                                        width: 32,
-                                        alignment: Alignment.center,
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
+                                        ),
+                                        const SizedBox(height: 2),
+                                        Row(
                                           children: [
                                             Text(
-                                              DateFormat('E').format(date).substring(0, 2),
-                                              style: const TextStyle(color: DesignTokens.textTertiary, fontSize: 12),
+                                              frequencyText,
+                                              style: const TextStyle(
+                                                color: DesignTokens.textSecondary,
+                                                fontSize: 12,
+                                              ),
                                             ),
-                                            const SizedBox(height: 4),
+                                            const SizedBox(width: 6),
+                                            const Text('·', style: TextStyle(color: DesignTokens.textSecondary)),
+                                            const SizedBox(width: 6),
+                                            const Icon(Icons.local_fire_department, color: Colors.orange, size: 14),
+                                            const SizedBox(width: 4),
                                             Text(
-                                              '${date.day}',
-                                              style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                                              '${habit.currentStreak}',
+                                              style: const TextStyle(
+                                                color: DesignTokens.textSecondary,
+                                                fontSize: 12,
+                                              ),
                                             ),
                                           ],
                                         ),
-                                      );
-                                    }),
+                                      ],
+                                    ),
+                                  ),
+                                  const Icon(
+                                    Icons.chevron_right,
+                                    color: DesignTokens.textTertiary,
+                                    size: 20,
                                   ),
                                 ],
                               ),
                             ),
-                          
-                          Expanded(
-                            child: filteredHabits.isEmpty
-                                ? Center(
-                                    child: Text(
-                                      allHabits.isEmpty ? 'No habits found. Tap + to create one.' : 'No habits in this category.',
-                                      style: Theme.of(context).textTheme.bodyLarge,
-                                    ),
-                                  )
-                                : _navIndex == 2
-                                    ? GridView.builder(
-                                        padding: const EdgeInsets.only(left: 24, right: 24, bottom: 120),
-                                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 3,
-                                          crossAxisSpacing: 12,
-                                          mainAxisSpacing: 12,
-                                          childAspectRatio: 0.8,
-                                        ),
-                                        itemCount: filteredHabits.length,
-                                        itemBuilder: (context, index) {
-                                          return ConnectedHabitMonthlyCard(
-                                            habit: filteredHabits[index],
-                                            today: _selectedDate,
-                                          );
-                                        },
-                                      )
-                                    : ListView.builder(
-                                        padding: const EdgeInsets.only(bottom: 120), // Leave space for nav bar
-                                        itemCount: filteredHabits.length,
-                                        itemBuilder: (context, index) {
-                                          if (_navIndex == 1) {
-                                            return ConnectedHabitWeeklyCard(
-                                              habit: filteredHabits[index],
-                                              today: _selectedDate,
-                                            );
-                                          }
-                                          return ConnectedHabitHeatmapCard(
-                                            habit: filteredHabits[index],
-                                            today: _selectedDate,
-                                          );
-                                        },
-                                      ),
+                          ),
+                          const Divider(
+                            height: 1,
+                            thickness: 1,
+                            color: Color(0xFF2A2A2A),
+                            indent: 60, // Align with text start
+                            endIndent: 16,
                           ),
                         ],
                       );
-                    },
-                    loading: () => const Center(child: CircularProgressIndicator()),
-                    error: (e, _) => Center(child: Text('Error: $e')),
+                    }),
+
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TodayHabitItem extends ConsumerWidget {
+  final Habit habit;
+  final DateTime date;
+
+  const _TodayHabitItem({required this.habit, required this.date});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final progressAsync = ref.watch(habitProgressProvider((habit, date)));
+    final currentProgress = progressAsync.value ?? 0;
+    final isCompleted = currentProgress >= habit.targetValue;
+    
+    final habitColor = _parseColor(habit.color);
+
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HabitDetailScreen(habit: habit),
+          ),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: Row(
+          children: [
+            _buildIconWidget(habit.icon, habitColor),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    habit.name,
+                    style: TextStyle(
+                      color: isCompleted ? DesignTokens.textSecondary : Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      decoration: isCompleted ? TextDecoration.lineThrough : null,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Icon(Icons.local_fire_department, color: habitColor, size: 14),
+                      const SizedBox(width: 4),
+                      Text(
+                        '${habit.currentStreak} days',
+                        style: const TextStyle(
+                          color: DesignTokens.textSecondary,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            // Checkmark
+            GestureDetector(
+              onTap: () {
+                ref.read(habitNotifierProvider.notifier).toggleCompletion(habit, date, isCompleted);
+              },
+              child: Container(
+                width: 24,
+                height: 24,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: isCompleted ? habitColor : Colors.transparent,
+                  border: Border.all(
+                    color: isCompleted ? habitColor : DesignTokens.borderPrimary,
+                    width: 2,
                   ),
                 ),
-              ],
-            ),
-            
-            // Floating Bottom Nav Bar
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: CustomBottomNavBar(
-                selectedIndex: _navIndex,
-                onItemSelected: (index) => setState(() => _navIndex = index),
+                child: isCompleted
+                    ? const Icon(Icons.check, color: Colors.white, size: 16)
+                    : null,
               ),
             ),
           ],
@@ -266,4 +381,35 @@ class _HabitsHomeScreenState extends ConsumerState<HabitsHomeScreen> {
       ),
     );
   }
+}
+
+Color _parseColor(String colorStr) {
+  try {
+    if (colorStr.startsWith('#')) {
+      return Color(int.parse(colorStr.substring(1), radix: 16) + 0xFF000000);
+    } else if (colorStr.length == 6) {
+      return Color(int.parse(colorStr, radix: 16) + 0xFF000000);
+    } else if (colorStr.length == 8) {
+      return Color(int.parse(colorStr, radix: 16));
+    }
+  } catch (_) {}
+  return Colors.orange;
+}
+
+Widget _buildIconWidget(String iconStr, Color habitColor) {
+  return Container(
+    width: 32,
+    height: 32,
+    decoration: BoxDecoration(
+      color: habitColor,
+      shape: BoxShape.circle,
+    ),
+    child: Center(
+      child: Icon(
+        getHabitIcon(iconStr),
+        color: Colors.white,
+        size: 16,
+      ),
+    ),
+  );
 }

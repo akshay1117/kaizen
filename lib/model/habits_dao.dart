@@ -1,5 +1,5 @@
 import 'package:drift/drift.dart';
-import 'package:optimos/model/database.dart';
+import 'package:kaizen/model/database.dart';
 
 part 'habits_dao.g.dart';
 

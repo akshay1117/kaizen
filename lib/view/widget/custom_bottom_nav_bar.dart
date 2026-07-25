@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:optimos/services/design_tokens.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   final int selectedIndex;
@@ -15,10 +14,10 @@ class CustomBottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 32, left: 32, right: 32),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: DesignTokens.bgTertiary,
-        borderRadius: BorderRadius.circular(32),
+        color: const Color(0xFF1E1E1E), // Dark theme nav bar background
+        borderRadius: BorderRadius.circular(40),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.5),
@@ -28,22 +27,19 @@ class CustomBottomNavBar extends StatelessWidget {
         ],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _NavBarItem(
-            icon: Icons.grid_view_rounded,
+            icon: Icons.check_circle,
+            label: 'Today',
             isSelected: selectedIndex == 0,
             onTap: () => onItemSelected(0),
           ),
           _NavBarItem(
-            icon: Icons.view_list_rounded,
+            icon: Icons.local_fire_department_rounded,
+            label: 'Habits',
             isSelected: selectedIndex == 1,
             onTap: () => onItemSelected(1),
-          ),
-          _NavBarItem(
-            icon: Icons.calendar_today_rounded,
-            isSelected: selectedIndex == 2,
-            onTap: () => onItemSelected(2),
           ),
         ],
       ),
@@ -53,31 +49,50 @@ class CustomBottomNavBar extends StatelessWidget {
 
 class _NavBarItem extends StatelessWidget {
   final IconData icon;
+  final String label;
   final bool isSelected;
   final VoidCallback onTap;
 
   const _NavBarItem({
     required this.icon,
+    required this.label,
     required this.isSelected,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
+    final color = isSelected ? Colors.orange : Colors.grey;
+    final bgColor = isSelected ? Colors.orange.withValues(alpha: 0.15) : Colors.transparent;
+
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.white.withValues(alpha: 0.1) : Colors.transparent,
-          shape: BoxShape.circle,
+          color: bgColor,
+          borderRadius: BorderRadius.circular(30),
         ),
-        child: Icon(
-          icon,
-          color: isSelected ? Colors.white : DesignTokens.textTertiary,
-          size: 24,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              color: color,
+              size: 28,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: TextStyle(
+                color: color,
+                fontSize: 12,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+          ],
         ),
       ),
     );

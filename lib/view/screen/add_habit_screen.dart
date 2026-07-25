@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:optimos/controller/habit_providers.dart';
-import 'package:optimos/services/design_tokens.dart';
-import 'package:optimos/view/widget/color_picker_grid.dart';
-import 'package:optimos/view/widget/custom_option_tile.dart';
-import 'package:optimos/view/widget/icon_picker_grid.dart';
-import 'package:optimos/view/widget/tracking_segmented_control.dart';
-import 'package:optimos/view/widget/category_wrap.dart';
+import 'package:kaizen/controller/habit_providers.dart';
+import 'package:kaizen/services/design_tokens.dart';
+import 'package:kaizen/view/widget/tracking_segmented_control.dart';
+import 'package:kaizen/view/widget/category_wrap.dart';
+import 'package:kaizen/view/screen/streak_goal_screen.dart';
+import 'package:kaizen/view/screen/reminder_screen.dart';
+import 'package:kaizen/view/widget/icon_picker_sheet.dart';
+import 'package:kaizen/utils/habit_icons.dart';
 
 class AddHabitScreen extends ConsumerStatefulWidget {
   const AddHabitScreen({super.key});
@@ -17,14 +18,12 @@ class AddHabitScreen extends ConsumerStatefulWidget {
 }
 
 class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
-  final _formKey = GlobalKey<FormState>();
   final _nameCtrl = TextEditingController();
-  final _descCtrl = TextEditingController(); // We map description to note or ignore if no schema field, but let's keep it in UI
+  final _descCtrl = TextEditingController();
   
-  String _iconName = 'favorite';
-  IconData _iconData = Icons.favorite_border;
+  Color _color = const Color(0xFFF76C6C); // Default to first color
+  String _iconId = 'pulse'; // Default icon id from Sports
   
-  Color _color = const Color(0xFFFF4D4D);
   final String _frequency = 'daily';
   String? _reminder;
   bool _isQuantitative = false;
@@ -36,31 +35,28 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
   bool _showAdvanced = false;
 
   final List<Color> _colors = [
-    const Color(0xFFFF6B6B), const Color(0xFFFF922B), const Color(0xFFFCC419), const Color(0xFFFFE066),
-    const Color(0xFF94D82D), const Color(0xFF51CF66), const Color(0xFF20C997), const Color(0xFF339AF0),
-    const Color(0xFF3BC9DB), const Color(0xFF4DABF7), const Color(0xFF748FFC), const Color(0xFF9775FA),
-    const Color(0xFFB197FC), const Color(0xFFE599F7), const Color(0xFFF06595), const Color(0xFFFFA8A8),
-    const Color(0xFFFF8787), const Color(0xFFADB5BD), const Color(0xFF868E96), const Color(0xFF495057),
-  ];
-
-  final List<Map<String, dynamic>> _availableIcons = [
-    {'name': 'wallet', 'icon': Icons.account_balance_wallet_outlined},
-    {'name': 'moon', 'icon': Icons.nights_stay_outlined},
-    {'name': 'camera', 'icon': Icons.camera_alt_outlined},
-    {'name': 'coffee', 'icon': Icons.local_cafe_outlined},
-    {'name': 'fitness', 'icon': Icons.fitness_center_outlined},
-    {'name': 'book', 'icon': Icons.menu_book_outlined},
-    {'name': 'medication', 'icon': Icons.medication_outlined},
-    {'name': 'water', 'icon': Icons.water_drop_outlined},
-    {'name': 'favorite', 'icon': Icons.favorite_border},
-    {'name': 'restaurant', 'icon': Icons.restaurant_menu_outlined},
-    {'name': 'directions_run', 'icon': Icons.directions_run_outlined},
-    {'name': 'laptop', 'icon': Icons.laptop_mac_outlined},
+    // Row 1
+    const Color(0xFFF76C6C), const Color(0xFFF5A623), const Color(0xFFF7B733), const Color(0xFFF9D423), 
+    const Color(0xFF8BC34A), const Color(0xFF4CAF50), const Color(0xFF26C281),
+    // Row 2
+    const Color(0xFF1ABC9C), const Color(0xFF26C6DA), const Color(0xFF29B6F6), const Color(0xFF5B9BF0), 
+    const Color(0xFF7C83F0), const Color(0xFFB784E0), const Color(0xFFC97FE8),
+    // Row 3
+    const Color(0xFFD96FE8), const Color(0xFFF06FA8), const Color(0xFFF07C7C), const Color(0xFF9AA5B1), 
+    const Color(0xFF9E9E9E), const Color(0xFFA0A0A0), const Color(0xFFA8A29A),
   ];
 
   final List<String> _allCategories = [
-    'Art', 'Finances', 'Fitness', 'Health', 'Nutrition', 'Social', 'Study', 'Work', 'Morning', 'Day', 'Evening'
+    'Art', 'Finances', 'Fitness', 'Health', 'Nutrition', 'Social', 'Study', 'Work', 'Other', 'Morning', 'Day', 'Evening'
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _nameCtrl.addListener(() {
+      setState(() {}); // Rebuild to update Save button state
+    });
+  }
 
   @override
   void dispose() {
@@ -69,61 +65,14 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
     super.dispose();
   }
 
-  void _showIconPicker() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: DesignTokens.bgSecondary,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(width: 40, height: 4, decoration: BoxDecoration(color: DesignTokens.borderSecondary, borderRadius: BorderRadius.circular(2))),
-              const SizedBox(height: 24),
-              IconPickerGrid(
-                selectedIcon: _iconName,
-                icons: _availableIcons,
-                onIconSelected: (name) {
-                  setState(() {
-                    _iconName = name;
-                    _iconData = _availableIcons.firstWhere((e) => e['name'] == name)['icon'];
-                  });
-                  Navigator.pop(context);
-                },
-              ),
-              const SizedBox(height: 24),
-            ],
-          ),
-        );
-      },
+  void _showStreakGoalPicker() async {
+    final result = await Navigator.push<String>(
+      context,
+      MaterialPageRoute(builder: (context) => StreakGoalScreen(initialGoal: _streakGoal)),
     );
-  }
-
-  void _showStreakGoalPicker() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: DesignTokens.bgSecondary,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
-      builder: (context) {
-        return ListView(
-          shrinkWrap: true,
-          padding: const EdgeInsets.symmetric(vertical: 24),
-          children: ['None', 'Daily', 'Week', 'Month'].map((goal) {
-            return ListTile(
-              title: Text(goal, style: const TextStyle(color: DesignTokens.textPrimary)),
-              trailing: _streakGoal == goal ? const Icon(Icons.check, color: Colors.white) : null,
-              onTap: () {
-                setState(() => _streakGoal = goal);
-                Navigator.pop(context);
-              },
-            );
-          }).toList(),
-        );
-      },
-    );
+    if (result != null && mounted) {
+      setState(() => _streakGoal = result);
+    }
   }
 
   void _showCategoryPicker() {
@@ -162,19 +111,17 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
                         });
                         setState(() {});
                       },
-                      onCreateNew: () {
-                        // Dummy for now
-                      },
+                      onCreateNew: () {},
                     ),
                     const SizedBox(height: 32),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: DesignTokens.accentDiet,
+                          backgroundColor: const Color(0xFF9747FF),
                           foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(DesignTokens.radiusMedium)),
+                          padding: const EdgeInsets.symmetric(vertical: 18),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         ),
                         onPressed: () => Navigator.pop(context),
                         child: const Text('Save', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
@@ -190,257 +137,389 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
     );
   }
 
+  void _pickIcon() async {
+    final result = await showIconPicker(context, currentSelection: _iconId);
+    if (result != null && mounted) {
+      setState(() {
+        _iconId = result;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final bool isFormValid = _nameCtrl.text.trim().isNotEmpty;
+    
     return Scaffold(
-      backgroundColor: DesignTokens.bgPrimary,
+      backgroundColor: const Color(0xFF0A0A0A),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.close, color: DesignTokens.textPrimary),
+          icon: const Icon(Icons.close, color: Colors.white),
           onPressed: () => context.pop(),
         ),
-        title: Text('New Habit', style: Theme.of(context).textTheme.displaySmall),
+        title: const Text(
+          'New Habit',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         centerTitle: true,
       ),
       body: SafeArea(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              Expanded(
-                child: ListView(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                  children: [
-                    // Icon Picker
-                    Center(
-                      child: GestureDetector(
-                        onTap: _showIconPicker,
-                        child: Container(
-                          width: 80,
-                          height: 80,
-                          decoration: const BoxDecoration(
-                            color: DesignTokens.bgSecondary,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(_iconData, size: 40, color: Colors.white),
-                        ),
-                      ),
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                children: [
+                  // Icon / Emoji selector (Top)
+                  _buildIconSelector(),
+                  
+                  const SizedBox(height: 12),
+                  
+                  // Name Field
+                  const Text('Name', style: TextStyle(color: Color(0xFF9A9A9E), fontSize: 11, fontWeight: FontWeight.w500)),
+                  const SizedBox(height: 4),
+                  Container(
+                    height: 48,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF1C1C1E),
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    const SizedBox(height: 32),
-                    
-                    // Name
-                    Text('Name', style: Theme.of(context).textTheme.labelMedium),
-                    const SizedBox(height: 8),
-                    TextFormField(
+                    child: TextFormField(
                       controller: _nameCtrl,
                       textCapitalization: TextCapitalization.words,
-                      decoration: const InputDecoration(),
-                      style: const TextStyle(color: Colors.white),
-                      validator: (v) => v!.isEmpty ? 'Required' : null,
-                    ),
-                    const SizedBox(height: 24),
-                    
-                    // Description
-                    Text('Description', style: Theme.of(context).textTheme.labelMedium),
-                    const SizedBox(height: 8),
-                    TextFormField(
-                      controller: _descCtrl,
-                      decoration: const InputDecoration(),
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    const SizedBox(height: 24),
-                    
-                    // Color Picker
-                    Text('Color', style: Theme.of(context).textTheme.labelMedium),
-                    const SizedBox(height: 12),
-                    ColorPickerGrid(
-                      colors: _colors,
-                      selectedColor: _color,
-                      onColorSelected: (c) => setState(() => _color = c),
-                    ),
-                    const SizedBox(height: 32),
-                    
-                    // Advanced Options Toggle
-                    GestureDetector(
-                      onTap: () => setState(() => _showAdvanced = !_showAdvanced),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Advanced Options', style: Theme.of(context).textTheme.bodyMedium),
-                          Icon(_showAdvanced ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, color: DesignTokens.textSecondary, size: 20),
-                        ],
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 12),
                       ),
+                      style: const TextStyle(color: Colors.white, fontSize: 14),
                     ),
-                    const SizedBox(height: 24),
-                    
-                    AnimatedCrossFade(
-                      firstChild: const SizedBox(width: double.infinity),
-                      secondChild: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
+                  ),
+                  const SizedBox(height: 12),
+                  
+                  // Description Field
+                  const Text('Description', style: TextStyle(color: Color(0xFF9A9A9E), fontSize: 11, fontWeight: FontWeight.w500)),
+                  const SizedBox(height: 4),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF1C1C1E),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: TextFormField(
+                      controller: _descCtrl,
+                      textCapitalization: TextCapitalization.sentences,
+                      maxLines: null,
+                      minLines: 1,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                      ),
+                      style: const TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  
+                  // Color Picker
+                  const Text('Color', style: TextStyle(color: Color(0xFF9A9A9E), fontSize: 11, fontWeight: FontWeight.w500)),
+                  const SizedBox(height: 6),
+                  _buildCustomColorPicker(),
+                  const SizedBox(height: 16),
+                  
+                  // Advanced Options Toggle
+                  GestureDetector(
+                    onTap: () => setState(() => _showAdvanced = !_showAdvanced),
+                    child: Row(
+                      children: [
+                        const Expanded(child: Divider(color: Colors.white12)),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Row(
                             children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Streak Goal', style: Theme.of(context).textTheme.labelMedium),
-                                    const SizedBox(height: 8),
-                                    CustomOptionTile(
-                                      title: 'Streak Goal',
-                                      subtitle: _streakGoal,
-                                      onTap: _showStreakGoalPicker,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Reminder', style: Theme.of(context).textTheme.labelMedium),
-                                    const SizedBox(height: 8),
-                                    CustomOptionTile(
-                                      title: 'Reminder',
-                                      subtitle: _reminder ?? '0 Active Reminders',
-                                      onTap: () async {
-                                        final time = await showTimePicker(context: context, initialTime: TimeOfDay.now());
-                                        if (time != null) {
-                                          setState(() => _reminder = '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}');
-                                        }
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              const Text('Advanced Options', style: TextStyle(color: Colors.white54, fontSize: 13)),
+                              const SizedBox(width: 4),
+                              Icon(_showAdvanced ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, color: Colors.white54, size: 14),
                             ],
                           ),
-                          const SizedBox(height: 24),
-                          
-                          Text('Categories', style: Theme.of(context).textTheme.labelMedium),
-                          const SizedBox(height: 8),
-                          CustomOptionTile(
-                            title: 'Categories',
-                            subtitle: _categories.isEmpty ? 'None' : _categories.join(', '),
-                            onTap: _showCategoryPicker,
-                          ),
-                          const SizedBox(height: 24),
-                          
-                          Text('How should completions be tracked?', style: Theme.of(context).textTheme.labelMedium),
-                          const SizedBox(height: 8),
-                          TrackingSegmentedControl(
-                            isQuantitative: _isQuantitative,
-                            onChanged: (val) => setState(() => _isQuantitative = val),
-                          ),
-                          const SizedBox(height: 24),
-                          
-                          if (_isQuantitative) ...[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Completions Per Day', style: Theme.of(context).textTheme.labelMedium),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                Expanded(
-                                  flex: 2,
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                                    decoration: BoxDecoration(
-                                      color: DesignTokens.bgTertiary,
-                                      borderRadius: BorderRadius.circular(DesignTokens.radiusMedium),
-                                    ),
-                                    child: Text('$_targetValue / Day', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                _buildActionButton(Icons.remove, () {
-                                  if (_targetValue > 1) setState(() => _targetValue--);
-                                }),
-                                const SizedBox(width: 8),
-                                _buildActionButton(Icons.add, () {
-                                  setState(() => _targetValue++);
-                                }),
-                                const SizedBox(width: 8),
-                                _buildActionButton(Icons.edit_outlined, () {
-                                  // Edit custom unit or exact value logic
-                                }),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Center(
-                              child: Text('The square will be filled completely when this number is met', style: Theme.of(context).textTheme.labelMedium),
-                            ),
-                            const SizedBox(height: 48),
-                          ]
-                        ],
-                      ),
-                      crossFadeState: _showAdvanced ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                      duration: const Duration(milliseconds: 300),
+                        ),
+                        const Expanded(child: Divider(color: Colors.white12)),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: DesignTokens.accentDiet, // Purple button from screenshot
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 18),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                    ),
-                    onPressed: _save,
-                    child: const Text('Save', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                   ),
+                  const SizedBox(height: 12),
+                  
+                  AnimatedCrossFade(
+                    firstChild: const SizedBox(width: double.infinity),
+                    secondChild: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text('Streak Goal', style: TextStyle(color: Color(0xFF9A9A9E), fontSize: 11)),
+                                  const SizedBox(height: 4),
+                                  _buildDarkRowOption(_streakGoal, onTap: _showStreakGoalPicker),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text('Reminder', style: TextStyle(color: Color(0xFF9A9A9E), fontSize: 11)),
+                                  const SizedBox(height: 4),
+                                  _buildDarkRowOption(_reminder ?? '0 Active Reminders', onTap: () async {
+                                    final result = await Navigator.push<String>(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => ReminderScreen(initialReminder: _reminder)),
+                                    );
+                                    if (result != null && mounted) {
+                                      setState(() => _reminder = result);
+                                    }
+                                  }),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        
+                        const Text('Categories', style: TextStyle(color: Color(0xFF9A9A9E), fontSize: 11)),
+                        const SizedBox(height: 4),
+                        _buildDarkRowOption(_categories.isEmpty ? 'None' : _categories.join(', '), onTap: _showCategoryPicker),
+                        const SizedBox(height: 12),
+                        
+                        const Text('How should completions be tracked?', style: TextStyle(color: Color(0xFF9A9A9E), fontSize: 11)),
+                        const SizedBox(height: 4),
+                        TrackingSegmentedControl(
+                          isQuantitative: _isQuantitative,
+                          onChanged: (val) => setState(() => _isQuantitative = val),
+                        ),
+                        const SizedBox(height: 8),
+                        const Center(
+                          child: Text('Increment by 1 with each completion', style: TextStyle(color: Colors.white38, fontSize: 11)),
+                        ),
+                        const SizedBox(height: 12),
+                        
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text('Completions Per Day', style: TextStyle(color: Color(0xFF9A9A9E), fontSize: 11)),
+                            Row(
+                              children: [
+                                Container(width: 12, height: 12, decoration: BoxDecoration(color: const Color(0xFF2C2C2E), borderRadius: BorderRadius.circular(2))),
+                                const SizedBox(width: 4),
+                                Container(width: 12, height: 12, decoration: BoxDecoration(color: _color, borderRadius: BorderRadius.circular(2))),
+                              ],
+                            )
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF1C1C1E),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text('$_targetValue / Day', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            _buildDarkActionButton(Icons.remove, () {
+                              if (_targetValue > 1) setState(() => _targetValue--);
+                            }),
+                            const SizedBox(width: 8),
+                            _buildDarkActionButton(Icons.add, () {
+                              setState(() => _targetValue++);
+                            }),
+                            const SizedBox(width: 8),
+                            _buildDarkActionButton(Icons.edit_outlined, () {}),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        const Center(
+                          child: Text('The square will be filled completely when this number is met', style: TextStyle(color: Colors.white38, fontSize: 11)),
+                        ),
+                        const SizedBox(height: 16),
+                      ],
+                    ),
+                    crossFadeState: _showAdvanced ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                    duration: const Duration(milliseconds: 300),
+                  ),
+                ],
+              ),
+            ),
+            
+            // Pinned Save Button
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: isFormValid ? const Color(0xFF262628) : const Color(0xFF161616), // Lighten when valid
+                    foregroundColor: isFormValid ? Colors.white : Colors.white38,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  ),
+                  onPressed: isFormValid ? _save : null,
+                  child: const Text('Save', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildActionButton(IconData icon, VoidCallback onTap) {
+  Widget _buildIconSelector() {
+    // Generate a fixed grid of ~40 decorative icons
+    final decorativeIcons = allHabitIcons.values.take(40).toList();
+
+    return Center(
+      child: SizedBox(
+        height: 100,
+        width: double.infinity,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            // Background faint grid
+            Opacity(
+              opacity: 0.08,
+              child: GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 7,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  childAspectRatio: 1.0,
+                ),
+                itemCount: decorativeIcons.length,
+                itemBuilder: (context, index) {
+                  return Icon(decorativeIcons[index], color: Colors.white, size: 24);
+                },
+              ),
+            ),
+            // Foreground Circle
+            GestureDetector(
+              onTap: _pickIcon,
+              child: Container(
+                width: 60,
+                height: 60,
+                decoration: const BoxDecoration(
+                  color: Color(0xFF1C1C1E),
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: Icon(
+                    getHabitIcon(_iconId),
+                    color: Colors.white,
+                    size: 24,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCustomColorPicker() {
+    return Wrap(
+      spacing: 10,
+      runSpacing: 10,
+      children: _colors.map((color) {
+        final isSelected = color == _color;
+        return GestureDetector(
+          onTap: () => setState(() => _color = color),
+          child: Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+            ),
+            child: isSelected
+                ? const Center(
+                    child: Icon(Icons.circle, color: Colors.black54, size: 12),
+                  )
+                : null,
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildDarkRowOption(String text, {required VoidCallback onTap}) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
-          color: DesignTokens.bgTertiary,
-          borderRadius: BorderRadius.circular(DesignTokens.radiusMedium),
+          color: const Color(0xFF1C1C1E),
+          borderRadius: BorderRadius.circular(10),
         ),
-        child: Icon(icon, color: Colors.white, size: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Text(
+                text,
+                style: const TextStyle(color: Colors.white, fontSize: 14),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const Icon(Icons.chevron_right, color: Colors.white54, size: 20),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDarkActionButton(IconData icon, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1C1C1E),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Icon(icon, color: Colors.white54, size: 20),
       ),
     );
   }
 
   void _save() async {
-    if (_formKey.currentState!.validate()) {
-      final hexColor = '#${_color.toARGB32().toRadixString(16).substring(2, 8).toUpperCase()}';
-      await ref.read(habitNotifierProvider.notifier).addHabit(
-            name: _nameCtrl.text,
-            icon: _iconName,
-            color: hexColor,
-            frequency: _frequency,
-            reminderTime: _reminder,
-            isQuantitative: _isQuantitative,
-            targetValue: _targetValue,
-            unit: _unit.isEmpty ? null : _unit,
-            categories: _categories.isNotEmpty ? _categories.join(',') : null,
-            streakGoalInterval: _streakGoal.toLowerCase(),
-          );
-      if (mounted) {
-        context.pop();
-      }
+    final hexColor = '#${_color.toARGB32().toRadixString(16).substring(2, 8).toUpperCase()}';
+    await ref.read(habitNotifierProvider.notifier).addHabit(
+          name: _nameCtrl.text.trim(),
+          icon: _iconId,
+          color: hexColor,
+          frequency: _frequency,
+          reminderTime: _reminder,
+          isQuantitative: _isQuantitative,
+          targetValue: _targetValue,
+          unit: _unit.isEmpty ? null : _unit,
+          categories: _categories.isNotEmpty ? _categories.join(',') : null,
+          streakGoalInterval: _streakGoal.toLowerCase(),
+        );
+    if (mounted) {
+      context.pop();
     }
   }
 }
