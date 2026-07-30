@@ -151,16 +151,29 @@ class _HabitsHomeScreenState extends ConsumerState<HabitsHomeScreen> {
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
                   final habit = filteredHabits[index];
-                  return Column(
-                    children: [
-                      _TodayHabitItem(habit: habit, date: _selectedDate),
-                      const Divider(
-                        height: 1,
-                        thickness: 1,
-                        color: Color(0xFF2A2A2A),
-                        indent: 60,
-                      ),
-                    ],
+                  return Dismissible(
+                    key: Key(habit.id),
+                    direction: DismissDirection.endToStart,
+                    onDismissed: (direction) {
+                      ref.read(habitNotifierProvider.notifier).deleteHabit(habit.id);
+                    },
+                    background: Container(
+                      color: Colors.red,
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.only(right: 20),
+                      child: const Icon(Icons.delete, color: Colors.white),
+                    ),
+                    child: Column(
+                      children: [
+                        _TodayHabitItem(habit: habit, date: _selectedDate),
+                        const Divider(
+                          height: 1,
+                          thickness: 1,
+                          color: Color(0xFF2A2A2A),
+                          indent: 60,
+                        ),
+                      ],
+                    ),
                   );
                 },
                 childCount: filteredHabits.length,
@@ -206,82 +219,101 @@ class _HabitsHomeScreenState extends ConsumerState<HabitsHomeScreen> {
                         frequencyText = habit.frequency;
                       }
 
-                      return Column(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => HabitDetailScreen(habit: habit),
-                                ),
-                              );
-                            },
+                      return Dismissible(
+                        key: Key(habit.id),
+                        direction: DismissDirection.endToStart,
+                        onDismissed: (direction) {
+                          ref.read(habitNotifierProvider.notifier).deleteHabit(habit.id);
+                        },
+                        background: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.red,
                             borderRadius: BorderRadius.vertical(
                               top: index == 0 ? const Radius.circular(24) : Radius.zero,
+                              bottom: index == filteredHabits.length - 1 ? const Radius.circular(24) : Radius.zero,
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                              child: Row(
-                                children: [
-                                  _buildIconWidget(habit.icon, _parseColor(habit.color)),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          habit.name,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500,
+                          ),
+                          alignment: Alignment.centerRight,
+                          padding: const EdgeInsets.only(right: 20),
+                          child: const Icon(Icons.delete, color: Colors.white),
+                        ),
+                        child: Column(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => HabitDetailScreen(habit: habit),
+                                  ),
+                                );
+                              },
+                              borderRadius: BorderRadius.vertical(
+                                top: index == 0 ? const Radius.circular(24) : Radius.zero,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                                child: Row(
+                                  children: [
+                                    _buildIconWidget(habit.icon, _parseColor(habit.color)),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            habit.name,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500,
+                                            ),
                                           ),
-                                        ),
-                                        const SizedBox(height: 2),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              frequencyText,
-                                              style: const TextStyle(
-                                                color: DesignTokens.textSecondary,
-                                                fontSize: 12,
+                                          const SizedBox(height: 2),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                frequencyText,
+                                                style: const TextStyle(
+                                                  color: DesignTokens.textSecondary,
+                                                  fontSize: 12,
+                                                ),
                                               ),
-                                            ),
-                                            const SizedBox(width: 6),
-                                            const Text('·', style: TextStyle(color: DesignTokens.textSecondary)),
-                                            const SizedBox(width: 6),
-                                            const Icon(Icons.local_fire_department, color: Colors.orange, size: 14),
-                                            const SizedBox(width: 4),
-                                            Text(
-                                              '${habit.currentStreak}',
-                                              style: const TextStyle(
-                                                color: DesignTokens.textSecondary,
-                                                fontSize: 12,
+                                              const SizedBox(width: 6),
+                                              const Text('·', style: TextStyle(color: DesignTokens.textSecondary)),
+                                              const SizedBox(width: 6),
+                                              const Icon(Icons.local_fire_department, color: Colors.orange, size: 14),
+                                              const SizedBox(width: 4),
+                                              Text(
+                                                '${habit.currentStreak}',
+                                                style: const TextStyle(
+                                                  color: DesignTokens.textSecondary,
+                                                  fontSize: 12,
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  const Icon(
-                                    Icons.chevron_right,
-                                    color: DesignTokens.textTertiary,
-                                    size: 20,
-                                  ),
-                                ],
+                                    const Icon(
+                                      Icons.chevron_right,
+                                      color: DesignTokens.textTertiary,
+                                      size: 20,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          const Divider(
-                            height: 1,
-                            thickness: 1,
-                            color: Color(0xFF2A2A2A),
-                            indent: 60, // Align with text start
-                            endIndent: 16,
-                          ),
-                        ],
+                            const Divider(
+                              height: 1,
+                              thickness: 1,
+                              color: Color(0xFF2A2A2A),
+                              indent: 60, // Align with text start
+                              endIndent: 16,
+                            ),
+                          ],
+                        ),
                       );
                     }),
 
