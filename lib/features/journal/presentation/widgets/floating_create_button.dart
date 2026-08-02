@@ -38,7 +38,7 @@ class _FloatingCreateButtonState extends State<FloatingCreateButton> with Single
         child: Material(
           color: const Color(0xFF9b51e0),
           shape: const CircleBorder(),
-          elevation: 8,
+
           shadowColor: const Color(0xFF9b51e0).withValues(alpha: 0.5),
           child: InkWell(
             onTap: () {

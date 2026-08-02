@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
@@ -88,13 +89,13 @@ class _AddExercisesScreenState extends ConsumerState<AddExercisesScreen> {
   Widget build(BuildContext context) {
     final myExercisesAsync = ref.watch(allExercisesProvider);
 
-    return Scaffold(
+    return GlassScaffold(
       backgroundColor: GymTheme.background,
-      appBar: AppBar(
+      appBar: GlassAppBar(
         backgroundColor: GymTheme.background,
-        elevation: 0,
+
         leading: const SizedBox.shrink(),
-        leadingWidth: 0,
+
         title: Text('Add to "${widget.workoutName}"', style: const TextStyle(fontSize: 16)),
         centerTitle: true,
         actions: [

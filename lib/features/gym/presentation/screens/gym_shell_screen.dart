@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kaizen/features/gym/theme/gym_theme.dart';
 import 'package:kaizen/features/gym/presentation/screens/workouts_home_screen.dart';
@@ -27,28 +28,28 @@ class _GymShellScreenState extends ConsumerState<GymShellScreen> {
   Widget build(BuildContext context) {
     return Theme(
       data: GymTheme.darkTheme,
-      child: Scaffold(
+      child: GlassScaffold(
         body: IndexedStack(
           index: _currentIndex,
           children: _screens,
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (index) => setState(() => _currentIndex = index),
-          items: const [
-            BottomNavigationBarItem(
+        bottomBar: GlassTabBar.bottom(
+          selectedIndex: _currentIndex,
+          onTabSelected: (index) => setState(() => _currentIndex = index),
+          tabs: const [
+            GlassTab(
               icon: Icon(Icons.fitness_center),
               label: 'Sets',
             ),
-            BottomNavigationBarItem(
+            GlassTab(
               icon: Icon(Icons.timer_outlined),
               label: 'Sessions',
             ),
-            BottomNavigationBarItem(
+            GlassTab(
               icon: Icon(Icons.accessibility_new),
               label: 'Body',
             ),
-            BottomNavigationBarItem(
+            GlassTab(
               icon: Icon(Icons.list_alt),
               label: 'Today',
             ),

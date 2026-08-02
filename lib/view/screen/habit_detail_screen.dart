@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kaizen/model/database.dart';
 import 'package:kaizen/controller/habit_stats_provider.dart';
@@ -24,7 +25,7 @@ class HabitDetailScreen extends ConsumerWidget {
     final habitColor = _parseColor(habit.color);
     final statsAsync = ref.watch(habitStatsProvider(habit));
 
-    return Scaffold(
+    return GlassScaffold(
       backgroundColor: DesignTokens.bgPrimary,
       body: SafeArea(
         child: Column(

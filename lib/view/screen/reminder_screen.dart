@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
 class ReminderScreen extends StatefulWidget {
   final String? initialReminder;
@@ -20,11 +21,11 @@ class _ReminderScreenState extends State<ReminderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GlassScaffold(
       backgroundColor: const Color(0xFF141414), // Dark background matching the screenshot
-      appBar: AppBar(
+      appBar: GlassAppBar(
         backgroundColor: Colors.transparent,
-        elevation: 0,
+
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, size: 20, color: Colors.white),
           onPressed: () => Navigator.pop(context, _selectedReminder),

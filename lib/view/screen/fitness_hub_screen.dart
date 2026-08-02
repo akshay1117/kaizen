@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kaizen/services/design_tokens.dart';
 
@@ -7,8 +8,8 @@ class FitnessHubScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Fitness Hub')),
+    return GlassScaffold(
+      appBar: const GlassAppBar(title: Text('Fitness Hub')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: GridView.count(
@@ -58,7 +59,7 @@ class FitnessHubScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
         side: BorderSide(color: color.withValues(alpha: 0.3), width: 1),
       ),
-      elevation: 0,
+
       color: DesignTokens.bgSecondary,
       child: InkWell(
         onTap: onTap,

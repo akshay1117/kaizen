@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kaizen/features/gym/theme/gym_theme.dart';
 
@@ -12,13 +13,13 @@ class MultisetTemplatePickerScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
+    return GlassScaffold(
       backgroundColor: GymTheme.background,
-      appBar: AppBar(
+      appBar: GlassAppBar(
         backgroundColor: GymTheme.background,
-        elevation: 0,
+
         leading: const SizedBox.shrink(), // hide back button, use Checkmark
-        leadingWidth: 0,
+
         title: Text('Add to "$workoutName"', style: const TextStyle(fontSize: 16)),
         centerTitle: true,
         actions: [

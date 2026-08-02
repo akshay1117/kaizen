@@ -66,7 +66,7 @@ class JournalCard extends ConsumerWidget {
       },
       child: Card(
         color: bgColor,
-        elevation: isDark ? 0 : 3,
+
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(22),
           side: isDark ? BorderSide(color: Colors.grey.withValues(alpha: 0.15)) : BorderSide.none,

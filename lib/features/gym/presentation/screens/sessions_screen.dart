@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SessionsScreen extends ConsumerWidget {
@@ -6,9 +7,9 @@ class SessionsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Sessions')),
-      body: const Center(child: Text('Sessions List')),
+    return const GlassScaffold(
+      appBar: GlassAppBar(title: Text('Sessions')),
+      body: Center(child: Text('Sessions List')),
     );
   }
 }

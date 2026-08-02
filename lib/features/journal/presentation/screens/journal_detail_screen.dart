@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../providers/journal_provider.dart';
@@ -26,11 +27,11 @@ class JournalDetailScreen extends ConsumerWidget {
     final textColor = isDark ? Colors.white : Colors.black;
     final bodyColor = isDark ? Colors.grey[300] : Colors.grey[800];
 
-    return Scaffold(
+    return GlassScaffold(
       backgroundColor: isDark ? const Color(0xFF141415) : Colors.white,
-      appBar: AppBar(
+      appBar: GlassAppBar(
         backgroundColor: Colors.transparent,
-        elevation: 0,
+
         actions: [
           IconButton(
             icon: Icon(

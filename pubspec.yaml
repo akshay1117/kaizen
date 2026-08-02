@@ -49,6 +49,9 @@ dependencies:
   share_plus: ^13.3.0
   font_awesome_flutter: ^11.0.0
   purchases_flutter: ^10.4.3
+  liquid_glass_widgets: ^0.26.0
+  image_picker: ^1.2.3
+  csv: ^8.0.0
 
 dev_dependencies:
   flutter_test:

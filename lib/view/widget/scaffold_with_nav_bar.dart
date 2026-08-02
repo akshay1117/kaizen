@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:go_router/go_router.dart';
 
 class ScaffoldWithNavBar extends StatelessWidget {
@@ -8,22 +9,20 @@ class ScaffoldWithNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GlassScaffold(
       body: navigationShell,
-      bottomNavigationBar: NavigationBar(
+      bottomBar: GlassTabBar.bottom(
         selectedIndex: navigationShell.currentIndex,
-        onDestinationSelected: (index) => navigationShell.goBranch(
+        onTabSelected: (index) => navigationShell.goBranch(
           index,
-          // Optional: A common pattern is to reset the branch to its initial location
-          // when tapping the icon of the current active branch.
           initialLocation: index == navigationShell.currentIndex,
         ),
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-          NavigationDestination(icon: Icon(Icons.fitness_center), label: 'Fitness'),
-          NavigationDestination(icon: Icon(Icons.attach_money), label: 'Finance'),
-          NavigationDestination(icon: Icon(Icons.book), label: 'Journal'),
-          NavigationDestination(icon: Icon(Icons.insights), label: 'Habits'), // Index 4
+        tabs: const [
+          GlassTab(icon: Icon(Icons.home), label: 'Home'),
+          GlassTab(icon: Icon(Icons.fitness_center), label: 'Fitness'),
+          GlassTab(icon: Icon(Icons.attach_money), label: 'Finance'),
+          GlassTab(icon: Icon(Icons.book), label: 'Journal'),
+          GlassTab(icon: Icon(Icons.insights), label: 'Habits'), // Index 4
         ],
       ),
     );

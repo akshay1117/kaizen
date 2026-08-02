@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kaizen/controller/habit_providers.dart';
@@ -31,7 +32,7 @@ class _HabitsHomeScreenState extends ConsumerState<HabitsHomeScreen> {
   Widget build(BuildContext context) {
     final habitsAsync = ref.watch(activeHabitsProvider(_selectedDate));
 
-    return Scaffold(
+    return GlassScaffold(
       backgroundColor: DesignTokens.bgPrimary,
       body: Stack(
         children: [
@@ -115,15 +116,16 @@ class _HabitsHomeScreenState extends ConsumerState<HabitsHomeScreen> {
               ),
             ),
           ),
+          Positioned(
+            bottom: 80,
+            right: 16,
+            child: FloatingActionButton(
+              onPressed: () => context.pushNamed('add-habit'),
+              backgroundColor: DesignTokens.accentHabit,
+              child: const Icon(Icons.add, color: Colors.white),
+            ),
+          ),
         ],
-      ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 80.0), // Above nav bar
-        child: FloatingActionButton(
-          onPressed: () => context.pushNamed('add-habit'),
-          backgroundColor: DesignTokens.accentHabit,
-          child: const Icon(Icons.add, color: Colors.white),
-        ),
       ),
     );
   }

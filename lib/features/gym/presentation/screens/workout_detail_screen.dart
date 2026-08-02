@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kaizen/features/gym/theme/gym_theme.dart';
 import 'package:kaizen/features/gym/presentation/screens/add_exercises_screen.dart';
@@ -22,11 +23,11 @@ class _WorkoutDetailScreenState extends ConsumerState<WorkoutDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GlassScaffold(
       backgroundColor: GymTheme.background,
-      appBar: AppBar(
+      appBar: GlassAppBar(
         backgroundColor: GymTheme.background,
-        elevation: 0,
+
         leading: IconButton(
           icon: const Icon(Icons.chevron_left, color: GymTheme.textPrimary, size: 30),
           onPressed: () => Navigator.pop(context),

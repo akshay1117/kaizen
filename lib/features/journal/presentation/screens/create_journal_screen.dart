@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../domain/models/journal_entry.dart';
@@ -69,11 +70,11 @@ class _CreateJournalScreenState extends ConsumerState<CreateJournalScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Scaffold(
+    return GlassScaffold(
       backgroundColor: isDark ? const Color(0xFF141415) : Colors.white,
-      appBar: AppBar(
+      appBar: GlassAppBar(
         backgroundColor: Colors.transparent,
-        elevation: 0,
+
         title: const Text('New Journal', style: TextStyle(fontWeight: FontWeight.bold)),
         actions: [
           IconButton(

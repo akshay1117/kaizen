@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:kaizen/features/gym/theme/gym_theme.dart';
@@ -14,11 +15,11 @@ class WorkoutsHomeScreen extends ConsumerWidget {
     final ungroupedWorkoutsAsync = ref.watch(ungroupedWorkoutsProvider);
     final workoutGroupsAsync = ref.watch(workoutGroupsProvider);
 
-    return Scaffold(
-      appBar: AppBar(
+    return GlassScaffold(
+      appBar: GlassAppBar(
         title: const Text('My Workouts', style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: GymTheme.background,
-        elevation: 0,
+
         leading: IconButton(
           icon: const Icon(LucideIcons.settings),
           onPressed: () {},
@@ -34,125 +35,135 @@ class WorkoutsHomeScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                children: [
-                  _buildActionRow(
-                    icon: Icons.add,
-                    title: 'New Workout...',
-                    subtitle: 'e.g., Upper Body, Leg Day, Monday Routine',
-                    iconColor: GymTheme.primaryAccent,
-                    onTap: () => _showNewWorkoutDialog(context, ref),
+      body: Stack(
+        children: [
+          CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(
+                    children: [
+                      _buildActionRow(
+                        icon: Icons.add,
+                        title: 'New Workout...',
+                        subtitle: 'e.g., Upper Body, Leg Day, Monday Routine',
+                        iconColor: GymTheme.primaryAccent,
+                        onTap: () => _showNewWorkoutDialog(context, ref),
+                      ),
+                      const Divider(color: GymTheme.pillUnselected, height: 1),
+                      _buildActionRow(
+                        icon: Icons.auto_awesome,
+                        title: 'New Custom Plan...',
+                        iconColor: GymTheme.primaryAccent,
+                        onTap: () {},
+                      ),
+                      const Divider(color: GymTheme.pillUnselected, height: 1),
+                      _buildActionRow(
+                        icon: Icons.menu_book,
+                        title: 'My Exercises',
+                        iconColor: GymTheme.primaryAccent,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const ExercisesIndexScreen()),
+                          );
+                        },
+                        trailing: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text('0', style: TextStyle(color: GymTheme.textSecondary, fontSize: 16)),
+                            Icon(Icons.chevron_right, color: GymTheme.textSecondary),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                    ],
                   ),
-                  const Divider(color: GymTheme.pillUnselected, height: 1),
-                  _buildActionRow(
-                    icon: Icons.auto_awesome,
-                    title: 'New Custom Plan...',
-                    iconColor: GymTheme.primaryAccent,
-                    onTap: () {},
-                  ),
-                  const Divider(color: GymTheme.pillUnselected, height: 1),
-                  _buildActionRow(
-                    icon: Icons.menu_book,
-                    title: 'My Exercises',
-                    iconColor: GymTheme.primaryAccent,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const ExercisesIndexScreen()),
+                ),
+              ),
+              
+              // Ungrouped Workouts
+              ungroupedWorkoutsAsync.when(
+                data: (workouts) => SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final workout = workouts[index];
+                      return Dismissible(
+                        key: Key(workout.id),
+                        direction: DismissDirection.endToStart,
+                        onDismissed: (_) {
+                          ref.read(workoutDaoProvider).deleteWorkout(workout);
+                        },
+                        background: Container(
+                          color: Colors.red,
+                          alignment: Alignment.centerRight,
+                          padding: const EdgeInsets.only(right: 20),
+                          child: const Icon(Icons.delete, color: Colors.white),
+                        ),
+                        child: ListTile(
+                          leading: const Icon(Icons.fitness_center, color: GymTheme.destructive),
+                          title: Text(workout.name, style: const TextStyle(color: GymTheme.textPrimary, fontSize: 18)),
+                          trailing: const Icon(Icons.chevron_right, color: GymTheme.textSecondary),
+                          onTap: () {},
+                        ),
                       );
                     },
-                    trailing: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('0', style: TextStyle(color: GymTheme.textSecondary, fontSize: 16)),
-                        Icon(Icons.chevron_right, color: GymTheme.textSecondary),
-                      ],
-                    ),
+                    childCount: workouts.length,
                   ),
-                  const SizedBox(height: 24),
-                ],
+                ),
+                loading: () => const SliverToBoxAdapter(child: Center(child: CircularProgressIndicator())),
+                error: (e, st) => SliverToBoxAdapter(child: Center(child: Text('Error: $e'))),
               ),
-            ),
-          ),
-          
-          // Ungrouped Workouts
-          ungroupedWorkoutsAsync.when(
-            data: (workouts) => SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final workout = workouts[index];
-                  return Dismissible(
-                    key: Key(workout.id),
-                    direction: DismissDirection.endToStart,
-                    onDismissed: (_) {
-                      ref.read(workoutDaoProvider).deleteWorkout(workout);
-                    },
-                    background: Container(
-                      color: Colors.red,
-                      alignment: Alignment.centerRight,
-                      padding: const EdgeInsets.only(right: 20),
-                      child: const Icon(Icons.delete, color: Colors.white),
-                    ),
-                    child: ListTile(
-                      leading: const Icon(Icons.fitness_center, color: GymTheme.destructive),
-                      title: Text(workout.name, style: const TextStyle(color: GymTheme.textPrimary, fontSize: 18)),
-                      trailing: const Icon(Icons.chevron_right, color: GymTheme.textSecondary),
-                      onTap: () {},
-                    ),
-                  );
-                },
-                childCount: workouts.length,
-              ),
-            ),
-            loading: () => const SliverToBoxAdapter(child: Center(child: CircularProgressIndicator())),
-            error: (e, st) => SliverToBoxAdapter(child: Center(child: Text('Error: $e'))),
-          ),
 
-          // Workout Groups
-          workoutGroupsAsync.when(
-            data: (groups) => SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final group = groups[index];
-                  return Dismissible(
-                    key: Key(group.id),
-                    direction: DismissDirection.endToStart,
-                    onDismissed: (_) {
-                      ref.read(workoutDaoProvider).deleteWorkoutGroup(group);
+              // Workout Groups
+              workoutGroupsAsync.when(
+                data: (groups) => SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final group = groups[index];
+                      return Dismissible(
+                        key: Key(group.id),
+                        direction: DismissDirection.endToStart,
+                        onDismissed: (_) {
+                          ref.read(workoutDaoProvider).deleteWorkoutGroup(group);
+                        },
+                        background: Container(
+                          color: Colors.red,
+                          alignment: Alignment.centerRight,
+                          padding: const EdgeInsets.only(right: 20),
+                          child: const Icon(Icons.delete, color: Colors.white),
+                        ),
+                        child: ListTile(
+                          leading: const Icon(Icons.folder, color: GymTheme.volumeAccent),
+                          title: Text(group.name, style: const TextStyle(color: GymTheme.textPrimary, fontSize: 18)),
+                          trailing: const Icon(Icons.chevron_right, color: GymTheme.textSecondary),
+                          onTap: () {},
+                        ),
+                      );
                     },
-                    background: Container(
-                      color: Colors.red,
-                      alignment: Alignment.centerRight,
-                      padding: const EdgeInsets.only(right: 20),
-                      child: const Icon(Icons.delete, color: Colors.white),
-                    ),
-                    child: ListTile(
-                      leading: const Icon(Icons.folder, color: GymTheme.volumeAccent),
-                      title: Text(group.name, style: const TextStyle(color: GymTheme.textPrimary, fontSize: 18)),
-                      trailing: const Icon(Icons.chevron_right, color: GymTheme.textSecondary),
-                      onTap: () {},
-                    ),
-                  );
-                },
-                childCount: groups.length,
+                    childCount: groups.length,
+                  ),
+                ),
+                loading: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
+                error: (e, st) => const SliverToBoxAdapter(child: SizedBox.shrink()),
+              ),
+            ],
+          ),
+          Positioned(
+            bottom: 16,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: FloatingActionButton.extended(
+                onPressed: () {},
+                backgroundColor: GymTheme.primaryAccent,
+                label: const Text('Add Group', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(GymTheme.pillRadius)),
               ),
             ),
-            loading: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
-            error: (e, st) => const SliverToBoxAdapter(child: SizedBox.shrink()),
           ),
         ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
-        backgroundColor: GymTheme.primaryAccent,
-        label: const Text('Add Group', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(GymTheme.pillRadius)),
       ),
     );
   }
