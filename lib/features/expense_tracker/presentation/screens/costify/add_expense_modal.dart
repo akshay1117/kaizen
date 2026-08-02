@@ -14,6 +14,7 @@ class AddExpenseModal extends ConsumerStatefulWidget {
 class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
   String _amount = "0";
   final TextEditingController _noteController = TextEditingController();
+  ExpenseCategory? _selectedCategory;
 
   @override
   void dispose() {
@@ -83,7 +84,7 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
           Expanded(
             child: Center(
               child: Text(
-                '₹$_amount',
+                '₹${_amount == "0" ? "0.00" : _amount}',
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 64,
@@ -92,20 +93,7 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
               ),
             ),
           ),
-          
-          // Attachments
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildAttachmentBtn('Scan', true),
-                _buildAttachmentBtn('Add photos', true),
-                _buildAttachmentBtn('Add files', true),
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
+
           
           // Inputs
           Padding(
@@ -133,12 +121,19 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
               children: [
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                     decoration: BoxDecoration(
                       color: const Color(0xFF2C2C2E),
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    child: const Text('No account (optional)', style: TextStyle(color: Colors.white)),
+                    child: const Row(
+                      children: [
+                        Icon(Icons.credit_card, color: Color(0xFF8E8E93), size: 20),
+                        SizedBox(width: 8),
+                        Expanded(child: Text('No account (optional)', style: TextStyle(color: Colors.white))),
+                        Icon(Icons.chevron_right, color: Color(0xFF8E8E93), size: 20),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -149,54 +144,94 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
+                Consumer(
+                  builder: (context, ref, _) {
+                    final categoriesAsync = ref.watch(categoriesProvider);
+                    final categories = categoriesAsync.valueOrNull ?? [];
+                    final currentCat = _selectedCategory ?? (categories.isNotEmpty ? categories.first : null);
+                    
+                    Color catColor = const Color(0xFF81b0ff); // default fallback
+                    if (currentCat != null) {
+                      String hex = currentCat.colorHex;
+                      if (hex.length == 6) hex = 'FF$hex';
+                      catColor = Color(int.parse(hex, radix: 16));
+                    }
+                    
+                    // Mix color with white for pastel pill look
+                    final pillColor = Color.lerp(catColor, Colors.white, 0.2) ?? catColor;
+                    
+                    return PopupMenuButton<ExpenseCategory>(
                       color: const Color(0xFF2C2C2E),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: const Row(
-                      children: [
-                        Text('✨', style: TextStyle(fontSize: 18)),
-                        SizedBox(width: 8),
-                        Text('Canteen', style: TextStyle(color: Colors.white)),
-                      ],
-                    ),
-                  ),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                      offset: const Offset(0, -300),
+                      onSelected: (cat) => setState(() => _selectedCategory = cat),
+                      itemBuilder: (context) {
+                        return categories.map((cat) {
+                          return PopupMenuItem<ExpenseCategory>(
+                            value: cat,
+                            child: Row(
+                              children: [
+                                Text(cat.icon, style: const TextStyle(fontSize: 20)),
+                                const SizedBox(width: 12),
+                                Text(cat.name, style: const TextStyle(color: Colors.white)),
+                              ],
+                            ),
+                          );
+                        }).toList();
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        decoration: BoxDecoration(
+                          color: pillColor,
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(currentCat?.icon ?? '✨', style: const TextStyle(fontSize: 18)),
+                            const SizedBox(width: 8),
+                            Text(
+                              currentCat?.name ?? 'Select', 
+                              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
                 ),
-                const SizedBox(width: 16),
-                Expanded(
-                  flex: 1,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF0A84FF),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                    ),
-                    onPressed: () async {
-                      final dao = ref.read(expenseDaoProvider);
-                      final amountVal = double.tryParse(_amount) ?? 0.0;
-                      if (amountVal <= 0) return;
-                      
-                      final categories = await dao.watchAllCategories().first;
-                      final defaultCat = categories.isNotEmpty ? categories.first.id : 'cat_food';
-                      
-                      final newExpense = ExpenseTransactionsCompanion.insert(
-                        amount: amountVal,
-                        date: DateTime.now(),
-                        isIncome: const drift.Value(false),
-                        categoryId: defaultCat,
-                        note: _noteController.text.isNotEmpty ? drift.Value(_noteController.text) : const drift.Value.absent(),
-                      );
-                      
-                      await dao.insertTransaction(newExpense);
-                      if (context.mounted) Navigator.pop(context);
-                    },
-                    child: const Text('Save', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF8E8E93),
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
                   ),
+                  onPressed: () async {
+                    final dao = ref.read(expenseDaoProvider);
+                    final amountVal = double.tryParse(_amount) ?? 0.0;
+                    if (amountVal <= 0) return;
+                    
+                    final categories = await dao.watchAllCategories().first;
+                    final defaultCat = categories.isNotEmpty ? categories.first.id : 'cat_food';
+                    final catId = _selectedCategory?.id ?? defaultCat;
+                    
+                    final currentTrackerId = ref.read(selectedTrackerIdProvider);
+                    
+                    final newExpense = ExpenseTransactionsCompanion.insert(
+                      amount: amountVal,
+                      date: DateTime.now(),
+                      isIncome: const drift.Value(false),
+                      categoryId: catId,
+                      trackerId: currentTrackerId != null ? drift.Value(currentTrackerId) : const drift.Value.absent(),
+                      note: _noteController.text.isNotEmpty ? drift.Value(_noteController.text) : const drift.Value.absent(),
+                    );
+                    
+                    await dao.insertTransaction(newExpense);
+                    if (context.mounted) Navigator.pop(context);
+                  },
+                  child: const Text('Save', style: TextStyle(color: Color(0xFF2C2C2E), fontWeight: FontWeight.bold)),
                 ),
               ],
             ),
@@ -214,31 +249,6 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
     );
   }
 
-  Widget _buildAttachmentBtn(String title, bool isPro) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        border: Border.all(color: const Color(0xFF2C2C2E)),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Row(
-        children: [
-          Text(title, style: const TextStyle(color: Colors.white, fontSize: 12)),
-          if (isPro) ...[
-            const SizedBox(width: 4),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-              decoration: BoxDecoration(
-                color: const Color(0xFF0A84FF).withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: const Text('PRO', style: TextStyle(color: Color(0xFF0A84FF), fontSize: 8, fontWeight: FontWeight.bold)),
-            ),
-          ]
-        ],
-      ),
-    );
-  }
 
   Widget _buildNumpad() {
     return Column(

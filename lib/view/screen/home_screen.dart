@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kaizen/services/design_tokens.dart';
+import 'package:kaizen/controller/habit_providers.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final globalStreakAsync = ref.watch(globalHabitStreakProvider);
+    final globalStreak = globalStreakAsync.value ?? 0;
+
     return GlassScaffold(
       backgroundColor: DesignTokens.bgPrimary,
       body: SafeArea(
@@ -201,9 +205,9 @@ class HomeScreen extends ConsumerWidget {
                                     size: 20, color: DesignTokens.accentHabit),
                               ),
                               const Spacer(),
-                              const Text(
-                                '7 Days',
-                                style: TextStyle(
+                              Text(
+                                '$globalStreak Days',
+                                style: const TextStyle(
                                   fontSize: 28,
                                   fontWeight: FontWeight.bold,
                                   color: DesignTokens.textPrimary,

@@ -7,6 +7,7 @@ import 'package:kaizen/features/expense_tracker/presentation/screens/costify/qui
 import 'package:kaizen/features/expense_tracker/presentation/screens/costify/expense_detail_view.dart';
 import 'package:kaizen/features/expense_tracker/presentation/screens/costify/tracker_drawer.dart';
 import 'package:kaizen/features/expense_tracker/presentation/widgets/donut_chart_widget.dart';
+import 'package:kaizen/features/expense_tracker/presentation/screens/costify/new_tracker_modal.dart';
 
 class ExpenseTrackerScreen extends ConsumerStatefulWidget {
   const ExpenseTrackerScreen({super.key});
@@ -37,62 +38,119 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final currentTrackerAsync = ref.watch(currentTrackerProvider);
+
     return Scaffold(
       backgroundColor: const Color(0xFF000000),
       drawer: const TrackerDrawer(),
-      body: Stack(
-        children: [
-          SafeArea(
-            child: Column(
-              children: [
-                _buildAppBar(),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 16),
-                        const DonutChartWidget(),
-                        const SizedBox(height: 24),
-                        _buildCategoryChips(),
-                        const SizedBox(height: 24),
-                        _buildTimePeriodSelector(),
-                        const SizedBox(height: 16),
-                        _buildExpenseList(),
-                        const SizedBox(height: 200), // padding for FABs
-                      ],
+      body: currentTrackerAsync.when(
+        data: (tracker) {
+          if (tracker == null) {
+            return SafeArea(
+              child: Column(
+                children: [
+                  _buildAppBar(),
+                  Expanded(
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.account_balance_wallet_outlined, size: 64, color: Colors.white.withValues(alpha: 0.2)),
+                          const SizedBox(height: 16),
+                          const Text(
+                            'No trackers found',
+                            style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 8),
+                          const Text(
+                            'Create a tracker to start managing your expenses.',
+                            style: TextStyle(color: Color(0xFF8E8E93), fontSize: 14),
+                          ),
+                          const SizedBox(height: 24),
+                          ElevatedButton(
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                builder: (context) => Padding(
+                                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                                  child: const NewTrackerModal(),
+                                ),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF0A84FF),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                            ),
+                            child: const Text('Create Tracker', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          // Bottom FABs
-          Positioned(
-            bottom: 120,
-            left: 24,
-            child: FloatingActionButton(
-              heroTag: 'quick_actions_fab',
-              backgroundColor: const Color(0xFF1C1C1E),
-              onPressed: _showQuickActions,
-              child: const Icon(Icons.grid_view, color: Colors.white),
-            ),
-          ),
-          Positioned(
-            bottom: 120,
-            right: 24,
-            child: SizedBox(
-              width: 64,
-              height: 64,
-              child: FloatingActionButton(
-                heroTag: 'add_expense_fab',
-                backgroundColor: const Color(0xFF1C1C1E),
-                onPressed: _showAddExpenseModal,
-                child: const Icon(Icons.add, color: Colors.white, size: 32),
+                ],
               ),
-            ),
-          ),
-        ],
+            );
+          }
+          return Stack(
+            children: [
+              SafeArea(
+                child: Column(
+                  children: [
+                    _buildAppBar(),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 16),
+                            const DonutChartWidget(),
+                            const SizedBox(height: 24),
+                            _buildTimePeriodSelector(),
+                            const SizedBox(height: 24),
+                            _buildCategoryChips(),
+                            const SizedBox(height: 16),
+                            _buildExpenseList(),
+                            const SizedBox(height: 200), // padding for FABs
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // Bottom FABs
+              Positioned(
+                bottom: 120,
+                left: 24,
+                child: FloatingActionButton(
+                  heroTag: 'quick_actions_fab',
+                  backgroundColor: const Color(0xFF1C1C1E),
+                  onPressed: _showQuickActions,
+                  child: const Icon(Icons.grid_view, color: Colors.white),
+                ),
+              ),
+              Positioned(
+                bottom: 120,
+                right: 24,
+                child: SizedBox(
+                  width: 64,
+                  height: 64,
+                  child: FloatingActionButton(
+                    heroTag: 'add_expense_fab',
+                    backgroundColor: const Color(0xFF1C1C1E),
+                    onPressed: _showAddExpenseModal,
+                    child: const Icon(Icons.add, color: Colors.white, size: 32),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, s) => Center(child: Text('Error: $e')),
       ),
     );
   }
@@ -175,7 +233,6 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
             itemBuilder: (context, index) {
               final cat = sortedCategories[index];
               final color = categoryColors[cat.key] ?? Colors.grey;
-              final iconStr = categoryIcons[cat.key] ?? '';
               
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -186,7 +243,7 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
                   border: Border.all(color: color.withValues(alpha: 0.5)),
                 ),
                 child: Text(
-                  '$iconStr ${cat.key} ${formatter.format(cat.value)}',
+                  '${cat.key} ${formatter.format(cat.value)}',
                   style: const TextStyle(color: Colors.white, fontSize: 13),
                 ),
               );
@@ -275,10 +332,6 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
                   )),
                 );
               },
-              leading: CircleAvatar(
-                backgroundColor: const Color(0xFF1C1C1E),
-                child: Text(t.category.icon, style: const TextStyle(fontSize: 20)),
-              ),
               title: Text(t.transaction.note ?? t.category.name, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
               subtitle: Text('${t.category.name} • $dateStr', style: const TextStyle(color: Color(0xFF8E8E93), fontSize: 12)),
               trailing: Row(

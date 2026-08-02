@@ -52,6 +52,7 @@ dependencies:
   liquid_glass_widgets: ^0.26.0
   image_picker: ^1.2.3
   csv: ^8.0.0
+  rxdart: ^0.28.0
 
 dev_dependencies:
   flutter_test:

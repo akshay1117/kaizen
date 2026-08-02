@@ -69,19 +69,23 @@ class ExpenseDao extends DatabaseAccessor<ExpenseDatabase> with _$ExpenseDaoMixi
     ).watch();
   }
   
-  Stream<List<TransactionWithDetails>> watchTransactionsWithDetailsByMonth(DateTime month) {
+  Stream<List<TransactionWithDetails>> watchTransactionsWithDetailsByMonth(DateTime month, {String? trackerId}) {
     final start = DateTime(month.year, month.month, 1);
     final end = DateTime(month.year, month.month + 1, 1).subtract(const Duration(milliseconds: 1));
-    return watchTransactionsWithDetailsByPeriod(start, end);
+    return watchTransactionsWithDetailsByPeriod(start, end, trackerId: trackerId);
   }
 
-  Stream<List<TransactionWithDetails>> watchTransactionsWithDetailsByPeriod(DateTime start, DateTime end) {
+  Stream<List<TransactionWithDetails>> watchTransactionsWithDetailsByPeriod(DateTime start, DateTime end, {String? trackerId}) {
     final query = select(expenseTransactions).join([
       innerJoin(expenseCategories, expenseCategories.id.equalsExp(expenseTransactions.categoryId)),
       leftOuterJoin(expenseAccounts, expenseAccounts.id.equalsExp(expenseTransactions.accountId)),
-    ])
-      ..where(expenseTransactions.date.isBetweenValues(start, end))
-      ..orderBy([OrderingTerm(expression: expenseTransactions.date, mode: OrderingMode.desc)]);
+    ])..where(expenseTransactions.date.isBetweenValues(start, end));
+
+    if (trackerId != null) {
+      query.where(expenseTransactions.trackerId.equals(trackerId));
+    }
+
+    query.orderBy([OrderingTerm(expression: expenseTransactions.date, mode: OrderingMode.desc)]);
 
     return query.watch().map((rows) {
       return rows.map((row) {

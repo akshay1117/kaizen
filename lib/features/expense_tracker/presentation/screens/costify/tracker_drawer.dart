@@ -1,42 +1,81 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kaizen/features/expense_tracker/application/expense_providers.dart';
 import 'analytics_screen.dart';
 import 'new_tracker_modal.dart';
 
-class TrackerDrawer extends StatelessWidget {
+class TrackerDrawer extends ConsumerWidget {
   const TrackerDrawer({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final trackersAsync = ref.watch(trackersProvider);
+    final selectedTrackerId = ref.watch(selectedTrackerIdProvider);
+
     return Drawer(
       backgroundColor: const Color(0xFF1C1C1E),
       child: SafeArea(
         child: Column(
           children: [
-            // Header
-            Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Row(
-                children: [
-                  Container(
-                    width: 48,
-                    height: 48,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFF2C2C2E),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(Icons.wallet, color: Colors.white),
-                  ),
-                  const SizedBox(width: 16),
-                  const Expanded(
-                    child: Text(
-                      'Food Bills',
-                      style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const Icon(Icons.check_circle, color: Color(0xFF34C759)),
-                ],
-              ),
+            // Trackers List
+            trackersAsync.when(
+              data: (trackers) {
+                if (trackers.isEmpty) {
+                  return const SizedBox.shrink(); // Hide if no trackers
+                }
+                return Column(
+                  children: trackers.map((tracker) {
+                    final isSelected = selectedTrackerId == tracker.id || (selectedTrackerId == null && trackers.first.id == tracker.id);
+                    return InkWell(
+                      onTap: () {
+                        ref.read(selectedTrackerIdProvider.notifier).state = tracker.id;
+                        Navigator.pop(context);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 36,
+                              height: 36,
+                              decoration: const BoxDecoration(
+                                color: Color(0xFF2C2C2E),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(Icons.wallet, color: Colors.white, size: 20),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                tracker.name,
+                                style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            if (isSelected)
+                              const Icon(Icons.check_circle, color: Color(0xFF34C759), size: 20),
+                            IconButton(
+                              icon: const Icon(Icons.delete_outline, color: Colors.white54, size: 20),
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                              onPressed: () async {
+                                final dao = ref.read(expenseDaoProvider);
+                                await dao.deleteTracker(tracker);
+                                if (isSelected) {
+                                  ref.read(selectedTrackerIdProvider.notifier).state = null;
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                );
+              },
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (e, st) => const SizedBox.shrink(),
             ),
+            
             const Divider(color: Color(0xFF2C2C2E), thickness: 1),
             
             // Main Links
@@ -81,20 +120,6 @@ class TrackerDrawer extends StatelessWidget {
                 ],
               ),
             ),
-            
-            const Divider(color: Color(0xFF2C2C2E), thickness: 1),
-            
-            // Footer Links
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Column(
-                children: [
-                  _buildDrawerItem(context, Icons.person, 'Profile'),
-                  _buildDrawerItem(context, Icons.settings, 'Settings'),
-                  _buildDrawerItem(context, Icons.logout, 'Log out', color: const Color(0xFFFF3B30)),
-                ],
-              ),
-            ),
           ],
         ),
       ),
@@ -103,10 +128,12 @@ class TrackerDrawer extends StatelessWidget {
 
   Widget _buildDrawerItem(BuildContext context, IconData icon, String title, {bool isPro = false, Color color = Colors.white, VoidCallback? onTap}) {
     return ListTile(
-      leading: Icon(icon, color: color),
+      visualDensity: VisualDensity.compact,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+      leading: Icon(icon, color: color, size: 20),
       title: Row(
         children: [
-          Text(title, style: TextStyle(color: color, fontSize: 16)),
+          Text(title, style: TextStyle(color: color, fontSize: 14)),
           if (isPro) ...[
             const SizedBox(width: 8),
             Container(
@@ -115,7 +142,7 @@ class TrackerDrawer extends StatelessWidget {
                 color: const Color(0xFF0A84FF).withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(4),
               ),
-              child: const Text('PRO', style: TextStyle(color: Color(0xFF0A84FF), fontSize: 10, fontWeight: FontWeight.bold)),
+              child: const Text('PRO', style: TextStyle(color: Color(0xFF0A84FF), fontSize: 9, fontWeight: FontWeight.bold)),
             ),
           ],
         ],

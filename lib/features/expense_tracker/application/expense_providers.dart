@@ -95,14 +95,15 @@ final filteredTransactionsProvider = StreamProvider<List<TransactionWithDetails>
   final dao = ref.watch(expenseDaoProvider);
   final dateRange = ref.watch(timePeriodDateRangeProvider);
   final filters = ref.watch(expenseFilterProvider);
+  final currentTrackerAsync = ref.watch(currentTrackerProvider);
+  final trackerId = currentTrackerAsync.value?.id;
   
-  if (dateRange == null) {
+  if (dateRange == null || trackerId == null) {
     yield [];
     return;
   }
   
-  // Note: in a fully developed app we might also filter by the selectedTrackerIdProvider.
-  final stream = dao.watchTransactionsWithDetailsByPeriod(dateRange.start, dateRange.end);
+  final stream = dao.watchTransactionsWithDetailsByPeriod(dateRange.start, dateRange.end, trackerId: trackerId);
   
   await for (final transactions in stream) {
     var filtered = List<TransactionWithDetails>.from(transactions);
@@ -185,7 +186,56 @@ final membersForSelectedTrackerProvider = StreamProvider<List<ExpenseMember>>((r
 final transactionsForMonthProvider = StreamProvider<List<TransactionWithDetails>>((ref) {
   final dao = ref.watch(expenseDaoProvider);
   final month = ref.watch(selectedMonthProvider);
-  return dao.watchTransactionsWithDetailsByMonth(month);
+  final trackerId = ref.watch(selectedTrackerIdProvider);
+  return dao.watchTransactionsWithDetailsByMonth(month, trackerId: trackerId);
+});
+
+// --- Analytics Specific Providers ---
+
+// Time Period Selection for Analytics Screen
+// Mapping: '24H', '7D', '1M', '3M', '1Y', 'Custom'
+final analyticsTimePeriodProvider = StateProvider<String>((ref) => '1M');
+
+final analyticsCustomDateRangeProvider = StateProvider<({DateTime start, DateTime end})?>((ref) => null);
+
+final analyticsDateRangeProvider = Provider<({DateTime start, DateTime end})?>((ref) {
+  final period = ref.watch(analyticsTimePeriodProvider);
+  final now = DateTime.now();
+  final endOfToday = DateTime(now.year, now.month, now.day, 23, 59, 59, 999);
+  
+  switch (period) {
+    case '24H':
+      return (start: now.subtract(const Duration(hours: 24)), end: endOfToday);
+    case '7D':
+      return (start: now.subtract(const Duration(days: 7)), end: endOfToday);
+    case '1M':
+      return (start: DateTime(now.year, now.month - 1, now.day), end: endOfToday);
+    case '3M':
+      return (start: DateTime(now.year, now.month - 3, now.day), end: endOfToday);
+    case '1Y':
+      return (start: DateTime(now.year - 1, now.month, now.day), end: endOfToday);
+    case 'Custom':
+      final customRange = ref.watch(analyticsCustomDateRangeProvider);
+      if (customRange != null) {
+        return customRange;
+      }
+      return (start: now.subtract(const Duration(days: 30)), end: endOfToday);
+    default:
+      return (start: DateTime(now.year, now.month - 1, now.day), end: endOfToday);
+  }
+});
+
+final analyticsTransactionsProvider = StreamProvider<List<TransactionWithDetails>>((ref) {
+  final dao = ref.watch(expenseDaoProvider);
+  final dateRange = ref.watch(analyticsDateRangeProvider);
+  final currentTrackerAsync = ref.watch(currentTrackerProvider);
+  final trackerId = currentTrackerAsync.value?.id;
+  
+  if (dateRange == null || trackerId == null) {
+    return Stream.value([]);
+  }
+  
+  return dao.watchTransactionsWithDetailsByPeriod(dateRange.start, dateRange.end, trackerId: trackerId);
 });
 
 // Derived Providers for Dashboard / Balance Card

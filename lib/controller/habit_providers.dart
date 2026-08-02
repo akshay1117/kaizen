@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:kaizen/model/database.dart';
 import 'package:kaizen/model/habits_dao.dart';
 
@@ -128,3 +129,67 @@ class HabitNotifier extends AsyncNotifier<void> {
 }
 
 final habitNotifierProvider = AsyncNotifierProvider<HabitNotifier, void>(() => HabitNotifier());
+
+final globalHabitStreakProvider = StreamProvider<int>((ref) {
+  final dao = ref.watch(habitsDaoProvider);
+  final allHabitsStream = dao.watchAllHabits();
+  final allLogsStream = dao.watchLogsBetweenAll(DateTime(2000, 1, 1), DateTime.now());
+
+  return Rx.combineLatest2(allHabitsStream, allLogsStream, (List<Habit> habits, List<HabitLog> logs) {
+    int streak = 0;
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    
+    // Group logs by date and habitId
+    final Map<DateTime, Set<String>> completedLogs = {};
+    for (final log in logs) {
+      try {
+        final habit = habits.firstWhere((h) => h.id == log.habitId);
+        if (log.progress >= habit.targetValue) {
+          final d = DateTime(log.completedDate.year, log.completedDate.month, log.completedDate.day);
+          completedLogs.putIfAbsent(d, () => <String>{}).add(log.habitId);
+        }
+      } catch (e) {
+        // habit not found, skip
+      }
+    }
+
+    for (int i = 0; i < 10000; i++) {
+      final date = today.subtract(Duration(days: i));
+      
+      // Get all active habits for this date
+      final activeHabitsForDate = habits.where((h) {
+        if (h.frequency != 'daily') return false; 
+        
+        final createdBeforeEnd = h.createdAt.isBefore(DateTime(date.year, date.month, date.day, 23, 59, 59));
+        final notArchived = h.archivedAt == null || h.archivedAt!.isAfter(date);
+        return createdBeforeEnd && notArchived;
+      }).toList();
+
+      if (activeHabitsForDate.isEmpty) {
+        if (i == 0) continue;
+        break; 
+      }
+      
+      bool allCompleted = true;
+      final logsForDate = completedLogs[date] ?? {};
+      for (final h in activeHabitsForDate) {
+        if (!logsForDate.contains(h.id)) {
+          allCompleted = false;
+          break;
+        }
+      }
+      
+      if (allCompleted) {
+        streak++;
+      } else {
+        if (i == 0) {
+          continue; 
+        } else {
+          break; 
+        }
+      }
+    }
+    return streak;
+  });
+});

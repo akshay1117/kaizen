@@ -26,6 +26,11 @@ class _HabitsHomeScreenState extends ConsumerState<HabitsHomeScreen> {
     super.initState();
     final now = DateTime.now();
     _selectedDate = DateTime(now.year, now.month, now.day);
+    
+    // Recalculate streaks in case a day passed without app opening
+    Future.microtask(() {
+      ref.read(habitsDaoProvider).recalculateAllStreaks();
+    });
   }
 
   @override

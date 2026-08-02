@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 
-class NewTrackerModal extends StatefulWidget {
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kaizen/features/expense_tracker/application/expense_providers.dart';
+import 'package:kaizen/features/expense_tracker/data/expense_database.dart';
+import 'package:drift/drift.dart' as drift;
+
+class NewTrackerModal extends ConsumerStatefulWidget {
   const NewTrackerModal({super.key});
 
   @override
-  State<NewTrackerModal> createState() => _NewTrackerModalState();
+  ConsumerState<NewTrackerModal> createState() => _NewTrackerModalState();
 }
 
-class _NewTrackerModalState extends State<NewTrackerModal> {
+class _NewTrackerModalState extends ConsumerState<NewTrackerModal> {
   final _nameController = TextEditingController();
   final _budgetController = TextEditingController();
   String _budgetCycle = 'Monthly'; // 'One-Time' or 'Monthly'
@@ -236,9 +241,28 @@ class _NewTrackerModalState extends State<NewTrackerModal> {
                   width: double.infinity,
                   height: 56,
                   child: ElevatedButton(
-                    onPressed: _nameController.text.isNotEmpty ? () {
-                      // Save action
-                      Navigator.pop(context);
+                    onPressed: _nameController.text.isNotEmpty ? () async {
+                      final dao = ref.read(expenseDaoProvider);
+                      final budgetVal = double.tryParse(_budgetController.text);
+                      
+                      final newTracker = ExpenseTrackersCompanion.insert(
+                        name: _nameController.text,
+                        budget: budgetVal != null ? drift.Value(budgetVal) : const drift.Value.absent(),
+                        cycleType: drift.Value(_budgetCycle),
+                      );
+                      
+                      // We need the inserted ID, but insertTracker might just return internal row id.
+                      // Let's generate the ID manually to be safe, or just query it back if we need it.
+                      // Actually, the DAO generates the ID by default if absent! Wait, let's just supply an ID
+                      // so we can set it to active immediately.
+                      final trackerId = '${DateTime.now().millisecondsSinceEpoch}';
+                      final trackerWithId = newTracker.copyWith(id: drift.Value(trackerId));
+                      
+                      await dao.insertTracker(trackerWithId);
+                      
+                      ref.read(selectedTrackerIdProvider.notifier).state = trackerId;
+                      
+                      if (context.mounted) Navigator.pop(context);
                     } : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF2C2C2E), // Uses dark color when disabled

@@ -143,6 +143,17 @@ class HabitsDao extends DatabaseAccessor<AppDatabase> with _$HabitsDaoMixin {
   Stream<List<HabitLog>> watchLogsBetweenAll(DateTime start, DateTime end) =>
       (select(habitLogs)..where((l) => l.completedDate.isBetweenValues(start, end))).watch();
 
+  // Watch all habits (including archived ones)
+  Stream<List<Habit>> watchAllHabits() => select(habits).watch();
+
+  // Recalculate all streaks (useful for app startup)
+  Future<void> recalculateAllStreaks() async {
+    final allHabits = await select(habits).get();
+    for (var habit in allHabits) {
+      await _recalculateStreak(habit.id);
+    }
+  }
+
   // Private: recalculate streak based on consecutive days
   Future<void> _recalculateStreak(String habitId) async {
     final habit = await (select(habits)..where((h) => h.id.equals(habitId))).getSingle();
@@ -158,21 +169,61 @@ class HabitsDao extends DatabaseAccessor<AppDatabase> with _$HabitsDaoMixin {
 
     int streak = 0;
     DateTime? lastDate;
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+
     for (final log in logs) {
-      final date = log.completedDate;
+      final date = DateTime(log.completedDate.year, log.completedDate.month, log.completedDate.day);
       if (lastDate == null) {
+        if (habit.frequency == 'daily') {
+          if (today.difference(date).inDays > 1) {
+            break;
+          }
+        } else if (habit.frequency == 'weekly') {
+          final startOfTodayWeek = today.subtract(Duration(days: today.weekday - 1));
+          final startOfLogWeek = date.subtract(Duration(days: date.weekday - 1));
+          if (startOfTodayWeek.difference(startOfLogWeek).inDays > 7) {
+            break;
+          }
+        } else if (habit.frequency == 'monthly') {
+          final diffMonths = (today.year - date.year) * 12 + (today.month - date.month);
+          if (diffMonths > 1) {
+            break;
+          }
+        }
         streak = 1;
         lastDate = date;
         continue;
       }
-      final difference = lastDate.difference(date).inDays;
-      if (difference == 1) {
-        streak++;
-        lastDate = date;
-      } else {
-        break;
+      
+      if (habit.frequency == 'daily') {
+        final difference = lastDate.difference(date).inDays;
+        if (difference == 1) {
+          streak++;
+          lastDate = date;
+        } else {
+          break;
+        }
+      } else if (habit.frequency == 'weekly') {
+        final startOfLastWeek = lastDate.subtract(Duration(days: lastDate.weekday - 1));
+        final startOfLogWeek = date.subtract(Duration(days: date.weekday - 1));
+        if (startOfLastWeek.difference(startOfLogWeek).inDays == 7) {
+          streak++;
+          lastDate = date;
+        } else {
+          break;
+        }
+      } else if (habit.frequency == 'monthly') {
+        final diffMonths = (lastDate.year - date.year) * 12 + (lastDate.month - date.month);
+        if (diffMonths == 1) {
+          streak++;
+          lastDate = date;
+        } else {
+          break;
+        }
       }
     }
+    
     await (update(habits)..where((h) => h.id.equals(habitId))).write(HabitsCompanion(currentStreak: Value(streak)));
   }
 }
