@@ -1,22 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kaizen/features/expense_tracker/application/expense_providers.dart';
+import 'package:kaizen/features/expense_tracker/data/expense_database.dart';
 
-class CustomCategoriesModal extends StatefulWidget {
+class CustomCategoriesModal extends ConsumerWidget {
   const CustomCategoriesModal({super.key});
 
-  @override
-  State<CustomCategoriesModal> createState() => _CustomCategoriesModalState();
-}
-
-class _CustomCategoriesModalState extends State<CustomCategoriesModal> {
-  final List<Map<String, dynamic>> _categories = [
-    {'name': 'Food & Drinks', 'icon': '🍔', 'color': Colors.orange},
-    {'name': 'Transport', 'icon': '🚗', 'color': Colors.blue},
-    {'name': 'Shopping', 'icon': '🛍️', 'color': Colors.purple},
-    {'name': 'Entertainment', 'icon': '🎬', 'color': Colors.red},
-    {'name': 'Health', 'icon': '💊', 'color': Colors.green},
-  ];
-
-  void _showNewCategorySheet() {
+  void _showNewCategorySheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -31,7 +21,9 @@ class _CustomCategoriesModalState extends State<CustomCategoriesModal> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final categoriesAsync = ref.watch(categoriesProvider);
+
     return Container(
       decoration: const BoxDecoration(
         color: Color(0xFF121212),
@@ -45,7 +37,7 @@ class _CustomCategoriesModalState extends State<CustomCategoriesModal> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                'Categories',
+                'Custom Categories',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
@@ -56,7 +48,7 @@ class _CustomCategoriesModalState extends State<CustomCategoriesModal> {
                 children: [
                   IconButton(
                     icon: const Icon(Icons.add, color: Color(0xFF0A84FF)),
-                    onPressed: _showNewCategorySheet,
+                    onPressed: () => _showNewCategorySheet(context),
                   ),
                   IconButton(
                     icon: const Icon(Icons.close, color: Colors.white54),
@@ -68,33 +60,49 @@ class _CustomCategoriesModalState extends State<CustomCategoriesModal> {
           ),
           const SizedBox(height: 16),
           Expanded(
-            child: ListView.separated(
-              itemCount: _categories.length,
-              separatorBuilder: (context, index) => const Divider(
-                color: Color(0xFF2C2C2E),
-                height: 1,
-              ),
-              itemBuilder: (context, index) {
-                final category = _categories[index];
-                return ListTile(
-                  leading: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: (category['color'] as Color).withValues(alpha: 0.2),
-                      shape: BoxShape.circle,
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(category['icon'] as String, style: const TextStyle(fontSize: 20)),
+            child: categoriesAsync.when(
+              data: (categories) {
+                return ListView.separated(
+                  itemCount: categories.length,
+                  separatorBuilder: (context, index) => const Divider(
+                    color: Color(0xFF2C2C2E),
+                    height: 1,
                   ),
-                  title: Text(
-                    category['name'] as String,
-                    style: const TextStyle(color: Colors.white, fontSize: 16),
-                  ),
-                  trailing: const Icon(Icons.chevron_right, color: Colors.white54),
-                  onTap: () {},
+                  itemBuilder: (context, index) {
+                    final category = categories[index];
+                    String hex = category.colorHex;
+                    if (hex.length == 6) hex = 'FF$hex';
+                    final color = Color(int.parse(hex, radix: 16));
+                    return ListTile(
+                      leading: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: color.withValues(alpha: 0.2),
+                          shape: BoxShape.circle,
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(category.icon, style: const TextStyle(fontSize: 20)),
+                      ),
+                      title: Text(
+                        category.name,
+                        style: const TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                      trailing: Container(
+                        width: 12,
+                        height: 12,
+                        decoration: BoxDecoration(
+                          color: color,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      onTap: () {},
+                    );
+                  },
                 );
               },
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (err, stack) => Center(child: Text('Error: $err', style: const TextStyle(color: Colors.red))),
             ),
           ),
         ],
@@ -103,14 +111,15 @@ class _CustomCategoriesModalState extends State<CustomCategoriesModal> {
   }
 }
 
-class NewCategorySheet extends StatefulWidget {
+class NewCategorySheet extends ConsumerStatefulWidget {
   const NewCategorySheet({super.key});
 
   @override
-  State<NewCategorySheet> createState() => _NewCategorySheetState();
+  ConsumerState<NewCategorySheet> createState() => _NewCategorySheetState();
 }
 
-class _NewCategorySheetState extends State<NewCategorySheet> {
+class _NewCategorySheetState extends ConsumerState<NewCategorySheet> {
+  final TextEditingController _nameController = TextEditingController();
   final List<Color> _colors = [
     Colors.red,
     Colors.orange,
@@ -121,6 +130,12 @@ class _NewCategorySheetState extends State<NewCategorySheet> {
     Colors.pink,
   ];
   Color _selectedColor = Colors.blue;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -161,6 +176,7 @@ class _NewCategorySheetState extends State<NewCategorySheet> {
           ),
           const SizedBox(height: 8),
           TextField(
+            controller: _nameController,
             style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
               hintText: 'e.g. Groceries',
@@ -208,8 +224,22 @@ class _NewCategorySheetState extends State<NewCategorySheet> {
             width: double.infinity,
             height: 56,
             child: ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
+              onPressed: () async {
+                final dao = ref.read(expenseDaoProvider);
+                final name = _nameController.text;
+                if (name.isEmpty) return;
+
+                // ignore: deprecated_member_use
+                final colorHex = _selectedColor.value.toRadixString(16).padLeft(8, '0');
+                
+                final newCat = ExpenseCategoriesCompanion.insert(
+                  name: name,
+                  icon: '✨', // Default icon for custom
+                  colorHex: colorHex,
+                );
+                
+                await dao.insertCategory(newCat);
+                if (context.mounted) Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF0A84FF),

@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kaizen/features/expense_tracker/application/expense_providers.dart';
+import 'package:kaizen/features/expense_tracker/presentation/widgets/add_subscription_modal.dart';
 
-class SubscriptionsModal extends StatelessWidget {
+class SubscriptionsModal extends ConsumerWidget {
   const SubscriptionsModal({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final subscriptionsAsync = ref.watch(subscriptionsProvider);
+    final formatter = ref.watch(currencyFormatterProvider);
+
     return Container(
       decoration: const BoxDecoration(
         color: Color(0xFF121212),
@@ -25,66 +31,130 @@ class SubscriptionsModal extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              IconButton(
-                icon: const Icon(Icons.close, color: Colors.white54),
-                onPressed: () => Navigator.pop(context),
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.add, color: Colors.white),
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (context) => SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.9,
+                          child: const AddSubscriptionModal(),
+                        ),
+                      );
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close, color: Colors.white54),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
               ),
             ],
           ),
-          const SizedBox(height: 48),
-          Container(
-            width: 120,
-            height: 120,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: const Color(0xFF2C2C2E), width: 8),
-            ),
-            child: const Center(
-              child: Icon(
-                Icons.autorenew,
-                size: 48,
-                color: Color(0xFF2C2C2E),
-              ),
-            ),
-          ),
           const SizedBox(height: 24),
-          const Text(
-            'No Active Subscriptions',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            'Keep track of your recurring payments here.',
-            style: TextStyle(
-              color: Colors.white54,
-              fontSize: 14,
-            ),
-          ),
-          const SizedBox(height: 32),
-          SizedBox(
-            width: double.infinity,
-            height: 56,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF0A84FF),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-              ),
-              child: const Text(
-                'Add Subscription',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+          subscriptionsAsync.when(
+            data: (subscriptions) {
+              int activeCount = subscriptions.length;
+              double monthlyTotal = 0;
+              double yearlyTotal = 0;
+
+              for (final sub in subscriptions) {
+                if (sub.interval == '1 Month') {
+                  monthlyTotal += sub.amount;
+                  yearlyTotal += sub.amount * 12;
+                } else if (sub.interval == '1 Year') {
+                  yearlyTotal += sub.amount;
+                  monthlyTotal += sub.amount / 12;
+                }
+              }
+
+              return Column(
+                children: [
+                  Container(
+                    width: 140,
+                    height: 140,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: const Color(0xFF2C2C2E), width: 8),
+                    ),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '$activeCount',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const Text(
+                            'Active',
+                            style: TextStyle(
+                              color: Color(0xFF8E8E93),
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Column(
+                        children: [
+                          const Text('Monthly total', style: TextStyle(color: Color(0xFF8E8E93), fontSize: 12)),
+                          const SizedBox(height: 4),
+                          Text(formatter.format(monthlyTotal), style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          const Text('Yearly total', style: TextStyle(color: Color(0xFF8E8E93), fontSize: 12)),
+                          const SizedBox(height: 4),
+                          Text(formatter.format(yearlyTotal), style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Active', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                  ),
+                  const SizedBox(height: 16),
+                  if (subscriptions.isEmpty)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 32.0),
+                      child: Text('No active subscriptions.', style: TextStyle(color: Color(0xFF8E8E93))),
+                    )
+                  else
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: subscriptions.length,
+                      itemBuilder: (context, index) {
+                        final sub = subscriptions[index];
+                        return ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          title: Text(sub.name, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                          subtitle: Text(sub.interval, style: const TextStyle(color: Color(0xFF8E8E93))),
+                          trailing: Text(formatter.format(sub.amount), style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                        );
+                      },
+                    ),
+                ],
+              );
+            },
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (err, stack) => Center(child: Text('Error: $err', style: const TextStyle(color: Colors.red))),
           ),
           const SizedBox(height: 32),
         ],

@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kaizen/features/expense_tracker/application/expense_providers.dart';
+import 'package:kaizen/features/expense_tracker/data/expense_database.dart';
+import 'package:drift/drift.dart' as drift;
 
-class AddExpenseModal extends StatefulWidget {
+class AddExpenseModal extends ConsumerStatefulWidget {
   const AddExpenseModal({super.key});
 
   @override
-  State<AddExpenseModal> createState() => _AddExpenseModalState();
+  ConsumerState<AddExpenseModal> createState() => _AddExpenseModalState();
 }
 
-class _AddExpenseModalState extends State<AddExpenseModal> {
+class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
   String _amount = "0";
+  final TextEditingController _noteController = TextEditingController();
+
+  @override
+  void dispose() {
+    _noteController.dispose();
+    super.dispose();
+  }
 
   void _onDigitPress(String digit) {
     setState(() {
@@ -100,6 +111,7 @@ class _AddExpenseModalState extends State<AddExpenseModal> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: TextField(
+              controller: _noteController,
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 hintText: 'Name / Note',
@@ -164,7 +176,25 @@ class _AddExpenseModalState extends State<AddExpenseModal> {
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                     ),
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () async {
+                      final dao = ref.read(expenseDaoProvider);
+                      final amountVal = double.tryParse(_amount) ?? 0.0;
+                      if (amountVal <= 0) return;
+                      
+                      final categories = await dao.watchAllCategories().first;
+                      final defaultCat = categories.isNotEmpty ? categories.first.id : 'cat_food';
+                      
+                      final newExpense = ExpenseTransactionsCompanion.insert(
+                        amount: amountVal,
+                        date: DateTime.now(),
+                        isIncome: const drift.Value(false),
+                        categoryId: defaultCat,
+                        note: _noteController.text.isNotEmpty ? drift.Value(_noteController.text) : const drift.Value.absent(),
+                      );
+                      
+                      await dao.insertTransaction(newExpense);
+                      if (context.mounted) Navigator.pop(context);
+                    },
                     child: const Text('Save', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                   ),
                 ),

@@ -1,26 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:kaizen/features/expense_tracker/application/expense_providers.dart';
 import 'package:kaizen/features/expense_tracker/presentation/screens/costify/add_expense_modal.dart';
 import 'package:kaizen/features/expense_tracker/presentation/screens/costify/quick_actions_sheet.dart';
 import 'package:kaizen/features/expense_tracker/presentation/screens/costify/expense_detail_view.dart';
 import 'package:kaizen/features/expense_tracker/presentation/screens/costify/tracker_drawer.dart';
 import 'package:kaizen/features/expense_tracker/presentation/widgets/donut_chart_widget.dart';
 
-class ExpenseTrackerScreen extends StatefulWidget {
+class ExpenseTrackerScreen extends ConsumerStatefulWidget {
   const ExpenseTrackerScreen({super.key});
 
   @override
-  State<ExpenseTrackerScreen> createState() => _ExpenseTrackerScreenState();
+  ConsumerState<ExpenseTrackerScreen> createState() => _ExpenseTrackerScreenState();
 }
 
-class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> {
-  String _selectedPeriod = '1Y';
+class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
   final List<String> _periods = ['24H', '7D', '1M', '3M', '1Y', 'Custom'];
-  
-  final List<Map<String, dynamic>> _expenses = [
-    {'icon': Icons.fastfood, 'title': 'Mango juice', 'category': 'Personal', 'date': 'March 18, 2026', 'amount': '-₹30.00'},
-    {'icon': Icons.restaurant, 'title': 'Lunch', 'category': 'Work', 'date': 'March 17, 2026', 'amount': '-₹250.00'},
-    {'icon': Icons.directions_car, 'title': 'Uber', 'category': 'Transport', 'date': 'March 16, 2026', 'amount': '-₹120.00'},
-  ];
 
   void _showAddExpenseModal() {
     showModalBottomSheet(
@@ -142,49 +138,78 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> {
   }
 
   Widget _buildCategoryChips() {
-    final categories = [
-      {'name': '🍟 Canteen', 'amount': '₹1,088.00', 'color': 0xFFFF9500},
-      {'name': '🛒 Groceries', 'amount': '₹450.00', 'color': 0xFF34C759},
-      {'name': '🚕 Transport', 'amount': '₹300.50', 'color': 0xFF0A84FF},
-    ];
+    final transactionsAsync = ref.watch(filteredTransactionsProvider);
+    final formatter = ref.watch(currencyFormatterProvider);
 
-    return SizedBox(
-      height: 40,
-      child: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        scrollDirection: Axis.horizontal,
-        itemCount: categories.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 8),
-        itemBuilder: (context, index) {
-          final cat = categories[index];
-          final color = Color(cat['color'] as int);
-          return Container(
+    return transactionsAsync.when(
+      data: (transactions) {
+        if (transactions.isEmpty) return const SizedBox(height: 40);
+
+        final categoryTotals = <String, double>{};
+        final categoryColors = <String, Color>{};
+        final categoryIcons = <String, String>{};
+
+        for (final t in transactions) {
+          if (!t.transaction.isIncome) {
+            final catName = t.category.name;
+            categoryTotals[catName] = (categoryTotals[catName] ?? 0) + t.transaction.amount;
+            
+            String hex = t.category.colorHex;
+            if (hex.length == 6) hex = 'FF$hex';
+            categoryColors[catName] = Color(int.parse(hex, radix: 16));
+            
+            categoryIcons[catName] = t.category.icon;
+          }
+        }
+
+        final sortedCategories = categoryTotals.entries.toList()
+          ..sort((a, b) => b.value.compareTo(a.value));
+
+        return SizedBox(
+          height: 40,
+          child: ListView.separated(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: const Color(0xFF1C1C1E),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: color.withValues(alpha: 0.5)),
-            ),
-            child: Text(
-              '${cat['name']} ${cat['amount']}',
-              style: const TextStyle(color: Colors.white, fontSize: 13),
-            ),
-          );
-        },
-      ),
+            scrollDirection: Axis.horizontal,
+            itemCount: sortedCategories.length,
+            separatorBuilder: (_, __) => const SizedBox(width: 8),
+            itemBuilder: (context, index) {
+              final cat = sortedCategories[index];
+              final color = categoryColors[cat.key] ?? Colors.grey;
+              final iconStr = categoryIcons[cat.key] ?? '';
+              
+              return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1C1C1E),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: color.withValues(alpha: 0.5)),
+                ),
+                child: Text(
+                  '$iconStr ${cat.key} ${formatter.format(cat.value)}',
+                  style: const TextStyle(color: Colors.white, fontSize: 13),
+                ),
+              );
+            },
+          ),
+        );
+      },
+      loading: () => const SizedBox(height: 40, child: Center(child: CircularProgressIndicator())),
+      error: (_, __) => const SizedBox(height: 40),
     );
   }
 
   Widget _buildTimePeriodSelector() {
+    final selectedPeriod = ref.watch(selectedTimePeriodProvider);
+    
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: _periods.map((period) {
-          final isActive = _selectedPeriod == period;
+          final isActive = selectedPeriod == period;
           return GestureDetector(
-            onTap: () => setState(() => _selectedPeriod = period),
+            onTap: () => ref.read(selectedTimePeriodProvider.notifier).state = period,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
@@ -206,49 +231,73 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> {
   }
 
   Widget _buildExpenseList() {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: _expenses.length,
-      itemBuilder: (context, index) {
-        final ex = _expenses[index];
-        return ListTile(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => ExpenseDetailView(
-                title: ex['title'] as String,
-                amount: ex['amount'] as String,
-                category: ex['category'] as String,
-                date: ex['date'] as String,
-                onDelete: () {
-                  setState(() {
-                    _expenses.removeAt(index);
-                  });
-                  Navigator.pop(context);
-                },
-              )),
+    final transactionsAsync = ref.watch(filteredTransactionsProvider);
+    final formatter = ref.watch(currencyFormatterProvider);
+
+    return transactionsAsync.when(
+      data: (transactions) {
+        if (transactions.isEmpty) {
+          return const Padding(
+            padding: EdgeInsets.all(32.0),
+            child: Center(
+              child: Text(
+                'No expenses during the selected period.',
+                style: TextStyle(color: Color(0xFF8E8E93)),
+              ),
+            ),
+          );
+        }
+
+        return ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: transactions.length,
+          itemBuilder: (context, index) {
+            final t = transactions[index];
+            final dateStr = DateFormat('MMMM d, yyyy').format(t.transaction.date);
+            final isIncome = t.transaction.isIncome;
+            final amountColor = isIncome ? const Color(0xFF34C759) : const Color(0xFFFF3B30);
+            
+            return ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => ExpenseDetailView(
+                    title: t.transaction.note ?? t.category.name,
+                    amount: formatter.format(t.transaction.amount),
+                    category: t.category.name,
+                    date: dateStr,
+                    onDelete: () async {
+                      final dao = ref.read(expenseDaoProvider);
+                      await dao.deleteTransaction(t.transaction);
+                      if (context.mounted) Navigator.pop(context);
+                    },
+                  )),
+                );
+              },
+              leading: CircleAvatar(
+                backgroundColor: const Color(0xFF1C1C1E),
+                child: Text(t.category.icon, style: const TextStyle(fontSize: 20)),
+              ),
+              title: Text(t.transaction.note ?? t.category.name, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
+              subtitle: Text('${t.category.name} • $dateStr', style: const TextStyle(color: Color(0xFF8E8E93), fontSize: 12)),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    formatter.format(t.transaction.amount),
+                    style: TextStyle(color: amountColor, fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  const SizedBox(width: 4),
+                  const Icon(Icons.chevron_right, color: Color(0xFF8E8E93)),
+                ],
+              ),
             );
           },
-          leading: CircleAvatar(
-            backgroundColor: const Color(0xFF1C1C1E),
-            child: Icon(ex['icon'] as IconData, color: Colors.white, size: 20),
-          ),
-          title: Text(ex['title'] as String, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
-          subtitle: Text('${ex['category']} • ${ex['date']}', style: const TextStyle(color: Color(0xFF8E8E93), fontSize: 12)),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                ex['amount'] as String,
-                style: const TextStyle(color: Color(0xFFFF3B30), fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-              const SizedBox(width: 4),
-              const Icon(Icons.chevron_right, color: Color(0xFF8E8E93)),
-            ],
-          ),
         );
       },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (e, s) => Center(child: Text('Error: $e', style: const TextStyle(color: Colors.red))),
     );
   }
 }

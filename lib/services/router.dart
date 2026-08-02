@@ -9,11 +9,8 @@ import 'package:kaizen/view/screen/diet_home_screen.dart';
 import 'package:kaizen/view/screen/habits_home_screen.dart';
 import 'package:kaizen/view/screen/add_habit_screen.dart';
 import 'package:kaizen/view/screen/journal_home_screen.dart';
-import 'package:kaizen/features/expense_tracker/presentation/screens/add_transaction_screen.dart';
-import 'package:kaizen/features/expense_tracker/presentation/screens/analytics_screen.dart';
-import 'package:kaizen/features/expense_tracker/presentation/screens/calendar_screen.dart';
-import 'package:kaizen/features/expense_tracker/presentation/screens/settings_screen.dart';
-import 'package:kaizen/features/expense_tracker/presentation/screens/expense_tracker_screen.dart';
+import 'package:kaizen/features/expense_tracker/presentation/screens/costify/analytics_screen.dart';
+import 'package:kaizen/features/expense_tracker/presentation/screens/costify/expense_tracker_screen.dart';
 import 'package:kaizen/features/journal/presentation/screens/create_journal_screen.dart';
 import 'package:kaizen/features/journal/presentation/screens/journal_detail_screen.dart';
 
@@ -104,24 +101,9 @@ final router = GoRouter(
 
     // Expense sub-modules
     GoRoute(
-      path: '/expenses/add',
-      name: 'add-expense',
-      builder: (_, __) => const AddTransactionScreen(),
-    ),
-    GoRoute(
       path: '/expenses/analytics',
       name: 'analytics-expense',
-      builder: (_, __) => const ExpenseAnalyticsScreen(),
-    ),
-    GoRoute(
-      path: '/expenses/calendar',
-      name: 'calendar-expense',
-      builder: (_, __) => const ExpenseCalendarScreen(),
-    ),
-    GoRoute(
-      path: '/expenses/settings',
-      name: 'settings-expense',
-      builder: (_, __) => const ExpenseSettingsScreen(),
+      builder: (_, __) => const AnalyticsScreen(),
     ),
   ],
 );
