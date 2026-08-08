@@ -49,3 +49,14 @@ app.*.map.json
 *.MP4
 assets/*.mp4
 assets/*.MP4
+
+# Ignore image sequences and design references
+*.png
+!android/**/*.png
+!ios/**/*.png
+!macos/**/*.png
+!web/**/*.png
+
+# Google Stitch design artifacts
+.stitch/
+

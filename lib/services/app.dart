@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kaizen/services/router.dart';
 import 'package:kaizen/services/app_theme.dart';
 
@@ -10,15 +11,26 @@ class KaizenApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final materialApp = MaterialApp.router(
-      title: 'Kaizen',
-      theme: AppTheme.darkTheme,
-      routerConfig: router,
-      debugShowCheckedModeBanner: false,
+    final materialApp = ScreenUtilInit(
+      designSize: const Size(390, 844),
+      minTextAdapt: true,
+      splitScreenMode: true,
       builder: (context, child) {
-        return Material(
-          type: MaterialType.transparency,
-          child: child ?? const SizedBox.shrink(),
+        return SafeArea(
+          top: true,
+          bottom: false,
+          child: MaterialApp.router(
+            title: 'Kaizen',
+            theme: AppTheme.darkTheme,
+            routerConfig: router,
+            debugShowCheckedModeBanner: false,
+            builder: (context, child) {
+              return Material(
+                type: MaterialType.transparency,
+                child: child ?? const SizedBox.shrink(),
+              );
+            },
+          ),
         );
       },
     );

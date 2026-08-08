@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Multisets &amp; Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#53e16f",
+                        "tertiary": "#cbc8cb",
+                        "error-container": "#93000a",
+                        "on-surface-variant": "#bccbb8",
+                        "on-tertiary-fixed-variant": "#474649",
+                        "on-primary": "#003911",
+                        "on-background": "#e2e2e2",
+                        "tertiary-fixed-dim": "#c8c6c8",
+                        "on-secondary": "#303032",
+                        "on-primary-container": "#004d1a",
+                        "surface-container-high": "#2a2a2a",
+                        "primary-container": "#34c759",
+                        "outline-variant": "#3d4a3c",
+                        "surface-container": "#1f1f1f",
+                        "secondary-container": "#474649",
+                        "on-tertiary-fixed": "#1b1b1d",
+                        "on-tertiary-container": "#414143",
+                        "on-secondary-fixed": "#1b1b1d",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed-dim": "#53e16f",
+                        "on-primary-fixed-variant": "#00531c",
+                        "tertiary-fixed": "#e4e2e4",
+                        "tertiary-container": "#afadaf",
+                        "inverse-surface": "#e2e2e2",
+                        "secondary-fixed-dim": "#c8c6c8",
+                        "surface-container-highest": "#353535",
+                        "on-error": "#690005",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-surface": "#e2e2e2",
+                        "primary": "#56e472",
+                        "surface-variant": "#353535",
+                        "surface-bright": "#393939",
+                        "error": "#ffb4ab",
+                        "outline": "#869584",
+                        "primary-fixed": "#72fe88",
+                        "inverse-on-surface": "#303030",
+                        "on-primary-fixed": "#002107",
+                        "inverse-primary": "#006e28",
+                        "on-tertiary": "#303032",
+                        "surface": "#131313",
+                        "on-secondary-container": "#b6b4b7",
+                        "surface-container-low": "#1b1b1b",
+                        "on-secondary-fixed-variant": "#474649",
+                        "secondary": "#c8c6c8",
+                        "background": "#131313",
+                        "secondary-fixed": "#e4e2e4",
+                        "surface-dim": "#131313",
+                        "multiset-accent": "#FF4B6E",
+                        "analytics-accent": "#FF9500"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "xs": "8px",
+                        "container-padding": "16px",
+                        "base": "4px",
+                        "sm": "12px",
+                        "card-gap": "12px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "body-sm": ["Hanken Grotesk"],
+                        "display-metrics": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "label-caps": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-lg": ["17px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "display-metrics": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-lg-mobile": ["26px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Hanken Grotesk', sans-serif; }
+        .chart-grid-line {
+            stroke: #2a2a2a;
+            stroke-width: 1;
+            stroke-dasharray: 4 4;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface h-screen w-screen overflow-hidden flex justify-center items-center">
+<!-- Container for the two views to match the prompt's layout request (two screens side-by-side essentially, or overlay) -->
+<!-- Implementing as a single desktop view with two distinct mobile-sized panels to illustrate both requested states -->
+<div class="flex flex-row gap-8 w-full max-w-5xl justify-center h-[850px]">
+<!-- VIEW 1: Multisets Bottom Sheet (Showing background list with overlay) -->
+<div class="relative w-[390px] h-full bg-background rounded-[40px] overflow-hidden border-[8px] border-surface-container-high shadow-2xl flex flex-col">
+<!-- Top Nav Area (Simulated Background) -->
+<div class="flex justify-between items-center w-full px-md py-xs mt-6">
+<button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface">chevron_left</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface">Bench Press</h1>
+<div class="flex gap-2">
+<button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface">sort</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface">more_horiz</span>
+</button>
+</div>
+</div>
+<!-- Tabs (Simulated Background) -->
+<div class="px-md mt-4 flex gap-2">
+<div class="flex-1 bg-secondary text-background rounded-full py-2 flex items-center justify-center gap-2 font-headline-md text-sm">
+<span class="material-symbols-outlined text-sm">reorder</span> Sets
+                </div>
+<div class="flex-1 bg-surface-container text-on-surface rounded-full py-2 flex items-center justify-center gap-2 font-headline-md text-sm opacity-50">
+<span class="material-symbols-outlined text-sm">show_chart</span> Analyze
+                </div>
+<div class="flex-1 bg-surface-container text-on-surface rounded-full py-2 flex items-center justify-center gap-2 font-headline-md text-sm opacity-50">
+<span class="material-symbols-outlined text-sm">lightbulb</span> 1RM
+                </div>
+</div>
+<!-- List Background (Dimmed) -->
+<div class="flex-1 mt-6 px-md opacity-40">
+<div class="font-headline-md text-sm text-secondary mb-4">Yesterday &gt;</div>
+<div class="flex justify-between items-center py-4 border-b border-surface-container">
+<div class="text-secondary text-sm">1    12:16 AM</div>
+<div class="text-primary font-headline-md text-headline-md">12 <span class="text-sm font-body-sm">rep</span></div>
+<div class="text-analytics-accent font-headline-md text-headline-md">35 <span class="text-sm font-body-sm">kg &gt;</span></div>
+</div>
+<div class="font-headline-md text-sm text-secondary mb-4 mt-6">Sun, 26 Jul 2026 &gt;</div>
+<div class="flex justify-between items-center py-4 border-b border-surface-container">
+<div class="text-secondary text-sm">1    8:51 AM</div>
+<div class="text-primary font-headline-md text-headline-md">12 <span class="text-sm font-body-sm">rep</span></div>
+<div class="text-analytics-accent font-headline-md text-headline-md">20 <span class="text-sm font-body-sm">kg &gt;</span></div>
+</div>
+</div>
+<!-- Dim Overlay -->
+<div class="absolute inset-0 bg-black/60 z-10"></div>
+<!-- Bottom Sheet -->
+<div class="absolute bottom-0 left-0 w-full bg-surface-container rounded-t-[32px] z-20 flex flex-col pb-8 pt-2">
+<!-- Grabber -->
+<div class="w-12 h-1.5 bg-surface-variant rounded-full mx-auto mb-4"></div>
+<!-- Sheet Header -->
+<div class="flex justify-between items-center px-md mb-8">
+<button class="bg-surface-variant text-on-surface px-4 py-2 rounded-full font-headline-md text-sm">Done</button>
+<h2 class="font-headline-md text-headline-md">Multisets</h2>
+<button class="w-10 h-10 rounded-full bg-multiset-accent text-white flex items-center justify-center font-bold text-xl">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+<!-- Empty State Content -->
+<div class="flex flex-col items-center justify-center px-md py-12">
+<span class="material-symbols-outlined text-6xl text-secondary mb-6" style="font-variation-settings: 'FILL' 1;">layers</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">No Multisets</h3>
+<p class="font-body-sm text-body-sm text-secondary text-center max-w-[250px] mb-8">
+                        Build a superset, dropset, or multiset with Bench Press and log every set together.
+                    </p>
+<button class="bg-multiset-accent text-white font-headline-md text-body-lg px-8 py-3 rounded-full hover:opacity-90 transition-opacity">
+                        Add Multiset
+                    </button>
+</div>
+</div>
+</div>
+<!-- VIEW 2: Analytics View -->
+<div class="relative w-[390px] h-full bg-background rounded-[40px] overflow-hidden border-[8px] border-surface-container-high shadow-2xl flex flex-col">
+<!-- Top Nav Area -->
+<div class="flex justify-between items-center w-full px-md py-xs mt-6">
+<button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface">chevron_left</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface">Bench Press</h1>
+<div class="flex gap-2">
+<button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface">sort</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface">more_horiz</span>
+</button>
+</div>
+</div>
+<!-- Tabs -->
+<div class="px-md mt-4 flex gap-2">
+<div class="flex-1 bg-surface-container text-on-surface rounded-full py-2 flex items-center justify-center gap-2 font-headline-md text-sm opacity-50">
+<span class="material-symbols-outlined text-sm">reorder</span> Sets
+                </div>
+<div class="flex-1 bg-secondary text-background rounded-full py-2 flex items-center justify-center gap-2 font-headline-md text-sm">
+<span class="material-symbols-outlined text-sm">show_chart</span> Analyze
+                </div>
+<div class="flex-1 bg-surface-container text-on-surface rounded-full py-2 flex items-center justify-center gap-2 font-headline-md text-sm opacity-50">
+<span class="material-symbols-outlined text-sm">lightbulb</span> 1RM
+                </div>
+</div>
+<!-- Analytics Content Scrollable Area -->
+<div class="flex-1 overflow-y-auto px-md mt-6 pb-24 no-scrollbar">
+<!-- Metric Cards -->
+<div class="grid grid-cols-4 gap-2 mb-6">
+<div class="bg-analytics-accent text-background rounded-xl p-2 flex flex-col items-center justify-center aspect-square text-center">
+<span class="font-headline-md text-[16px] leading-tight">25</span>
+<span class="font-body-sm text-[11px] leading-tight opacity-90">kg/rep</span>
+</div>
+<div class="bg-surface-container text-on-surface rounded-xl p-2 flex flex-col items-center justify-center aspect-square text-center">
+<span class="font-headline-md text-[16px] leading-tight">2.5</span>
+<span class="font-body-sm text-[11px] leading-tight text-secondary">Sets</span>
+</div>
+<div class="bg-surface-container text-on-surface rounded-xl p-2 flex flex-col items-center justify-center aspect-square text-center">
+<span class="font-headline-md text-[16px] leading-tight">30</span>
+<span class="font-body-sm text-[11px] leading-tight text-secondary">rep</span>
+</div>
+<div class="bg-surface-container text-on-surface rounded-xl p-2 flex flex-col items-center justify-center aspect-square text-center">
+<span class="font-headline-md text-[16px] leading-tight">750 kg</span>
+<span class="font-body-sm text-[11px] leading-tight text-secondary">Volume</span>
+</div>
+</div>
+<div class="flex justify-between items-center text-secondary font-label-caps text-[10px] mb-4">
+<span>DAILY AVERAGE</span>
+<span>Dec 2025 - Dec 2026</span>
+</div>
+<!-- Chart Area -->
+<div class="relative h-[300px] w-full mb-6">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 100">
+<!-- Grid Lines -->
+<line class="chart-grid-line" x1="0" x2="100" y1="20" y2="20"></line>
+<line class="chart-grid-line" x1="0" x2="100" y1="45" y2="45"></line>
+<line class="chart-grid-line" x1="0" x2="100" y1="70" y2="70"></line>
+<line class="chart-grid-line" x1="0" x2="100" y1="95" y2="95"></line>
+<!-- Vertical Dashed Lines -->
+<line class="chart-grid-line" x1="16" x2="16" y1="0" y2="95"></line>
+<line class="chart-grid-line" x1="33" x2="33" y1="0" y2="95"></line>
+<line class="chart-grid-line" x1="50" x2="50" y1="0" y2="95"></line>
+<line class="chart-grid-line" x1="66" x2="66" y1="0" y2="95"></line>
+<line class="chart-grid-line" x1="83" x2="83" y1="0" y2="95"></line>
+<!-- Bars -->
+<rect fill="#FF9500" height="50" rx="1" width="4" x="5" y="45"></rect>
+<rect fill="#FF9500" height="70" rx="1" width="4" x="11" y="25"></rect>
+</svg>
+<!-- Y-Axis Labels -->
+<div class="absolute right-0 top-0 h-full flex flex-col justify-between text-secondary font-body-sm text-[10px] pb-[5%] pt-[15%] pointer-events-none">
+<span>40</span>
+<span>30</span>
+<span>20</span>
+<span>10</span>
+<span>0</span>
+</div>
+<!-- X-Axis Labels -->
+<div class="absolute bottom-0 left-0 w-[90%] flex justify-between text-secondary font-body-sm text-[10px] transform translate-y-6">
+<span>J</span>
+<span>A</span>
+<span>S</span>
+<span>O</span>
+<span>N</span>
+<span>D</span>
+</div>
+</div>
+<!-- Segmented Controls -->
+<div class="flex bg-surface-container rounded-full p-1 mb-4 mt-12">
+<button class="flex-1 text-center py-2 rounded-full font-headline-md text-sm text-secondary">M</button>
+<button class="flex-1 text-center py-2 rounded-full font-headline-md text-sm text-secondary">6M</button>
+<button class="flex-1 text-center py-2 rounded-full bg-secondary text-background font-headline-md text-sm">Y</button>
+</div>
+<div class="flex bg-surface-container rounded-full p-1">
+<button class="flex-1 text-center py-2 rounded-full font-headline-md text-sm text-secondary">Sets</button>
+<button class="flex-1 text-center py-2 rounded-full bg-secondary text-background font-headline-md text-sm">Stats</button>
+</div>
+</div>
+<!-- BottomNavBar (Semantic Shell) -->
+<div class="absolute bottom-0 left-0 w-full bg-surface-container shadow-lg rounded-t-xl px-md pb-xs pt-xs z-50">
+<div class="flex justify-around items-center w-full">
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">exercise</span>
+<span class="font-label-caps text-label-caps mt-1">Sets</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary p-2 hover:text-on-surface-variant">
+<span class="material-symbols-outlined">timer</span>
+<span class="font-label-caps text-label-caps mt-1">Sessions</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary p-2 hover:text-on-surface-variant">
+<span class="material-symbols-outlined">accessibility_new</span>
+<span class="font-label-caps text-label-caps mt-1">Body</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary p-2 hover:text-on-surface-variant">
+<span class="material-symbols-outlined">event_note</span>
+<span class="font-label-caps text-label-caps mt-1">Today</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

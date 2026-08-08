@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Analyze: Sets Progression</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-fixed-variant": "#00531c",
+                      "outline": "#869584",
+                      "surface-variant": "#353535",
+                      "tertiary": "#cbc8cb",
+                      "on-primary-container": "#004d1a",
+                      "inverse-primary": "#006e28",
+                      "on-secondary-fixed-variant": "#474649",
+                      "surface-tint": "#53e16f",
+                      "primary-fixed-dim": "#53e16f",
+                      "on-primary-fixed": "#002107",
+                      "secondary-container": "#474649",
+                      "surface-bright": "#393939",
+                      "error-container": "#93000a",
+                      "primary-fixed": "#72fe88",
+                      "secondary-fixed": "#e4e2e4",
+                      "on-secondary-container": "#b6b4b7",
+                      "inverse-surface": "#e2e2e2",
+                      "tertiary-fixed-dim": "#c8c6c8",
+                      "surface-container-highest": "#353535",
+                      "on-primary": "#003911",
+                      "surface-container": "#1f1f1f",
+                      "on-error-container": "#ffdad6",
+                      "on-error": "#690005",
+                      "surface-container-lowest": "#0e0e0e",
+                      "on-secondary": "#303032",
+                      "surface-dim": "#131313",
+                      "primary": "#56e472",
+                      "secondary-fixed-dim": "#c8c6c8",
+                      "on-background": "#e2e2e2",
+                      "secondary": "#c8c6c8",
+                      "on-secondary-fixed": "#1b1b1d",
+                      "error": "#ffb4ab",
+                      "surface": "#131313",
+                      "surface-container-high": "#2a2a2a",
+                      "surface-container-low": "#1b1b1b",
+                      "primary-container": "#34c759",
+                      "on-tertiary": "#303032",
+                      "tertiary-fixed": "#e4e2e4",
+                      "outline-variant": "#3d4a3c",
+                      "on-surface-variant": "#bccbb8",
+                      "tertiary-container": "#afadaf",
+                      "background": "#000000",
+                      "on-tertiary-container": "#414143",
+                      "on-tertiary-fixed": "#1b1b1d",
+                      "on-tertiary-fixed-variant": "#474649",
+                      "on-surface": "#e2e2e2",
+                      "inverse-on-surface": "#303030",
+                      "brand-orange": "#f97316"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "card-gap": "12px",
+                      "xl": "32px",
+                      "container-padding": "16px",
+                      "lg": "24px",
+                      "sm": "12px",
+                      "xs": "8px",
+                      "md": "16px",
+                      "base": "4px"
+              },
+              "fontFamily": {
+                      "display-metrics": ["Hanken Grotesk"],
+                      "label-caps": ["Hanken Grotesk"],
+                      "body-lg": ["Hanken Grotesk"],
+                      "headline-lg-mobile": ["Hanken Grotesk"],
+                      "headline-lg": ["Hanken Grotesk"],
+                      "body-sm": ["Hanken Grotesk"],
+                      "headline-md": ["Hanken Grotesk"]
+              },
+              "fontSize": {
+                      "display-metrics": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "body-lg": ["17px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["26px", {"lineHeight": "32px", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body { font-family: 'Hanken Grotesk', sans-serif; background-color: #000000; color: #e2e2e2; margin: 0; padding: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .fill-icon { font-variation-settings: 'FILL' 1; }
+        
+        /* Graph Styles */
+        .graph-line-orange { stroke: #f97316; stroke-width: 2; fill: none; }
+        .graph-line-green { stroke: #56e472; stroke-width: 2; fill: none; }
+        .graph-point-orange { fill: #000000; stroke: #f97316; stroke-width: 2; }
+        .graph-point-green { fill: #000000; stroke: #56e472; stroke-width: 2; }
+        .graph-grid-line { stroke: #2a2a2a; stroke-width: 1; stroke-dasharray: 4 4; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased">
+<!-- Header -->
+<header class="flex justify-between items-center w-full px-md py-sm pt-8">
+<button class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-on-surface">arrow_back_ios_new</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface text-center flex-1">Bench Press</h1>
+<div class="flex gap-2">
+<button class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-on-surface">sort</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-on-surface">more_horiz</span>
+</button>
+</div>
+</header>
+<!-- Sub-navigation -->
+<div class="px-md py-xs">
+<div class="flex gap-2 p-1 bg-surface-container-high rounded-full">
+<button class="flex-1 py-2 px-4 rounded-full text-secondary font-headline-md text-[14px] leading-5 flex items-center justify-center gap-2 hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">calendar_view_day</span> Sets
+            </button>
+<button class="flex-1 py-2 px-4 rounded-full bg-on-surface text-background font-headline-md text-[14px] leading-5 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">monitoring</span> Analyze
+            </button>
+<button class="flex-1 py-2 px-4 rounded-full text-secondary font-headline-md text-[14px] leading-5 flex items-center justify-center gap-2 hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">target</span> 1RM
+            </button>
+</div>
+</div>
+<!-- Main Content Area (Scrollable) -->
+<main class="flex-1 overflow-y-auto px-md py-sm flex flex-col gap-lg pb-32">
+<!-- Metrics Display -->
+<div class="text-center pt-md">
+<div class="font-display-metrics text-display-metrics">
+<span class="text-primary">12 rep</span> <span class="text-brand-orange">35 kg</span>
+</div>
+<div class="font-body-sm text-body-sm text-secondary mt-1">
+                Last Set: 03/08/26, 12:16 AM
+            </div>
+</div>
+<!-- Graph Area -->
+<div class="w-full aspect-[4/5] relative mt-4">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 100">
+<!-- Vertical Grid Lines (simulated based on UI) -->
+<line class="graph-grid-line" x1="10" x2="10" y1="0" y2="90"></line>
+<line class="graph-grid-line" x1="30" x2="30" y1="0" y2="90"></line>
+<line class="graph-grid-line" x1="50" x2="50" y1="0" y2="90"></line>
+<line class="graph-grid-line" x1="70" x2="70" y1="0" y2="90"></line>
+<line class="graph-grid-line" x1="90" x2="90" y1="0" y2="90"></line>
+<!-- Green Baseline (Reps) -->
+<polyline class="graph-line-green" points="10,85 30,85 50,85 70,85 90,85"></polyline>
+<circle class="graph-point-green" cx="10" cy="85" r="1.5"></circle>
+<circle class="graph-point-green" cx="30" cy="85" r="1.5"></circle>
+<circle class="graph-point-green" cx="50" cy="85" r="1.5"></circle>
+<circle class="graph-point-green" cx="70" cy="85" r="1.5"></circle>
+<circle class="graph-point-green" cx="90" cy="85" r="1.5"></circle>
+<!-- Orange Trendline (Weight) -->
+<polyline class="graph-line-orange" points="10,80 30,80 50,80 70,40 90,15"></polyline>
+<circle class="graph-point-orange" cx="10" cy="80" r="1.5"></circle>
+<circle class="graph-point-orange" cx="30" cy="80" r="1.5"></circle>
+<circle class="graph-point-orange" cx="50" cy="80" r="1.5"></circle>
+<circle class="graph-point-orange" cx="70" cy="40" r="1.5"></circle>
+<circle class="graph-point-orange" cx="90" cy="15" r="1.5"></circle>
+</svg>
+</div>
+<!-- Toggles at bottom of view -->
+<div class="flex flex-col gap-xs mt-auto">
+<!-- Timeframe Toggle -->
+<div class="flex gap-2 p-1 bg-surface-container-high rounded-full w-full">
+<button class="flex-1 py-3 px-4 rounded-full text-secondary font-headline-md text-[14px] leading-5 text-center hover:text-on-surface transition-colors">
+                    Last 2 Sessions
+                </button>
+<button class="flex-1 py-3 px-4 rounded-full bg-surface-variant text-on-surface font-headline-md text-[14px] leading-5 text-center">
+                    All
+                </button>
+</div>
+<!-- View Type Toggle -->
+<div class="flex gap-2 p-1 bg-surface-container-high rounded-full w-full mb-4">
+<button class="flex-1 py-3 px-4 rounded-full bg-surface-variant text-on-surface font-headline-md text-[14px] leading-5 text-center">
+                    Sets
+                </button>
+<button class="flex-1 py-3 px-4 rounded-full text-secondary font-headline-md text-[14px] leading-5 text-center hover:text-on-surface transition-colors">
+                    Stats
+                </button>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-md pb-xs pt-xs bg-surface-container border-t border-outline-variant shadow-lg rounded-t-xl z-50">
+<a class="flex flex-col items-center justify-center text-primary font-bold bg-primary-container text-on-primary-container rounded-full px-4 py-1 hover:text-on-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined fill-icon mb-1">exercise</span>
+<span class="font-label-caps text-label-caps">Sets</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary p-2 hover:text-on-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined mb-1">timer</span>
+<span class="font-label-caps text-label-caps">Sessions</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary p-2 hover:text-on-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined mb-1">accessibility_new</span>
+<span class="font-label-caps text-label-caps">Body</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary p-2 hover:text-on-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined mb-1">event_note</span>
+<span class="font-label-caps text-label-caps">Today</span>
+</a>
+</nav>
+</body></html>

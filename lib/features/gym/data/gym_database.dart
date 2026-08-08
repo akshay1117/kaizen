@@ -158,6 +158,30 @@ class BodyWeightEntries extends Table {
   Set<Column> get primaryKey => {id};
 }
 
+@DataClassName('Programme')
+class Programmes extends Table {
+  TextColumn get id => text().clientDefault(() => '${DateTime.now().millisecondsSinceEpoch}')();
+  TextColumn get name => text()();
+  TextColumn get description => text().nullable()();
+  IntColumn get durationWeeks => integer().withDefault(const Constant(4))();
+  DateTimeColumn get createdAt => dateTime().clientDefault(() => DateTime.now())();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+@DataClassName('ProgrammeWorkout')
+class ProgrammeWorkouts extends Table {
+  TextColumn get id => text().clientDefault(() => '${DateTime.now().millisecondsSinceEpoch}')();
+  TextColumn get programmeId => text().references(Programmes, #id, onDelete: KeyAction.cascade)();
+  TextColumn get workoutId => text().references(Workouts, #id, onDelete: KeyAction.cascade)();
+  IntColumn get weekNumber => integer()();
+  IntColumn get dayOfWeek => integer()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
 @DataClassName('GymSetting')
 class GymSettingsTable extends Table {
   TextColumn get id => text().withDefault(const Constant('default'))();
@@ -179,13 +203,15 @@ class GymSettingsTable extends Table {
   WorkoutGroups,
   WorkoutSessions,
   BodyWeightEntries,
+  Programmes,
+  ProgrammeWorkouts,
   GymSettingsTable,
 ], daos: [WorkoutDao, ExerciseDao])
 class GymDatabase extends _$GymDatabase {
   GymDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -196,6 +222,14 @@ class GymDatabase extends _$GymDatabase {
         GymSettingsTableCompanion.insert(),
         mode: InsertMode.insertOrIgnore,
       );
+      // Seed default exercises
+      await exerciseDao.seedDefaultExercises();
+    },
+    onUpgrade: (m, from, to) async {
+      if (from < 2) {
+        await m.createTable(programmes);
+        await m.createTable(programmeWorkouts);
+      }
     },
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');

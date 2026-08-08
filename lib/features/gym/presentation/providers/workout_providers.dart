@@ -18,3 +18,9 @@ final workoutGroupsProvider = StreamProvider<List<WorkoutGroup>>((ref) {
   final dao = ref.watch(workoutDaoProvider);
   return dao.watchAllGroups();
 });
+
+// Provides stream of exercises for a specific workout
+final workoutExercisesProvider = StreamProvider.family<List<Exercise>, String>((ref, workoutId) {
+  final dao = ref.watch(workoutDaoProvider);
+  return dao.watchExercisesForWorkout(workoutId);
+});

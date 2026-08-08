@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Active Workout Logging - Bench Press</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#afadaf",
+                        "on-error": "#690005",
+                        "on-tertiary-fixed": "#1b1b1d",
+                        "secondary-fixed-dim": "#c8c6c8",
+                        "error": "#ffb4ab",
+                        "tertiary": "#cbc8cb",
+                        "on-surface-variant": "#bccbb8",
+                        "primary-fixed": "#72fe88",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-low": "#1b1b1b",
+                        "on-tertiary-fixed-variant": "#474649",
+                        "on-primary-container": "#004d1a",
+                        "on-surface": "#e2e2e2",
+                        "primary-container": "#34c759",
+                        "secondary": "#c8c6c8",
+                        "inverse-surface": "#e2e2e2",
+                        "primary-fixed-dim": "#53e16f",
+                        "surface-dim": "#131313",
+                        "outline-variant": "#3d4a3c",
+                        "secondary-container": "#474649",
+                        "on-secondary": "#303032",
+                        "tertiary-fixed": "#e4e2e4",
+                        "on-primary-fixed-variant": "#00531c",
+                        "background": "#131313",
+                        "on-secondary-container": "#b6b4b7",
+                        "on-tertiary-container": "#414143",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-tint": "#53e16f",
+                        "surface-container-highest": "#353535",
+                        "surface": "#131313",
+                        "error-container": "#93000a",
+                        "on-primary": "#003911",
+                        "on-primary-fixed": "#002107",
+                        "on-secondary-fixed-variant": "#474649",
+                        "primary": "#56e472",
+                        "secondary-fixed": "#e4e2e4",
+                        "surface-variant": "#353535",
+                        "inverse-primary": "#006e28",
+                        "surface-bright": "#393939",
+                        "tertiary-fixed-dim": "#c8c6c8",
+                        "outline": "#869584",
+                        "on-tertiary": "#303032",
+                        "surface-container": "#1f1f1f",
+                        "inverse-on-surface": "#303030",
+                        "on-secondary-fixed": "#1b1b1d",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-background": "#e2e2e2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "base": "4px",
+                        "xs": "8px",
+                        "md": "16px",
+                        "sm": "12px",
+                        "container-padding": "16px",
+                        "card-gap": "12px",
+                        "xl": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Hanken Grotesk"],
+                        "body-sm": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "display-metrics": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "label-caps": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["26px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "body-lg": ["17px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-metrics": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #000000; /* Strict black background as requested */
+            color: #FFFFFF;
+        }
+        /* Custom scrollbar for web */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+        .numpad-btn:active {
+            background-color: #353535;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-black text-on-surface font-body-lg h-screen flex flex-col overflow-hidden relative selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top App Bar -->
+<header class="bg-black text-primary dark:text-primary font-headline-lg-mobile text-headline-lg-mobile text-on-surface docked full-width top-0 bg-black flat no shadows flex justify-between items-center w-full px-md py-xs z-10 shrink-0">
+<button class="text-on-surface p-2 hover:bg-surface-container-high transition-colors rounded-full flex items-center justify-center opacity-70 transition-opacity">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface flex-1 text-center">Bench Press</h1>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</header>
+<!-- Segmented Control -->
+<div class="px-md py-sm shrink-0">
+<div class="flex bg-surface-container p-1 rounded-full border border-surface-variant">
+<button class="flex-1 bg-surface-container-high text-on-surface font-headline-md text-headline-md py-2 rounded-full shadow-sm text-center">Sets</button>
+<button class="flex-1 text-secondary font-headline-md text-headline-md py-2 rounded-full hover:bg-surface-variant transition-colors text-center">Analyze</button>
+<button class="flex-1 text-secondary font-headline-md text-headline-md py-2 rounded-full hover:bg-surface-variant transition-colors text-center">1RM</button>
+</div>
+</div>
+<!-- Logged Sets Area (Scrollable) -->
+<main class="flex-1 overflow-y-auto px-md pb-[400px]">
+<!-- Group: Yesterday -->
+<div class="mb-lg">
+<div class="flex items-center text-secondary font-body-sm text-body-sm mb-sm py-2">
+<span>Yesterday</span>
+<span class="material-symbols-outlined ml-1 text-[16px]">chevron_right</span>
+</div>
+<div class="space-y-2">
+<!-- Row 1 -->
+<div class="bg-surface-container rounded-lg p-sm flex items-center justify-between h-[56px] border border-surface-variant">
+<div class="flex items-center gap-md">
+<div class="w-[32px] h-[32px] rounded-lg bg-surface-variant flex items-center justify-center font-headline-md text-headline-md text-on-surface">1</div>
+<span class="text-secondary font-body-sm text-body-sm">8:51 AM</span>
+</div>
+<div class="flex items-center gap-lg font-headline-md text-headline-md text-on-surface">
+<div class="w-16 text-right">20 kg</div>
+<div class="w-16 text-right">12 rep</div>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="bg-surface-container rounded-lg p-sm flex items-center justify-between h-[56px] border border-surface-variant">
+<div class="flex items-center gap-md">
+<div class="w-[32px] h-[32px] rounded-lg bg-surface-variant flex items-center justify-center font-headline-md text-headline-md text-on-surface">2</div>
+<span class="text-secondary font-body-sm text-body-sm">8:53 AM</span>
+</div>
+<div class="flex items-center gap-lg font-headline-md text-headline-md text-on-surface">
+<div class="w-16 text-right">30 kg</div>
+<div class="w-16 text-right">10 rep</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Group: 2 days ago -->
+<div class="mb-lg opacity-50">
+<div class="flex items-center text-secondary font-body-sm text-body-sm mb-sm py-2">
+<span>Oct 24</span>
+<span class="material-symbols-outlined ml-1 text-[16px]">chevron_right</span>
+</div>
+<div class="bg-surface-container rounded-lg p-sm flex items-center justify-between h-[56px] border border-surface-variant">
+<div class="flex items-center gap-md">
+<div class="w-[32px] h-[32px] rounded-lg bg-surface-variant flex items-center justify-center font-headline-md text-headline-md text-on-surface">1</div>
+<span class="text-secondary font-body-sm text-body-sm">7:30 AM</span>
+</div>
+<div class="flex items-center gap-lg font-headline-md text-headline-md text-on-surface">
+<div class="w-16 text-right">20 kg</div>
+<div class="w-16 text-right">12 rep</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Sticky Panel (Numpad & Actions) -->
+<div class="fixed bottom-0 left-0 w-full bg-surface-container border-t border-surface-variant shadow-[0_-10px_40px_rgba(0,0,0,0.5)] flex flex-col z-50 pb-xs">
+<!-- Top Display & Adjustments -->
+<div class="px-md py-sm flex justify-between items-center bg-black/40">
+<!-- Reps -->
+<div class="flex flex-col">
+<span class="text-secondary font-label-caps text-label-caps mb-1">REPS</span>
+<div class="font-display-metrics text-display-metrics text-on-surface flex items-baseline">
+                    12 <span class="font-headline-md text-headline-md text-secondary ml-1">rep</span>
+</div>
+</div>
+<!-- Weight Adjust -->
+<div class="flex items-center bg-surface-variant rounded-full p-1">
+<button class="w-12 h-12 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<div class="font-display-metrics text-display-metrics text-on-surface px-4 flex items-baseline min-w-[120px] justify-center">
+                    35 <span class="font-headline-md text-headline-md text-secondary ml-1">kg</span>
+</div>
+<button class="w-12 h-12 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+</div>
+<!-- Action Row -->
+<div class="px-md py-xs flex gap-2">
+<button class="flex-1 h-10 rounded bg-surface-variant text-on-surface font-headline-md text-headline-md border border-outline-variant">Label</button>
+<button class="flex-1 h-10 rounded bg-surface-variant text-on-surface font-headline-md text-headline-md border border-outline-variant">Plates</button>
+<button class="flex-1 h-10 rounded bg-surface-variant text-on-surface font-headline-md text-headline-md border border-outline-variant">KG</button>
+<button class="flex-1 h-10 rounded bg-surface-variant text-on-surface font-headline-md text-headline-md border border-outline-variant flex items-center justify-center gap-1">
+                Now <span class="material-symbols-outlined text-[16px]">schedule</span>
+</button>
+</div>
+<!-- Save Button -->
+<div class="px-md py-xs">
+<button class="w-full h-14 bg-[#34C759] text-black font-headline-lg-mobile text-headline-lg-mobile rounded-lg flex items-center justify-center gap-2 hover:bg-primary-fixed-dim transition-colors active:scale-[0.98]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                Save Set
+            </button>
+</div>
+<!-- Numeric Keypad (3x4) -->
+<div class="grid grid-cols-3 gap-1 px-md pb-md pt-xs">
+<button class="numpad-btn h-14 bg-surface text-on-surface font-headline-lg-mobile text-headline-lg-mobile rounded-lg transition-colors border border-surface-variant">1</button>
+<button class="numpad-btn h-14 bg-surface text-on-surface font-headline-lg-mobile text-headline-lg-mobile rounded-lg transition-colors border border-surface-variant">2</button>
+<button class="numpad-btn h-14 bg-surface text-on-surface font-headline-lg-mobile text-headline-lg-mobile rounded-lg transition-colors border border-surface-variant">3</button>
+<button class="numpad-btn h-14 bg-surface text-on-surface font-headline-lg-mobile text-headline-lg-mobile rounded-lg transition-colors border border-surface-variant">4</button>
+<button class="numpad-btn h-14 bg-surface text-on-surface font-headline-lg-mobile text-headline-lg-mobile rounded-lg transition-colors border border-surface-variant">5</button>
+<button class="numpad-btn h-14 bg-surface text-on-surface font-headline-lg-mobile text-headline-lg-mobile rounded-lg transition-colors border border-surface-variant">6</button>
+<button class="numpad-btn h-14 bg-surface text-on-surface font-headline-lg-mobile text-headline-lg-mobile rounded-lg transition-colors border border-surface-variant">7</button>
+<button class="numpad-btn h-14 bg-surface text-on-surface font-headline-lg-mobile text-headline-lg-mobile rounded-lg transition-colors border border-surface-variant">8</button>
+<button class="numpad-btn h-14 bg-surface text-on-surface font-headline-lg-mobile text-headline-lg-mobile rounded-lg transition-colors border border-surface-variant">9</button>
+<button class="numpad-btn h-14 bg-surface text-on-surface font-headline-lg-mobile text-headline-lg-mobile rounded-lg transition-colors border border-surface-variant">.</button>
+<button class="numpad-btn h-14 bg-surface text-on-surface font-headline-lg-mobile text-headline-lg-mobile rounded-lg transition-colors border border-surface-variant">0</button>
+<button class="numpad-btn h-14 bg-surface-variant text-on-surface rounded-lg transition-colors flex items-center justify-center border border-surface-variant">
+<span class="material-symbols-outlined">backspace</span>
+</button>
+</div>
+</div>
+</body></html>

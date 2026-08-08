@@ -49,9 +49,70 @@ class GymUseCases {
   }
 
   // --- Muscle Recovery ---
-  static bool isJustTrained(DateTime lastTrained, int fullRecoveryDays) {
+  static double calculateRecoveryPercentage(DateTime? lastTrained, int fullRecoveryDays) {
+    if (lastTrained == null) return 1.0; // Fully rested
+
     final now = DateTime.now();
     final difference = now.difference(lastTrained);
-    return difference.inDays < fullRecoveryDays;
+    
+    // Total hours needed for full recovery
+    final totalRecoveryHours = fullRecoveryDays * 24.0;
+    
+    if (difference.inHours >= totalRecoveryHours) {
+      return 1.0; // 100% recovered
+    }
+    
+    // Linear decay from 0.0 (just trained) to 1.0 (fully rested)
+    return difference.inHours / totalRecoveryHours;
+  }
+
+  // --- Streaks & Rest Days ---
+  static int calculateCurrentStreak(List<DateTime> sessionDates) {
+    if (sessionDates.isEmpty) return 0;
+    
+    // Sort dates descending
+    final sortedDates = sessionDates.map((d) => DateTime(d.year, d.month, d.day)).toSet().toList();
+    sortedDates.sort((a, b) => b.compareTo(a));
+
+    final today = DateTime.now();
+    final todayNormalized = DateTime(today.year, today.month, today.day);
+    
+    int streak = 0;
+    DateTime expectedDate = todayNormalized;
+
+    // Check if the most recent session is today or yesterday
+    if (sortedDates.isNotEmpty) {
+      final mostRecent = sortedDates.first;
+      final diff = todayNormalized.difference(mostRecent).inDays;
+      if (diff > 1) {
+        return 0; // Streak broken
+      }
+      if (diff == 1) {
+        expectedDate = todayNormalized.subtract(const Duration(days: 1));
+      }
+    }
+
+    for (final date in sortedDates) {
+      if (date == expectedDate) {
+        streak++;
+        expectedDate = expectedDate.subtract(const Duration(days: 1));
+      } else {
+        break; // Gap found
+      }
+    }
+
+    return streak;
+  }
+
+  static bool isRestDay(List<DateTime> sessionDates) {
+    final today = DateTime.now();
+    final todayNormalized = DateTime(today.year, today.month, today.day);
+    
+    for (final date in sessionDates) {
+      if (DateTime(date.year, date.month, date.day) == todayNormalized) {
+        return false; // Not a rest day if a session exists today
+      }
+    }
+    return true; // Rest day if no sessions today
   }
 }

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Analyze Tab - Sets Stats</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#c8c6c8",
+                        "surface-tint": "#53e16f",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-highest": "#353535",
+                        "on-surface-variant": "#bccbb8",
+                        "secondary-fixed": "#e4e2e4",
+                        "inverse-primary": "#006e28",
+                        "on-surface": "#e2e2e2",
+                        "surface-variant": "#353535",
+                        "primary-fixed-dim": "#53e16f",
+                        "surface-container-low": "#1b1b1b",
+                        "tertiary-container": "#afadaf",
+                        "error-container": "#93000a",
+                        "outline": "#869584",
+                        "on-background": "#e2e2e2",
+                        "primary-container": "#34c759",
+                        "surface": "#131313",
+                        "on-tertiary-fixed": "#1b1b1d",
+                        "on-tertiary": "#303032",
+                        "on-primary-container": "#004d1a",
+                        "primary": "#56e472",
+                        "on-primary-fixed": "#002107",
+                        "secondary-container": "#474649",
+                        "on-tertiary-fixed-variant": "#474649",
+                        "primary-fixed": "#72fe88",
+                        "background": "#131313",
+                        "outline-variant": "#3d4a3c",
+                        "surface-container": "#1f1f1f",
+                        "error": "#ffb4ab",
+                        "tertiary": "#cbc8cb",
+                        "inverse-surface": "#e2e2e2",
+                        "tertiary-fixed": "#e4e2e4",
+                        "on-tertiary-container": "#414143",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-error": "#690005",
+                        "on-primary-fixed-variant": "#00531c",
+                        "inverse-on-surface": "#303030",
+                        "on-secondary-fixed": "#1b1b1d",
+                        "on-secondary-container": "#b6b4b7",
+                        "on-secondary": "#303032",
+                        "on-secondary-fixed-variant": "#474649",
+                        "on-primary": "#003911",
+                        "surface-container-high": "#2a2a2a",
+                        "tertiary-fixed-dim": "#c8c6c8",
+                        "surface-bright": "#393939",
+                        "surface-dim": "#131313",
+                        "secondary-fixed-dim": "#c8c6c8",
+                        "vibrant-pink": "#FF4D6D"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "8px",
+                        "container-padding": "16px",
+                        "card-gap": "12px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "base": "4px",
+                        "md": "16px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "label-caps": ["Hanken Grotesk"],
+                        "body-sm": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "display-metrics": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["17px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "display-metrics": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-lg-mobile": ["26px", { "lineHeight": "32px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: theme('colors.background'); color: theme('colors.on-background'); }
+        .chart-grid { stroke: theme('colors.surface-container-high'); stroke-width: 1; stroke-dasharray: 4 4; }
+        .chart-axis { stroke: theme('colors.surface-container-high'); stroke-width: 1; }
+        .bar-fill { fill: theme('colors.vibrant-pink'); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-lg min-h-screen flex flex-col pt-12 pb-[90px]">
+<!-- Top App Bar -->
+<header class="flex justify-between items-center w-full px-md py-xs bg-background fixed top-0 left-0 z-50">
+<button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface" data-icon="arrow_back_ios_new">arrow_back_ios_new</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface">Bench Press</h1>
+<div class="flex gap-2">
+<button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface" data-icon="menu">menu</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface" data-icon="more_horiz">more_horiz</span>
+</button>
+</div>
+</header>
+<main class="flex-1 px-md flex flex-col pt-[80px]">
+<!-- Tab Navigation -->
+<div class="flex bg-surface-container rounded-full p-1 mb-6">
+<button class="flex-1 py-2 px-4 rounded-full text-secondary font-headline-md text-sm flex items-center justify-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="kitchen">kitchen</span>
+                Sets
+            </button>
+<button class="flex-1 py-2 px-4 rounded-full bg-on-surface text-background font-headline-md text-sm flex items-center justify-center gap-2 shadow-sm transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="show_chart">show_chart</span>
+                Analyze
+            </button>
+<button class="flex-1 py-2 px-4 rounded-full text-secondary font-headline-md text-sm flex items-center justify-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="lightbulb">lightbulb</span>
+                1RM
+            </button>
+</div>
+<!-- Metric Grid -->
+<div class="grid grid-cols-4 gap-2 mb-4">
+<div class="bg-surface-container rounded-lg p-3 flex flex-col items-center justify-center">
+<span class="font-headline-md text-on-surface">25</span>
+<span class="font-body-sm text-secondary text-xs">kg/rep</span>
+</div>
+<div class="bg-vibrant-pink rounded-lg p-3 flex flex-col items-center justify-center shadow-[0_0_15px_rgba(255,77,109,0.3)]">
+<span class="font-headline-md text-on-primary-fixed font-bold">2.5</span>
+<span class="font-body-sm text-on-primary-fixed font-bold text-xs">Sets</span>
+</div>
+<div class="bg-surface-container rounded-lg p-3 flex flex-col items-center justify-center">
+<span class="font-headline-md text-on-surface">30</span>
+<span class="font-body-sm text-secondary text-xs">rep</span>
+</div>
+<div class="bg-surface-container rounded-lg p-3 flex flex-col items-center justify-center">
+<span class="font-headline-md text-on-surface">750 kg</span>
+<span class="font-body-sm text-secondary text-xs">Volume</span>
+</div>
+</div>
+<div class="flex justify-between items-center mb-6">
+<span class="font-label-caps text-label-caps text-secondary uppercase">Average</span>
+<span class="font-body-sm text-secondary text-xs">15 Jul - 14 Aug 2026</span>
+</div>
+<!-- Chart Area -->
+<div class="flex-1 relative mb-6 min-h-[300px]">
+<svg class="absolute inset-0" height="100%" preserveaspectratio="none" width="100%">
+<!-- Grid Lines -->
+<line class="chart-grid" x1="0" x2="100%" y1="20%" y2="20%"></line>
+<line class="chart-grid" x1="0" x2="100%" y1="40%" y2="40%"></line>
+<line class="chart-grid" x1="0" x2="100%" y1="60%" y2="60%"></line>
+<line class="chart-grid" x1="0" x2="100%" y1="80%" y2="80%"></line>
+<line class="chart-axis" x1="0" x2="100%" y1="100%" y2="100%"></line>
+<!-- Vertical Grid Lines (Approximated for visual) -->
+<line class="chart-grid" x1="16%" x2="16%" y1="0" y2="100%"></line>
+<line class="chart-grid" x1="32%" x2="32%" y1="0" y2="100%"></line>
+<line class="chart-grid" x1="48%" x2="48%" y1="0" y2="100%"></line>
+<line class="chart-grid" x1="64%" x2="64%" y1="0" y2="100%"></line>
+<line class="chart-grid" x1="80%" x2="80%" y1="0" y2="100%"></line>
+<!-- Bars -->
+<rect class="bar-fill" height="90%" rx="2" width="2.5%" x="2%" y="10%"></rect>
+<rect class="bar-fill" height="30%" rx="2" width="2.5%" x="18%" y="70%"></rect>
+</svg>
+<!-- Y-Axis Labels -->
+<div class="absolute right-0 top-0 bottom-0 flex flex-col justify-between items-end text-xs text-secondary font-body-sm pr-1 py-1">
+<span>5</span>
+<span>4</span>
+<span>3</span>
+<span>2</span>
+<span>1</span>
+<span>0</span>
+</div>
+<!-- X-Axis Labels -->
+<div class="absolute -bottom-6 left-0 right-8 flex justify-between text-xs text-secondary font-body-sm px-2">
+<span>26</span>
+<span>2</span>
+<span>9</span>
+<span>16</span>
+<span>23</span>
+</div>
+</div>
+<!-- Time Range Selector -->
+<div class="flex bg-surface-container rounded-full p-1 mb-4 mt-8">
+<button class="flex-1 py-1 px-4 rounded-full bg-surface-container-high text-on-surface font-headline-md text-sm shadow-sm">M</button>
+<button class="flex-1 py-1 px-4 rounded-full text-secondary font-headline-md text-sm">6M</button>
+<button class="flex-1 py-1 px-4 rounded-full text-secondary font-headline-md text-sm">Y</button>
+</div>
+<!-- View Toggle -->
+<div class="flex bg-surface-container rounded-full p-1 mb-4">
+<button class="flex-1 py-2 px-4 rounded-full text-secondary font-headline-md text-sm">Sets</button>
+<button class="flex-1 py-2 px-4 rounded-full bg-surface-container-high text-on-surface font-headline-md text-sm shadow-sm">Stats</button>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-md pb-xs pt-xs bg-surface-container border-t border-outline-variant z-50 rounded-t-xl shadow-lg h-[80px]">
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="exercise">exercise</span>
+<span class="font-label-caps text-label-caps mt-1">Sets</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary p-2 hover:text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="timer">timer</span>
+<span class="font-label-caps text-label-caps mt-1">Sessions</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary p-2 hover:text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="accessibility_new">accessibility_new</span>
+<span class="font-label-caps text-label-caps mt-1">Body</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary p-2 hover:text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="event_note">event_note</span>
+<span class="font-label-caps text-label-caps mt-1">Today</span>
+</button>
+</nav>
+</body></html>

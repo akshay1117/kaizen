@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:kaizen/features/gym/theme/gym_theme.dart';
-import 'package:kaizen/features/gym/presentation/screens/add_set_bottom_sheet.dart';
+import 'package:kaizen/features/gym/presentation/widgets/exercise_set_history_view.dart';
+import 'package:kaizen/features/gym/presentation/widgets/exercise_analysis_view.dart';
+import 'package:kaizen/features/gym/presentation/widgets/exercise_1rm_analysis_view.dart';
 
-class ExerciseDetailScreen extends ConsumerStatefulWidget {
+class ExerciseDetailScreen extends StatefulWidget {
   final String exerciseId;
   final String exerciseName;
 
@@ -15,253 +17,168 @@ class ExerciseDetailScreen extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<ExerciseDetailScreen> createState() =>
-      _ExerciseDetailScreenState();
+  State<ExerciseDetailScreen> createState() => _ExerciseDetailScreenState();
 }
 
-class _ExerciseDetailScreenState extends ConsumerState<ExerciseDetailScreen> {
-  int _tabIndex = 0; // 0: Sets, 1: Analyze, 2: 1RM
+class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
+  int _selectedIndex = 0; // 0: Sets, 1: Analyze, 2: 1RM
 
   @override
   Widget build(BuildContext context) {
-    return GlassScaffold(
-      backgroundColor: GymTheme.background,
-      appBar: GlassAppBar(
-        backgroundColor: GymTheme.background,
-
-        leading: IconButton(
-          icon: const Icon(Icons.chevron_left,
-              color: GymTheme.textPrimary, size: 30),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(widget.exerciseName,
-            style: const TextStyle(fontWeight: FontWeight.bold)),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.more_horiz, color: GymTheme.textPrimary),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          _buildSegmentedControl(),
-          Expanded(
-            child: _buildSelectedTab(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSegmentedControl() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Container(
-        height: 36,
-        decoration: BoxDecoration(
-          color: GymTheme.pillUnselected,
-          borderRadius: BorderRadius.circular(GymTheme.pillRadius),
-        ),
-        child: Row(
-          children: [
-            Expanded(child: _buildSegmentButton('Sets', 0)),
-            Expanded(child: _buildSegmentButton('Analyze', 1)),
-            Expanded(child: _buildSegmentButton('1RM', 2)),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSegmentButton(String label, int index) {
-    final isSelected = _tabIndex == index;
-    return GestureDetector(
-      onTap: () => setState(() => _tabIndex = index),
-      child: Container(
-        decoration: BoxDecoration(
-          color: isSelected ? GymTheme.pillSelected : Colors.transparent,
-          borderRadius: BorderRadius.circular(GymTheme.pillRadius),
-        ),
-        child: Center(
-          child: Text(
-            label,
-            style: TextStyle(
-              color: isSelected
-                  ? GymTheme.pillTextSelected
-                  : GymTheme.textSecondary,
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSelectedTab() {
-    switch (_tabIndex) {
-      case 0:
-        return _buildSetsTab();
-      case 1:
-        return _buildAnalyzeTab();
-      case 2:
-        return _build1RMTab();
-      default:
-        return const SizedBox.shrink();
-    }
-  }
-
-  Widget _buildSetsTab() {
-    return Stack(
-      children: [
-        ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            // Compared to Previous
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: GymTheme.cardBackground,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Compared to Previous',
-                      style: TextStyle(
-                          color: GymTheme.textPrimary,
-                          fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _buildStatDelta('Sets', '3', '+1'),
-                      _buildStatDelta('Reps', '25', '+5'),
-                      _buildStatDelta('Volume', '1250', '+250'),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
-            // Example empty state or past sets
-            const Center(
-              child: Text('No Sets\nRecord sets to progress every session.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: GymTheme.textSecondary)),
-            ),
-          ],
-        ),
-        Positioned(
-          bottom: 32,
-          right: 16,
+    return Scaffold(
+        backgroundColor: Colors.black, // Dark background
+        body: SafeArea(
           child: Column(
             children: [
-              FloatingActionButton(
-                heroTag: 'multiset_fab',
-                mini: true,
-                backgroundColor: GymTheme.cardBackground,
-                onPressed: () {},
-                child: const Icon(Icons.layers, color: GymTheme.primaryAccent),
+              // Custom App Bar (moved beneath SafeArea)
+              Padding(
+                padding: EdgeInsets.only(top: 8.h, bottom: 8.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Back button
+                    Padding(
+                      padding: EdgeInsets.only(left: 16.w),
+                      child: CircleAvatar(
+                        backgroundColor: GymTheme.cardSurface2,
+                        child: IconButton(
+                          icon: Icon(LucideIcons.chevronLeft,
+                              color: GymTheme.textSecondary, size: 24.sp),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ),
+                    ),
+                    // Title
+                    Expanded(
+                      child: Text(
+                        widget.exerciseName,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18.sp,
+                          color: GymTheme.textPrimary,
+                        ),
+                      ),
+                    ),
+                    // Actions
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: GymTheme.cardSurface2,
+                          child: IconButton(
+                            icon: Icon(LucideIcons.menu,
+                                color: GymTheme.textSecondary, size: 20.sp),
+                            onPressed: () {},
+                          ),
+                        ),
+                        SizedBox(width: 8.w),
+                        CircleAvatar(
+                          backgroundColor: GymTheme.cardSurface2,
+                          child: IconButton(
+                            icon: Icon(LucideIcons.moreHorizontal,
+                                color: GymTheme.textSecondary, size: 20.sp),
+                            onPressed: () {},
+                          ),
+                        ),
+                        SizedBox(width: 16.w),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 16),
-              FloatingActionButton(
-                heroTag: 'add_set_fab',
-                backgroundColor: GymTheme.primaryAccent,
-                onPressed: () {
-                  AddSetBottomSheet.show(context);
-                }, // Will open add set bottom sheet
-                child: const Icon(Icons.add, color: Colors.white, size: 32),
+              // Segmented Control
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                child: Container(
+                  padding: EdgeInsets.all(4.w),
+                  decoration: BoxDecoration(
+                    color: GymTheme.cardBackground,
+                    borderRadius: BorderRadius.circular(32.r),
+                    border: Border.all(color: GymTheme.cardSurface2),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: _buildTabButton(
+                          index: 0,
+                          label: 'Sets',
+                          icon: LucideIcons.list,
+                        ),
+                      ),
+                      Expanded(
+                        child: _buildTabButton(
+                          index: 1,
+                          label: 'Analyze',
+                          icon: LucideIcons.lineChart,
+                        ),
+                      ),
+                      Expanded(
+                        child: _buildTabButton(
+                          index: 2,
+                          label: '1RM',
+                          icon: LucideIcons.timer,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              // Tab Content
+              Expanded(
+                child: IndexedStack(
+                  index: _selectedIndex,
+                  children: [
+                    ExerciseSetHistoryView(exerciseId: widget.exerciseId),
+                    ExerciseAnalysisView(exerciseId: widget.exerciseId),
+                    ExerciseOneRmAnalysisView(exerciseId: widget.exerciseId),
+                  ],
+                ),
               ),
             ],
           ),
-        ),
-      ],
-    );
+        ));
   }
 
-  Widget _buildStatDelta(String label, String value, String delta) {
-    return Column(
-      children: [
-        Text(label,
-            style:
-                const TextStyle(color: GymTheme.textSecondary, fontSize: 13)),
-        const SizedBox(height: 4),
-        Text(value,
-            style: const TextStyle(
-                color: GymTheme.textPrimary,
-                fontSize: 20,
-                fontWeight: FontWeight.bold)),
-        const SizedBox(height: 4),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-          decoration: BoxDecoration(
-            color: GymTheme.primaryAccent.withValues(alpha: 0.2),
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: Text(delta,
-              style: const TextStyle(
-                  color: GymTheme.primaryAccent,
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold)),
-        ),
-      ],
-    );
-  }
+  Widget _buildTabButton(
+      {required int index, required String label, required IconData icon}) {
+    final isSelected = _selectedIndex == index;
 
-  Widget _buildAnalyzeTab() {
-    return const Center(
-        child: Text('Analytics Unavailable',
-            style: TextStyle(color: GymTheme.textSecondary)));
-  }
-
-  Widget _build1RMTab() {
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: GymTheme.cardBackground,
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('1 Rep Max',
-                  style: TextStyle(color: GymTheme.textPrimary, fontSize: 16)),
-              Switch(
-                value: true,
-                onChanged: (val) {},
-                activeThumbColor: GymTheme.primaryAccent,
-              ),
-            ],
-          ),
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedIndex = index;
+        });
+      },
+      child: Container(
+        height: 40.h,
+        decoration: BoxDecoration(
+          color: isSelected ? GymTheme.cardSurface2 : Colors.transparent,
+          borderRadius: BorderRadius.circular(32.r), // Pill shape
         ),
-        const SizedBox(height: 16),
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: GymTheme.cardBackground,
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: ListTile(
-            contentPadding: EdgeInsets.zero,
-            title: const Text('Formula',
-                style: TextStyle(color: GymTheme.textPrimary)),
-            trailing: const Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('Average',
-                    style: TextStyle(color: GymTheme.textSecondary)),
-                Icon(Icons.chevron_right, color: GymTheme.textSecondary),
-              ],
+        alignment: Alignment.center,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: 16.sp,
+              color: isSelected ? GymTheme.textPrimary : GymTheme.textSecondary,
             ),
-            onTap: () {},
-          ),
+            SizedBox(width: 8.w),
+            Text(
+              label,
+              style: TextStyle(
+                color:
+                    isSelected ? GymTheme.textPrimary : GymTheme.textSecondary,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                fontSize: 14.sp,
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

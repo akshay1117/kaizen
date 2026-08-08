@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>New Workout</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#afadaf",
+                        "on-error": "#690005",
+                        "on-tertiary-fixed": "#1b1b1d",
+                        "secondary-fixed-dim": "#c8c6c8",
+                        "error": "#ffb4ab",
+                        "tertiary": "#cbc8cb",
+                        "on-surface-variant": "#bccbb8",
+                        "primary-fixed": "#72fe88",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-low": "#1b1b1b",
+                        "on-tertiary-fixed-variant": "#474649",
+                        "on-primary-container": "#004d1a",
+                        "on-surface": "#e2e2e2",
+                        "primary-container": "#34c759",
+                        "secondary": "#c8c6c8",
+                        "inverse-surface": "#e2e2e2",
+                        "primary-fixed-dim": "#53e16f",
+                        "surface-dim": "#131313",
+                        "outline-variant": "#3d4a3c",
+                        "secondary-container": "#474649",
+                        "on-secondary": "#303032",
+                        "tertiary-fixed": "#e4e2e4",
+                        "on-primary-fixed-variant": "#00531c",
+                        "background": "#131313",
+                        "on-secondary-container": "#b6b4b7",
+                        "on-tertiary-container": "#414143",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-tint": "#53e16f",
+                        "surface-container-highest": "#353535",
+                        "surface": "#131313",
+                        "error-container": "#93000a",
+                        "on-primary": "#003911",
+                        "on-primary-fixed": "#002107",
+                        "on-secondary-fixed-variant": "#474649",
+                        "primary": "#56e472",
+                        "secondary-fixed": "#e4e2e4",
+                        "surface-variant": "#353535",
+                        "inverse-primary": "#006e28",
+                        "surface-bright": "#393939",
+                        "tertiary-fixed-dim": "#c8c6c8",
+                        "outline": "#869584",
+                        "on-tertiary": "#303032",
+                        "surface-container": "#1f1f1f",
+                        "inverse-on-surface": "#303030",
+                        "on-secondary-fixed": "#1b1b1d",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-background": "#e2e2e2",
+                        "workout-red": "#FF453A",
+                        "workout-orange": "#FF9F0A",
+                        "workout-yellow": "#FFD60A",
+                        "workout-green": "#32D74B",
+                        "workout-pink": "#FF375F",
+                        "workout-blue": "#0A84FF",
+                        "workout-purple": "#BF5AF2",
+                        "workout-gray": "#8E8E93",
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "base": "4px",
+                        "xs": "8px",
+                        "md": "16px",
+                        "sm": "12px",
+                        "container-padding": "16px",
+                        "card-gap": "12px",
+                        "xl": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Hanken Grotesk"],
+                        "body-sm": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "display-metrics": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "label-caps": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["26px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "body-lg": ["17px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-metrics": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #000000; /* Force pure black canvas */
+            color: theme('colors.on-surface');
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Custom Scrollbar for color picker */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Material Icons Baseline Alignment */
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background flex flex-col min-h-screen">
+<!-- Top Navigation App Bar (Modal Header) -->
+<header class="bg-background dark:bg-background docked full-width top-0 w-full px-md py-xs sticky z-50 flex justify-between items-center h-[56px]">
+<!-- Close Button -->
+<button aria-label="Close" class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-high text-on-surface hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+<!-- Title -->
+<h1 class="font-headline-md text-headline-md text-on-surface text-center flex-1">New Workout</h1>
+<!-- Save Button -->
+<button aria-label="Save" class="w-10 h-10 flex items-center justify-center rounded-full bg-primary-container text-background font-bold hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="check">check</span>
+</button>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col px-md py-lg gap-lg overflow-y-auto">
+<!-- Top Icon -->
+<div class="flex justify-center mb-sm">
+<div class="w-20 h-20 bg-surface-container-high rounded-full flex items-center justify-center relative shadow-lg ring-1 ring-outline-variant">
+<span class="material-symbols-outlined text-[40px] text-primary-container icon-fill" data-icon="menu_book" data-weight="fill" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+</div>
+</div>
+<!-- Form Section -->
+<section class="flex flex-col gap-sm">
+<!-- Name Input -->
+<div class="flex flex-col gap-base">
+<label class="font-body-sm text-body-sm text-secondary" for="workout-name">Name</label>
+<input class="w-full bg-surface-container-high text-on-surface font-body-lg text-body-lg rounded-lg border-0 px-md py-[14px] focus:ring-1 focus:ring-primary-container placeholder-secondary outline-none" id="workout-name" type="text" value="K"/>
+<p class="font-body-sm text-body-sm text-primary-container opacity-80 text-xs">Organize by workout, muscle group, day of the week, etc.</p>
+</div>
+<!-- Description Input -->
+<div class="flex flex-col gap-base mt-sm">
+<label class="font-body-sm text-body-sm text-secondary" for="workout-desc">Description</label>
+<input class="w-full bg-surface-container-high text-on-surface font-body-lg text-body-lg rounded-lg border-0 px-md py-[14px] focus:ring-1 focus:ring-primary-container placeholder-secondary outline-none" id="workout-desc" placeholder="Set a description or plan" type="text"/>
+</div>
+</section>
+<!-- Color Picker Section -->
+<section class="bg-surface-container-high rounded-xl p-md flex flex-col gap-md ring-1 ring-outline-variant shadow-lg mt-xs">
+<div class="flex gap-4 overflow-x-auto no-scrollbar py-1">
+<!-- Colors -->
+<button class="w-10 h-10 rounded-full bg-workout-red flex-shrink-0 focus:outline-none"></button>
+<button class="w-10 h-10 rounded-full bg-workout-orange flex-shrink-0 focus:outline-none"></button>
+<button class="w-10 h-10 rounded-full bg-workout-yellow flex-shrink-0 focus:outline-none"></button>
+<button class="w-10 h-10 rounded-full bg-workout-green flex-shrink-0 focus:outline-none"></button>
+<button class="w-10 h-10 rounded-full bg-workout-pink flex-shrink-0 focus:outline-none"></button>
+<button class="w-10 h-10 rounded-full bg-workout-blue flex-shrink-0 focus:outline-none"></button>
+<button class="w-10 h-10 rounded-full bg-workout-purple flex-shrink-0 focus:outline-none"></button>
+<button class="w-10 h-10 rounded-full bg-workout-gray flex-shrink-0 focus:outline-none"></button>
+<!-- Selected Color (Green) with ring -->
+<button class="w-10 h-10 rounded-full bg-workout-green flex-shrink-0 focus:outline-none ring-2 ring-background ring-offset-2 ring-offset-primary-container flex items-center justify-center">
+<div class="w-2 h-2 bg-background rounded-full"></div>
+</button>
+</div>
+</section>
+<!-- Group Picker Section -->
+<section class="flex flex-col gap-base mt-xs">
+<label class="font-body-sm text-body-sm text-secondary">Group</label>
+<button class="w-full bg-surface-container-high flex justify-between items-center px-md py-[14px] rounded-lg ring-1 ring-outline-variant text-secondary">
+<span class="font-body-lg text-body-lg">No Group</span>
+<span class="material-symbols-outlined text-secondary" data-icon="unfold_more">unfold_more</span>
+</button>
+<p class="font-body-sm text-body-sm text-secondary opacity-70 text-xs">Optional: Organize this workout into a group</p>
+</section>
+<!-- Divider -->
+<div class="w-full h-px bg-outline-variant my-xs"></div>
+<!-- Exercises List Section -->
+<section class="flex flex-col gap-sm pb-24"> <!-- Padding bottom to ensure scrolling past nav if added -->
+<div class="flex justify-between items-center">
+<h2 class="font-headline-md text-headline-md text-on-surface">Exercises</h2>
+<button class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-sm" data-icon="more_horiz">more_horiz</span>
+</button>
+</div>
+<!-- Search Bar (Simulated) -->
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-md top-1/2 transform -translate-y-1/2 text-secondary" data-icon="search">search</span>
+<input class="w-full bg-surface-container-high text-on-surface font-body-lg text-body-lg rounded-lg border-0 pl-12 pr-md py-[12px] focus:ring-1 focus:ring-primary-container placeholder-secondary outline-none" placeholder="Search or enter exercise name" type="text"/>
+</div>
+<!-- List Header -->
+<h3 class="font-body-sm text-body-sm text-secondary mt-sm uppercase tracking-wider">By Popularity</h3>
+<!-- Exercise Items -->
+<div class="flex flex-col">
+<!-- Item 1 -->
+<div class="flex items-center justify-between h-[56px] border-b border-outline-variant hover:bg-surface-container-high transition-colors -mx-md px-md cursor-pointer">
+<span class="font-body-lg text-body-lg text-on-surface">Bench Press</span>
+<div class="flex items-center gap-xs">
+<span class="font-body-sm text-body-sm text-secondary text-xs">Yesterday</span>
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="help_outline">help_outline</span>
+<div class="w-6 h-6 rounded-full border border-secondary flex items-center justify-center ml-2"></div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center justify-between h-[56px] border-b border-outline-variant hover:bg-surface-container-high transition-colors -mx-md px-md cursor-pointer">
+<span class="font-body-lg text-body-lg text-on-surface">Overhead Press</span>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="help_outline">help_outline</span>
+<div class="w-6 h-6 rounded-full border border-secondary flex items-center justify-center ml-2"></div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex items-center justify-between h-[56px] border-b border-outline-variant hover:bg-surface-container-high transition-colors -mx-md px-md cursor-pointer">
+<span class="font-body-lg text-body-lg text-on-surface">Squat</span>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="help_outline">help_outline</span>
+<div class="w-6 h-6 rounded-full border border-secondary flex items-center justify-center ml-2"></div>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="flex items-center justify-between h-[56px] border-b border-outline-variant hover:bg-surface-container-high transition-colors -mx-md px-md cursor-pointer">
+<span class="font-body-lg text-body-lg text-on-surface truncate pr-2">Hack Squat or Smith Machine Squat</span>
+<div class="flex items-center gap-xs flex-shrink-0">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="help_outline">help_outline</span>
+<div class="w-6 h-6 rounded-full border border-secondary flex items-center justify-center ml-2"></div>
+</div>
+</div>
+</div>
+<button class="w-full h-[56px] bg-surface-container-high text-on-surface font-headline-md text-headline-md rounded-xl mt-xs flex items-center justify-center gap-xs ring-1 ring-outline-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-primary-container" data-icon="add">add</span>
+                Add Exercises
+            </button>
+</section>
+</main>
+<!-- Navigation omitted as this is a focused transactional builder screen as per instructions -->
+</body></html>

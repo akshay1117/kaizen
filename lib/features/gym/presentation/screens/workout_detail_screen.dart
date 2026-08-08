@@ -3,6 +3,8 @@ import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kaizen/features/gym/theme/gym_theme.dart';
 import 'package:kaizen/features/gym/presentation/screens/add_exercises_screen.dart';
+import 'package:kaizen/features/gym/presentation/screens/exercise_detail_screen.dart';
+import 'package:kaizen/features/gym/presentation/providers/workout_providers.dart';
 
 class WorkoutDetailScreen extends ConsumerStatefulWidget {
   final String workoutId;
@@ -103,16 +105,43 @@ class _WorkoutDetailScreenState extends ConsumerState<WorkoutDetailScreen> {
   }
 
   Widget _buildInfoTab() {
-    // Placeholder for actual list of workout steps
+    final exercisesAsync = ref.watch(workoutExercisesProvider(widget.workoutId));
+    
     return Column(
       children: [
         Expanded(
-          child: ListView(
-            padding: const EdgeInsets.all(16),
-            children: const [
-              ListTile(title: Text('Bench Press', style: TextStyle(color: GymTheme.textPrimary))),
-              ListTile(title: Text('Squat', style: TextStyle(color: GymTheme.textPrimary))),
-            ],
+          child: exercisesAsync.when(
+            data: (exercises) {
+              if (exercises.isEmpty) {
+                return const Center(
+                  child: Text('No exercises added yet.', style: TextStyle(color: GymTheme.textSecondary)),
+                );
+              }
+              return ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: exercises.length,
+                itemBuilder: (context, index) {
+                  final exercise = exercises[index];
+                  return ListTile(
+                    title: Text(exercise.name, style: const TextStyle(color: GymTheme.textPrimary)),
+                    trailing: const Icon(Icons.chevron_right, color: GymTheme.textSecondary),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ExerciseDetailScreen(
+                            exerciseId: exercise.id,
+                            exerciseName: exercise.name,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              );
+            },
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (err, stack) => Center(child: Text('Error: $err', style: const TextStyle(color: GymTheme.destructive))),
           ),
         ),
         Padding(
@@ -125,7 +154,10 @@ class _WorkoutDetailScreenState extends ConsumerState<WorkoutDetailScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AddExercisesScreen(workoutName: widget.workoutName),
+                        builder: (context) => AddExercisesScreen(
+                          workoutId: widget.workoutId,
+                          workoutName: widget.workoutName,
+                        ),
                         fullscreenDialog: true,
                       ),
                     );

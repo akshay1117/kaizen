@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kaizen/features/gym/theme/gym_theme.dart';
+import 'package:kaizen/features/gym/presentation/providers/gym_providers.dart';
+import 'package:kaizen/features/gym/data/gym_database.dart';
 
 class TodayScreen extends ConsumerWidget {
   const TodayScreen({super.key});
@@ -28,13 +30,13 @@ class TodayScreen extends ConsumerWidget {
         children: [
           _buildCalendarStrip(),
           const SizedBox(height: 24),
-          _buildStreakCard(),
+          _buildStreakCard(ref),
           const SizedBox(height: 24),
-          _buildSummaryCard(),
+          _buildSummaryCard(ref),
           const SizedBox(height: 24),
           const Text('Session Details', style: TextStyle(color: GymTheme.textPrimary, fontWeight: FontWeight.bold, fontSize: 18)),
           const SizedBox(height: 8),
-          _buildSessionDetails(),
+          _buildSessionDetails(ref),
         ],
       ),
     );
@@ -76,7 +78,10 @@ class TodayScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildStreakCard() {
+  Widget _buildStreakCard(WidgetRef ref) {
+    final currentStreak = ref.watch(currentStreakProvider);
+    final isRest = ref.watch(isRestDayProvider);
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -86,16 +91,16 @@ class TodayScreen extends ConsumerWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Current Streak', style: TextStyle(color: GymTheme.textSecondary)),
-              SizedBox(height: 4),
+              const Text('Current Streak', style: TextStyle(color: GymTheme.textSecondary)),
+              const SizedBox(height: 4),
               Row(
                 children: [
-                  Icon(Icons.local_fire_department, color: GymTheme.primaryAccent, size: 28),
-                  SizedBox(width: 8),
-                  Text('12 Days', style: TextStyle(color: GymTheme.textPrimary, fontSize: 24, fontWeight: FontWeight.bold)),
+                  const Icon(Icons.local_fire_department, color: GymTheme.primaryAccent, size: 28),
+                  const SizedBox(width: 8),
+                  Text('$currentStreak Days', style: const TextStyle(color: GymTheme.textPrimary, fontSize: 24, fontWeight: FontWeight.bold)),
                 ],
               ),
             ],
@@ -106,9 +111,9 @@ class TodayScreen extends ConsumerWidget {
               const Text('Rest Days', style: TextStyle(color: GymTheme.textSecondary)),
               const SizedBox(height: 4),
               Row(
-                children: List.generate(3, (index) => const Padding(
-                  padding: EdgeInsets.only(left: 4),
-                  child: Icon(Icons.favorite, color: GymTheme.primaryAccent, size: 16),
+                children: List.generate(3, (index) => Padding(
+                  padding: const EdgeInsets.only(left: 4),
+                  child: Icon(Icons.favorite, color: isRest ? GymTheme.primaryAccent : GymTheme.pillUnselected, size: 16),
                 )),
               ),
             ],
@@ -118,7 +123,9 @@ class TodayScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildSummaryCard() {
+  Widget _buildSummaryCard(WidgetRef ref) {
+    final stats = ref.watch(todayStatsProvider);
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -129,17 +136,17 @@ class TodayScreen extends ConsumerWidget {
         children: [
           Row(
             children: [
-              Expanded(child: _buildSummaryStat('Sets', '15')),
-              Expanded(child: _buildSummaryStat('Repetitions', '150')),
-              Expanded(child: _buildSummaryStat('Exercises', '4')),
+              Expanded(child: _buildSummaryStat('Sets', stats['sets']!)),
+              Expanded(child: _buildSummaryStat('Repetitions', stats['reps']!)),
+              Expanded(child: _buildSummaryStat('Exercises', stats['exercises']!)),
             ],
           ),
           const SizedBox(height: 16),
           Row(
             children: [
-              Expanded(child: _buildSummaryStat('Volume', '4500 kg')),
-              Expanded(child: _buildSummaryStat('Avg Rest', '1m 30s')),
-              Expanded(child: _buildSummaryStat('Duration', '45m')),
+              Expanded(child: _buildSummaryStat('Volume', stats['volume']!)),
+              Expanded(child: _buildSummaryStat('Avg Rest', 'N/A')),
+              Expanded(child: _buildSummaryStat('Duration', stats['duration']!)),
             ],
           ),
         ],
@@ -157,30 +164,54 @@ class TodayScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildSessionDetails() {
+  Widget _buildSessionDetails(WidgetRef ref) {
+    final setsAsync = ref.watch(allSetEntriesStreamProvider);
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: GymTheme.cardBackground,
         borderRadius: BorderRadius.circular(16),
       ),
-      child: const Column(
-        children: [
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            title: Text('Bench Press', style: TextStyle(color: GymTheme.textPrimary, fontWeight: FontWeight.bold)),
-            subtitle: Text('4 sets · 32 reps · 1200 kg', style: TextStyle(color: GymTheme.textSecondary)),
-            trailing: Icon(Icons.chevron_right, color: GymTheme.textSecondary),
-          ),
-          Divider(color: GymTheme.pillUnselected, height: 1),
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            title: Text('Squat', style: TextStyle(color: GymTheme.textPrimary, fontWeight: FontWeight.bold)),
-            subtitle: Text('3 sets · 30 reps · 1500 kg', style: TextStyle(color: GymTheme.textSecondary)),
-            trailing: Icon(Icons.chevron_right, color: GymTheme.textSecondary),
-          ),
-        ],
-      ),
+      child: setsAsync.when(
+        data: (sets) {
+          final now = DateTime.now();
+          final todaySets = sets.where((s) => s.performedAt.year == now.year && s.performedAt.month == now.month && s.performedAt.day == now.day).toList();
+          if (todaySets.isEmpty) {
+            return const Center(child: Text('No sessions today.', style: TextStyle(color: GymTheme.textSecondary)));
+          }
+
+          // Simple grouping by exerciseId
+          final grouped = <String, List<SetEntry>>{};
+          for (var s in todaySets) {
+            grouped.putIfAbsent(s.exerciseId, () => []).add(s);
+          }
+
+          final tiles = <Widget>[];
+          grouped.forEach((exId, exSets) {
+            int totalReps = exSets.fold(0, (sum, set) => sum + set.reps);
+            double vol = exSets.fold(0.0, (sum, set) => sum + (set.weightKg * set.reps));
+
+            tiles.add(
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text('Exercise: $exId', style: const TextStyle(color: GymTheme.textPrimary, fontWeight: FontWeight.bold)),
+                subtitle: Text('${exSets.length} sets · $totalReps reps · ${vol.toStringAsFixed(0)} kg', style: const TextStyle(color: GymTheme.textSecondary)),
+                trailing: const Icon(Icons.chevron_right, color: GymTheme.textSecondary),
+              )
+            );
+            tiles.add(const Divider(color: GymTheme.pillUnselected, height: 1));
+          });
+
+          if (tiles.isNotEmpty) {
+            tiles.removeLast(); // remove last divider
+          }
+
+          return Column(children: tiles);
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, stack) => Text('Error: $err'),
+      )
     );
   }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kaizen/features/gym/theme/gym_theme.dart';
+import 'package:kaizen/features/gym/presentation/providers/gym_providers.dart';
+import 'package:kaizen/features/gym/presentation/widgets/muscle_map_diagram.dart';
 
 class BodyScreen extends ConsumerWidget {
   const BodyScreen({super.key});
@@ -9,34 +11,46 @@ class BodyScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GlassScaffold(
-      backgroundColor: GymTheme.background,
-      appBar: GlassAppBar(
         backgroundColor: GymTheme.background,
-
-        title:
-            const Text('Body', style: TextStyle(fontWeight: FontWeight.bold)),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings, color: GymTheme.textPrimary),
-            onPressed: () {
-              // Body Settings
-            },
-          ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16.0),
-        children: [
-          _buildWeightRow(),
-          const SizedBox(height: 24),
-          _buildLegend(),
-          const SizedBox(height: 16),
-          _buildMuscleMapPlaceholder(),
-          const SizedBox(height: 24),
-          _buildMuscleList(),
-        ],
-      ),
-    );
+        body: SafeArea(
+          child: Column(children: [
+            // Custom Top Bar (moved beneath SafeArea)
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Body',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: GymTheme.textPrimary)),
+                  IconButton(
+                    icon:
+                        const Icon(Icons.settings, color: GymTheme.textPrimary),
+                    onPressed: () {
+                      // Body Settings
+                    },
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+                child: ListView(
+              padding: const EdgeInsets.all(16.0),
+              children: [
+                _buildWeightRow(),
+                const SizedBox(height: 24),
+                _buildLegend(),
+                const SizedBox(height: 16),
+                _buildMuscleMap(ref),
+                const SizedBox(height: 24),
+                _buildMuscleList(ref),
+              ],
+            ))
+          ]),
+        ));
   }
 
   Widget _buildWeightRow() {
@@ -91,44 +105,67 @@ class BodyScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildMuscleMapPlaceholder() {
-    return Container(
-      height: 300,
-      decoration: BoxDecoration(
-        color: GymTheme.cardBackground,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.accessibility_new,
-                size: 100, color: GymTheme.textSecondary),
-            SizedBox(height: 16),
-            Text('Muscle Map SVG Area',
-                style: TextStyle(color: GymTheme.textSecondary)),
-          ],
-        ),
-      ),
+  Widget _buildMuscleMap(WidgetRef ref) {
+    final recovery = ref.watch(muscleRecoveryProvider);
+    return MuscleMapDiagram(
+      recovery: recovery,
+      width: double.infinity,
+      height: 350,
     );
   }
 
-  Widget _buildMuscleList() {
+  Widget _buildMuscleList(WidgetRef ref) {
+    final lastTrained = ref.watch(muscleLastTrainedProvider);
+    final recovery = ref.watch(muscleRecoveryProvider);
+
+    if (lastTrained.isEmpty) {
+      return Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: GymTheme.cardBackground,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: const Center(
+          child: Text('No muscles trained yet.',
+              style: TextStyle(color: GymTheme.textSecondary)),
+        ),
+      );
+    }
+
+    final sortedMuscles = lastTrained.keys.toList()
+      ..sort((a, b) => lastTrained[b]!.compareTo(lastTrained[a]!));
+
     return Container(
       decoration: BoxDecoration(
         color: GymTheme.cardBackground,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
-        children: [
-          _buildMuscleRow('Chest', true, '2h ago'),
-          const Divider(color: GymTheme.pillUnselected, height: 1),
-          _buildMuscleRow('Back', false, '3d ago'),
-          const Divider(color: GymTheme.pillUnselected, height: 1),
-          _buildMuscleRow('Legs', false, '5d ago'),
-        ],
+        children: sortedMuscles.map((muscle) {
+          final isLast = muscle == sortedMuscles.last;
+          final time = lastTrained[muscle]!;
+          final timeAgo = _formatTimeAgo(time);
+          final rec = recovery[muscle] ?? 1.0;
+          final justTrained = rec < 0.3; // arbitrary threshold for UI
+
+          return Column(
+            children: [
+              _buildMuscleRow(muscle.name.toUpperCase(), justTrained, timeAgo),
+              if (!isLast)
+                const Divider(color: GymTheme.pillUnselected, height: 1),
+            ],
+          );
+        }).toList(),
       ),
     );
+  }
+
+  String _formatTimeAgo(DateTime dt) {
+    final diff = DateTime.now().difference(dt);
+    if (diff.inDays > 0) return '${diff.inDays}d ago';
+    if (diff.inHours > 0) return '${diff.inHours}h ago';
+    if (diff.inMinutes > 0) return '${diff.inMinutes}m ago';
+    return 'Just now';
   }
 
   Widget _buildMuscleRow(String name, bool justTrained, String timeAgo) {

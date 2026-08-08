@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bench Press Analyze - Reps</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#bccbb8",
+                        "on-secondary-fixed-variant": "#474649",
+                        "outline-variant": "#3d4a3c",
+                        "on-surface": "#e2e2e2",
+                        "secondary-container": "#474649",
+                        "primary": "#56e472",
+                        "on-tertiary-fixed-variant": "#474649",
+                        "inverse-on-surface": "#303030",
+                        "surface-tint": "#53e16f",
+                        "on-primary-fixed": "#002107",
+                        "secondary-fixed": "#e4e2e4",
+                        "on-background": "#e2e2e2",
+                        "surface-container-high": "#2a2a2a",
+                        "secondary-fixed-dim": "#c8c6c8",
+                        "surface-container": "#1f1f1f",
+                        "error-container": "#93000a",
+                        "tertiary-container": "#afadaf",
+                        "tertiary-fixed": "#e4e2e4",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-error-container": "#ffdad6",
+                        "surface-bright": "#393939",
+                        "surface-container-highest": "#353535",
+                        "primary-fixed": "#72fe88",
+                        "on-tertiary-container": "#414143",
+                        "on-error": "#690005",
+                        "on-primary-container": "#004d1a",
+                        "surface-dim": "#131313",
+                        "on-primary-fixed-variant": "#00531c",
+                        "primary-container": "#34c759",
+                        "surface-variant": "#353535",
+                        "tertiary-fixed-dim": "#c8c6c8",
+                        "outline": "#869584",
+                        "on-secondary-container": "#b6b4b7",
+                        "background": "#000000", /* Overridden for true black as per style guide */
+                        "surface": "#1c1c1e", /* Level 1 Surface */
+                        "primary-fixed-dim": "#53e16f",
+                        "on-secondary": "#303032",
+                        "inverse-surface": "#e2e2e2",
+                        "tertiary": "#cbc8cb",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed": "#1b1b1d",
+                        "on-primary": "#003911",
+                        "surface-container-low": "#1b1b1b",
+                        "on-tertiary-fixed": "#1b1b1d",
+                        "secondary": "#c8c6c8",
+                        "on-tertiary": "#303032",
+                        "inverse-primary": "#006e28",
+                        "interaction": "#2c2c2e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "8px",
+                        "container-padding": "16px",
+                        "sm": "12px",
+                        "base": "4px",
+                        "lg": "24px",
+                        "card-gap": "12px",
+                        "md": "16px",
+                        "xl": "32px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-sm": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "display-metrics": ["Hanken Grotesk"],
+                        "label-caps": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["17px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "display-metrics": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["26px", {"lineHeight": "32px", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #000000;
+            color: #e2e2e2;
+            font-family: 'Hanken Grotesk', sans-serif;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Material Symbols Outline setup */
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Custom scrollbar to match dark theme */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2c2c2e;
+            border-radius: 4px;
+        }
+        
+        .chart-grid-line {
+            stroke: #2c2c2e;
+            stroke-width: 1;
+            stroke-dasharray: 4 4;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col h-screen overflow-hidden text-on-surface bg-background">
+<!-- Top Navigation Area -->
+<header class="flex-none px-md pt-12 pb-xs flex justify-between items-center w-full z-10 bg-background sticky top-0">
+<button class="w-[44px] h-[44px] flex items-center justify-center rounded-full bg-surface hover:bg-interaction transition-colors border border-interaction">
+<span class="material-symbols-outlined text-on-surface">arrow_back_ios_new</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface text-center flex-1">Bench Press</h1>
+<div class="flex gap-xs">
+<button class="w-[44px] h-[44px] flex items-center justify-center rounded-full bg-surface hover:bg-interaction transition-colors border border-interaction">
+<span class="material-symbols-outlined text-on-surface">menu</span>
+</button>
+<button class="w-[44px] h-[44px] flex items-center justify-center rounded-full bg-surface hover:bg-interaction transition-colors border border-interaction">
+<span class="material-symbols-outlined text-on-surface">more_horiz</span>
+</button>
+</div>
+</header>
+<!-- Sub Navigation Tabs -->
+<div class="flex-none px-md py-sm">
+<div class="flex bg-surface rounded-full p-1 border border-interaction">
+<button class="flex-1 flex items-center justify-center py-2 rounded-full text-secondary hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined mr-2 text-[18px]">dns</span>
+<span class="font-body-sm text-body-sm font-semibold">Sets</span>
+</button>
+<button class="flex-1 flex items-center justify-center py-2 rounded-full bg-on-surface text-background font-bold shadow-sm transition-colors">
+<span class="material-symbols-outlined mr-2 text-[18px]" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="font-body-sm text-body-sm">Analyze</span>
+</button>
+<button class="flex-1 flex items-center justify-center py-2 rounded-full text-secondary hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined mr-2 text-[18px]">workspace_premium</span>
+<span class="font-body-sm text-body-sm font-semibold">1RM</span>
+</button>
+</div>
+</div>
+<!-- Main Content Canvas -->
+<main class="flex-1 overflow-y-auto px-md pb-[120px] flex flex-col gap-lg">
+<!-- Metrics Grid -->
+<div class="grid grid-cols-4 gap-xs">
+<!-- Inactive Metric -->
+<button class="flex flex-col items-center justify-center p-sm rounded-lg bg-surface border border-interaction transition-colors hover:bg-interaction min-h-[64px]">
+<span class="font-headline-md text-headline-md text-secondary">25</span>
+<span class="font-body-sm text-body-sm text-secondary text-xs">kg/rep</span>
+</button>
+<!-- Inactive Metric -->
+<button class="flex flex-col items-center justify-center p-sm rounded-lg bg-surface border border-interaction transition-colors hover:bg-interaction min-h-[64px]">
+<span class="font-headline-md text-headline-md text-secondary">2.5</span>
+<span class="font-body-sm text-body-sm text-secondary text-xs">Sets</span>
+</button>
+<!-- Active Metric (Reps) -->
+<button class="flex flex-col items-center justify-center p-sm rounded-lg bg-primary text-background border border-primary transition-colors shadow-[0_0_15px_rgba(86,228,114,0.3)] min-h-[64px]">
+<span class="font-headline-md text-headline-md font-bold text-background">30</span>
+<span class="font-body-sm text-body-sm text-background font-semibold text-xs">rep</span>
+</button>
+<!-- Inactive Metric -->
+<button class="flex flex-col items-center justify-center p-sm rounded-lg bg-surface border border-interaction transition-colors hover:bg-interaction min-h-[64px]">
+<span class="font-headline-md text-headline-md text-secondary">750 kg</span>
+<span class="font-body-sm text-body-sm text-secondary text-xs">Volume</span>
+</button>
+</div>
+<!-- Chart Header -->
+<div class="flex justify-between items-end px-xs">
+<span class="font-label-caps text-label-caps text-secondary tracking-widest uppercase">AVERAGE</span>
+<span class="font-body-sm text-body-sm text-secondary">15 Jul - 14 Aug 2026</span>
+</div>
+<!-- Chart Area -->
+<div class="relative w-full h-[300px] bg-background">
+<svg class="w-full h-full absolute inset-0 z-0" preserveaspectratio="none" viewbox="0 0 100 100">
+<!-- Horizontal Grid Lines -->
+<line class="chart-grid-line" x1="0" x2="90" y1="20" y2="20"></line>
+<line class="chart-grid-line" x1="0" x2="90" y1="50" y2="50"></line>
+<line class="chart-grid-line" x1="0" x2="90" y1="80" y2="80"></line>
+<line class="chart-grid-line" style="stroke-dasharray: none;" x1="0" x2="90" y1="95" y2="95"></line>
+<!-- Vertical Grid Lines -->
+<line class="chart-grid-line" x1="15" x2="15" y1="20" y2="95"></line>
+<line class="chart-grid-line" x1="35" x2="35" y1="20" y2="95"></line>
+<line class="chart-grid-line" x1="55" x2="55" y1="20" y2="95"></line>
+<line class="chart-grid-line" x1="75" x2="75" y1="20" y2="95"></line>
+<!-- Data Bars -->
+<!-- First Bar (26) -->
+<rect fill="#56e472" height="65" rx="0.5" width="2" x="5" y="30"></rect>
+<!-- Second Bar (2) -->
+<rect fill="#56e472" height="25" rx="0.5" width="2" x="25" y="70"></rect>
+</svg>
+<!-- Y-Axis Labels (Right Aligned) -->
+<div class="absolute right-0 top-[12px] h-[300px] flex flex-col justify-between font-body-sm text-[10px] text-secondary pb-4">
+<span>60</span>
+<span>40</span>
+<span>20</span>
+<span class="mb-2">0</span>
+</div>
+<!-- X-Axis Labels (Bottom Aligned) -->
+<div class="absolute bottom-[-24px] left-0 w-[90%] flex justify-between font-body-sm text-[10px] text-secondary">
+<span class="pl-[5%]">26</span>
+<span class="pl-[5%]">2</span>
+<span class="pl-[5%]">9</span>
+<span class="pl-[5%]">16</span>
+<span class="pl-[5%]">23</span>
+</div>
+</div>
+<!-- Controls Area (Fixed to bottom of content before nav) -->
+<div class="mt-auto space-y-sm">
+<!-- Timeframe Selector -->
+<div class="flex bg-surface rounded-full p-1 border border-interaction">
+<button class="flex-1 py-2 rounded-full bg-interaction text-on-surface font-semibold text-body-sm transition-colors">
+                    M
+                </button>
+<button class="flex-1 py-2 rounded-full text-secondary hover:text-on-surface text-body-sm transition-colors">
+                    6M
+                </button>
+<button class="flex-1 py-2 rounded-full text-secondary hover:text-on-surface text-body-sm transition-colors">
+                    Y
+                </button>
+</div>
+<!-- Sets/Stats Toggle -->
+<div class="flex bg-surface rounded-full p-1 border border-interaction">
+<button class="flex-1 py-2 rounded-full text-secondary hover:text-on-surface text-body-sm transition-colors font-semibold">
+                    Sets
+                </button>
+<button class="flex-1 py-2 rounded-full bg-interaction text-on-surface font-semibold text-body-sm transition-colors">
+                    Stats
+                </button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Shared Component JSON Implementation) -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-md pb-xs pt-xs bg-surface-container dark:bg-surface-container border-t border-outline-variant shadow-lg z-50 rounded-t-xl min-h-[80px]">
+<!-- Tab 1: Sets (Active mapping based on context - we are in Sets/Analyze view) -->
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 scale-95 transition-transform duration-150 min-w-[64px] min-h-[44px]">
+<span class="material-symbols-outlined text-[24px] mb-1" style="font-variation-settings: 'FILL' 1;">exercise</span>
+<span class="font-label-caps text-label-caps uppercase tracking-wider">Sets</span>
+</button>
+<!-- Tab 2: Sessions -->
+<button class="flex flex-col items-center justify-center text-secondary p-2 hover:text-on-surface-variant transition-colors min-w-[64px] min-h-[44px]">
+<span class="material-symbols-outlined text-[24px] mb-1">timer</span>
+<span class="font-label-caps text-label-caps uppercase tracking-wider">Sessions</span>
+</button>
+<!-- Tab 3: Body -->
+<button class="flex flex-col items-center justify-center text-secondary p-2 hover:text-on-surface-variant transition-colors min-w-[64px] min-h-[44px]">
+<span class="material-symbols-outlined text-[24px] mb-1">accessibility_new</span>
+<span class="font-label-caps text-label-caps uppercase tracking-wider">Body</span>
+</button>
+<!-- Tab 4: Today -->
+<button class="flex flex-col items-center justify-center text-secondary p-2 hover:text-on-surface-variant transition-colors min-w-[64px] min-h-[44px]">
+<span class="material-symbols-outlined text-[24px] mb-1">event_note</span>
+<span class="font-label-caps text-label-caps uppercase tracking-wider">Today</span>
+</button>
+</nav>
+</body></html>

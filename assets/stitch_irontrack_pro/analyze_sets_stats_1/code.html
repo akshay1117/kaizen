@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Analyze: Sets Stats</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed-variant": "#00531c",
+                    "outline": "#869584",
+                    "surface-variant": "#353535",
+                    "tertiary": "#cbc8cb",
+                    "on-primary-container": "#004d1a",
+                    "inverse-primary": "#006e28",
+                    "on-secondary-fixed-variant": "#474649",
+                    "surface-tint": "#53e16f",
+                    "primary-fixed-dim": "#53e16f",
+                    "on-primary-fixed": "#002107",
+                    "secondary-container": "#474649",
+                    "surface-bright": "#393939",
+                    "error-container": "#93000a",
+                    "primary-fixed": "#72fe88",
+                    "secondary-fixed": "#e4e2e4",
+                    "on-secondary-container": "#b6b4b7",
+                    "inverse-surface": "#e2e2e2",
+                    "tertiary-fixed-dim": "#c8c6c8",
+                    "surface-container-highest": "#353535",
+                    "on-primary": "#003911",
+                    "surface-container": "#1f1f1f",
+                    "on-error-container": "#ffdad6",
+                    "on-error": "#690005",
+                    "surface-container-lowest": "#0e0e0e",
+                    "on-secondary": "#303032",
+                    "surface-dim": "#131313",
+                    "primary": "#56e472",
+                    "secondary-fixed-dim": "#c8c6c8",
+                    "on-background": "#e2e2e2",
+                    "secondary": "#c8c6c8",
+                    "on-secondary-fixed": "#1b1b1d",
+                    "error": "#ffb4ab",
+                    "surface": "#131313",
+                    "surface-container-high": "#2a2a2a",
+                    "surface-container-low": "#1b1b1b",
+                    "primary-container": "#34c759",
+                    "on-tertiary": "#303032",
+                    "tertiary-fixed": "#e4e2e4",
+                    "outline-variant": "#3d4a3c",
+                    "on-surface-variant": "#bccbb8",
+                    "tertiary-container": "#afadaf",
+                    "background": "#131313",
+                    "on-tertiary-container": "#414143",
+                    "on-tertiary-fixed": "#1b1b1d",
+                    "on-tertiary-fixed-variant": "#474649",
+                    "on-surface": "#e2e2e2",
+                    "inverse-on-surface": "#303030"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "card-gap": "12px",
+                    "xl": "32px",
+                    "container-padding": "16px",
+                    "lg": "24px",
+                    "sm": "12px",
+                    "xs": "8px",
+                    "md": "16px",
+                    "base": "4px"
+            },
+            "fontFamily": {
+                    "display-metrics": [
+                            "Hanken Grotesk"
+                    ],
+                    "label-caps": [
+                            "Hanken Grotesk"
+                    ],
+                    "body-lg": [
+                            "Hanken Grotesk"
+                    ],
+                    "headline-lg-mobile": [
+                            "Hanken Grotesk"
+                    ],
+                    "headline-lg": [
+                            "Hanken Grotesk"
+                    ],
+                    "body-sm": [
+                            "Hanken Grotesk"
+                    ],
+                    "headline-md": [
+                            "Hanken Grotesk"
+                    ]
+            },
+            "fontSize": {
+                    "display-metrics": [
+                            "48px",
+                            {
+                                    "lineHeight": "56px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "800"
+                            }
+                    ],
+                    "label-caps": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-lg": [
+                            "17px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-lg-mobile": [
+                            "26px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "40px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-sm": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-md": [
+                            "20px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "600"
+                            }
+                    ]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Hanken Grotesk', sans-serif;
+        }
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col pb-24">
+<!-- Top App Bar -->
+<header class="flex justify-between items-center w-full px-md py-xs bg-background sticky top-0 z-10">
+<button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface">arrow_back_ios_new</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface">Bench Press</h1>
+<div class="flex gap-2">
+<button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface">sort</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface">more_horiz</span>
+</button>
+</div>
+</header>
+<!-- Sub Navigation Pill -->
+<div class="px-md py-4">
+<div class="flex bg-surface-container rounded-full p-1 border border-outline-variant">
+<button class="flex-1 flex items-center justify-center py-2 px-4 rounded-full text-secondary hover:text-on-surface transition-colors font-body-sm text-body-sm gap-2">
+<span class="material-symbols-outlined text-[18px]">dns</span>
+                Sets
+            </button>
+<button class="flex-1 flex items-center justify-center py-2 px-4 rounded-full bg-surface text-on-surface shadow-sm font-body-sm text-body-sm gap-2 font-semibold">
+<span class="material-symbols-outlined text-[18px]">show_chart</span>
+                Analyze
+            </button>
+<button class="flex-1 flex items-center justify-center py-2 px-4 rounded-full text-secondary hover:text-on-surface transition-colors font-body-sm text-body-sm gap-2">
+<span class="material-symbols-outlined text-[18px]">fitness_center</span>
+                1RM
+            </button>
+</div>
+</div>
+<!-- Main Content -->
+<main class="flex-1 px-md flex flex-col gap-lg overflow-y-auto">
+<!-- Metrics Grid -->
+<div class="grid grid-cols-4 gap-2">
+<button class="flex flex-col items-center justify-center bg-surface-container p-3 rounded-lg border border-outline-variant hover:bg-surface-container-high transition-colors text-secondary hover:text-on-surface">
+<span class="font-body-lg text-body-lg text-on-surface">25</span>
+<span class="font-label-caps text-label-caps text-[10px]">kg/rep</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-[#FF2D55] p-3 rounded-lg border border-[#FF2D55] text-white shadow-[0_0_15px_rgba(255,45,85,0.3)]">
+<span class="font-body-lg text-body-lg font-bold">2.5</span>
+<span class="font-label-caps text-label-caps text-[10px]">Sets</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-surface-container p-3 rounded-lg border border-outline-variant hover:bg-surface-container-high transition-colors text-secondary hover:text-on-surface">
+<span class="font-body-lg text-body-lg text-on-surface">30</span>
+<span class="font-label-caps text-label-caps text-[10px]">rep</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-surface-container p-3 rounded-lg border border-outline-variant hover:bg-surface-container-high transition-colors text-secondary hover:text-on-surface">
+<span class="font-body-lg text-body-lg text-on-surface">750 kg</span>
+<span class="font-label-caps text-label-caps text-[10px]">Volume</span>
+</button>
+</div>
+<!-- Chart Section -->
+<div class="flex flex-col gap-4 flex-1 mt-4">
+<div class="flex justify-between items-center text-secondary font-label-caps text-label-caps">
+<span>AVERAGE</span>
+<span>15 Jul - 14 Aug 2026</span>
+</div>
+<!-- Chart Area -->
+<div class="relative flex-1 min-h-[300px] border-b border-surface-container-high mb-6">
+<!-- Y-Axis Grid Lines & Labels -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none z-0">
+<div class="w-full border-t border-surface-container-high border-dashed h-0 flex items-center justify-end"><span class="bg-background pl-2 text-secondary font-label-caps text-[10px] transform translate-y-[-50%]">4</span></div>
+<div class="w-full border-t border-surface-container-high border-dashed h-0 flex items-center justify-end"><span class="bg-background pl-2 text-secondary font-label-caps text-[10px] transform translate-y-[-50%]">3</span></div>
+<div class="w-full border-t border-surface-container-high border-dashed h-0 flex items-center justify-end"><span class="bg-background pl-2 text-secondary font-label-caps text-[10px] transform translate-y-[-50%]">2</span></div>
+<div class="w-full border-t border-surface-container-high border-dashed h-0 flex items-center justify-end"><span class="bg-background pl-2 text-secondary font-label-caps text-[10px] transform translate-y-[-50%]">1</span></div>
+<div class="w-full border-t border-surface-container-high border-solid h-0 flex items-center justify-end"><span class="bg-background pl-2 text-secondary font-label-caps text-[10px] transform translate-y-[-50%]">0</span></div>
+</div>
+<!-- X-Axis Grid Lines -->
+<div class="absolute inset-0 flex justify-between pointer-events-none z-0 pr-[20px]">
+<div class="h-full border-l border-surface-container-high border-dashed w-0"></div>
+<div class="h-full border-l border-surface-container-high border-dashed w-0"></div>
+<div class="h-full border-l border-surface-container-high border-dashed w-0"></div>
+<div class="h-full border-l border-surface-container-high border-dashed w-0"></div>
+<div class="h-full border-l border-surface-container-high border-dashed w-0"></div>
+</div>
+<!-- Bars -->
+<div class="absolute inset-0 flex items-end justify-between z-10 pr-[20px] pb-[1px] pl-[1px]">
+<!-- Bar 1 (Leftmost, aligning with 26) -->
+<div class="w-2 bg-[#FF2D55] h-[90%] rounded-t-sm shadow-[0_0_8px_rgba(255,45,85,0.5)] transform -translate-x-1/2 ml-0 relative" style="left: 0%;"></div>
+<!-- Bar 2 (aligning with 2) -->
+<div class="w-2 bg-[#FF2D55] h-[25%] rounded-t-sm shadow-[0_0_8px_rgba(255,45,85,0.5)] transform -translate-x-1/2 relative" style="left: 25%;"></div>
+<!-- Empty spaces for 9, 16, 23 -->
+</div>
+</div>
+<!-- X-Axis Labels -->
+<div class="flex justify-between text-secondary font-label-caps text-[10px] pr-[20px] -mt-4 mb-2">
+<span>26</span>
+<span>2</span>
+<span>9</span>
+<span>16</span>
+<span>23</span>
+</div>
+<!-- Time Range Segmented Control -->
+<div class="flex bg-surface-container rounded-full p-1 border border-outline-variant mt-2">
+<button class="flex-1 py-1 px-4 rounded-full bg-surface text-on-surface shadow-sm font-label-caps text-label-caps text-[10px]">M</button>
+<button class="flex-1 py-1 px-4 rounded-full text-secondary hover:text-on-surface transition-colors font-label-caps text-label-caps text-[10px]">6M</button>
+<button class="flex-1 py-1 px-4 rounded-full text-secondary hover:text-on-surface transition-colors font-label-caps text-label-caps text-[10px]">Y</button>
+</div>
+</div>
+<!-- Bottom View Toggle -->
+<div class="flex bg-surface-container rounded-full p-1 border border-outline-variant mt-auto mb-4">
+<button class="flex-1 py-2 px-4 rounded-full text-secondary hover:text-on-surface transition-colors font-body-sm text-body-sm">Sets</button>
+<button class="flex-1 py-2 px-4 rounded-full bg-surface text-on-surface shadow-sm font-body-sm text-body-sm font-semibold">Stats</button>
+</div>
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-md pb-xs pt-xs bg-surface-container border-t border-outline-variant shadow-lg z-50 rounded-t-xl h-[80px]">
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 hover:text-on-surface-variant scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">exercise</span>
+<span class="font-label-caps text-label-caps text-[10px]">Sets</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary p-2 hover:text-on-surface-variant">
+<span class="material-symbols-outlined mb-1">timer</span>
+<span class="font-label-caps text-label-caps text-[10px]">Sessions</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary p-2 hover:text-on-surface-variant">
+<span class="material-symbols-outlined mb-1">accessibility_new</span>
+<span class="font-label-caps text-label-caps text-[10px]">Body</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary p-2 hover:text-on-surface-variant">
+<span class="material-symbols-outlined mb-1">event_note</span>
+<span class="font-label-caps text-label-caps text-[10px]">Today</span>
+</button>
+</nav>
+</body></html>

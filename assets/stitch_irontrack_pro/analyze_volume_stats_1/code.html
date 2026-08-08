@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Analyze: Volume Stats</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#00531c",
+                        "outline": "#869584",
+                        "surface-variant": "#353535",
+                        "tertiary": "#cbc8cb",
+                        "on-primary-container": "#004d1a",
+                        "inverse-primary": "#006e28",
+                        "on-secondary-fixed-variant": "#474649",
+                        "surface-tint": "#53e16f",
+                        "primary-fixed-dim": "#53e16f",
+                        "on-primary-fixed": "#002107",
+                        "secondary-container": "#474649",
+                        "surface-bright": "#393939",
+                        "error-container": "#93000a",
+                        "primary-fixed": "#72fe88",
+                        "secondary-fixed": "#e4e2e4",
+                        "on-secondary-container": "#b6b4b7",
+                        "inverse-surface": "#e2e2e2",
+                        "tertiary-fixed-dim": "#c8c6c8",
+                        "surface-container-highest": "#353535",
+                        "on-primary": "#003911",
+                        "surface-container": "#1f1f1f",
+                        "on-error-container": "#ffdad6",
+                        "on-error": "#690005",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-secondary": "#303032",
+                        "surface-dim": "#131313",
+                        "primary": "#56e472",
+                        "secondary-fixed-dim": "#c8c6c8",
+                        "on-background": "#e2e2e2",
+                        "secondary": "#c8c6c8",
+                        "on-secondary-fixed": "#1b1b1d",
+                        "error": "#ffb4ab",
+                        "surface": "#131313",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-container-low": "#1b1b1b",
+                        "primary-container": "#34c759",
+                        "on-tertiary": "#303032",
+                        "tertiary-fixed": "#e4e2e4",
+                        "outline-variant": "#3d4a3c",
+                        "on-surface-variant": "#bccbb8",
+                        "tertiary-container": "#afadaf",
+                        "background": "#131313",
+                        "on-tertiary-container": "#414143",
+                        "on-tertiary-fixed": "#1b1b1d",
+                        "on-tertiary-fixed-variant": "#474649",
+                        "on-surface": "#e2e2e2",
+                        "inverse-on-surface": "#303030"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "card-gap": "12px",
+                        "xl": "32px",
+                        "container-padding": "16px",
+                        "lg": "24px",
+                        "sm": "12px",
+                        "xs": "8px",
+                        "md": "16px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "display-metrics": ["Hanken Grotesk"],
+                        "label-caps": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-sm": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "display-metrics": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "body-lg": ["17px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["26px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #000000; color: #FFFFFF; font-family: 'Hanken Grotesk', sans-serif; }
+        .grid-bg {
+            background-image: 
+                linear-gradient(to right, #2C2C2E 1px, transparent 1px),
+                linear-gradient(to bottom, #2C2C2E 1px, transparent 1px);
+            background-size: 20% 25%;
+            background-position: center bottom;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased pb-24">
+<!-- Top App Bar -->
+<header class="bg-background dark:bg-background flex justify-between items-center w-full px-md py-xs sticky top-0 z-10">
+<button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-surface-container-high transition-colors text-primary dark:text-primary">
+<span class="material-symbols-outlined">arrow_back_ios_new</span>
+</button>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Bench Press</h1>
+<div class="flex gap-xs">
+<button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-surface-container-high transition-colors text-primary dark:text-primary">
+<span class="material-symbols-outlined">sort</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-surface-container-high transition-colors text-primary dark:text-primary">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+</header>
+<!-- Sub Navigation Pill -->
+<div class="px-md py-sm flex justify-center gap-2">
+<button class="flex items-center gap-1 px-4 py-2 rounded-full bg-surface-container text-secondary hover:bg-surface-container-high transition-colors font-body-sm">
+<span class="material-symbols-outlined text-sm">fitness_center</span>
+            Sets
+        </button>
+<button class="flex items-center gap-1 px-6 py-2 rounded-full bg-white text-black font-body-sm font-bold shadow-lg">
+<span class="material-symbols-outlined text-sm">show_chart</span>
+            Analyze
+        </button>
+<button class="flex items-center gap-1 px-4 py-2 rounded-full bg-surface-container text-secondary hover:bg-surface-container-high transition-colors font-body-sm">
+<span class="material-symbols-outlined text-sm">military_tech</span>
+            1RM
+        </button>
+</div>
+<!-- Main Content Canvas -->
+<main class="px-md flex flex-col gap-lg mt-4">
+<!-- Metric Cards -->
+<div class="grid grid-cols-4 gap-2">
+<div class="bg-surface-container rounded-lg p-2 flex flex-col items-center justify-center text-center">
+<span class="font-body-lg text-secondary">25</span>
+<span class="font-body-sm text-secondary">kg/rep</span>
+</div>
+<div class="bg-surface-container rounded-lg p-2 flex flex-col items-center justify-center text-center">
+<span class="font-body-lg text-secondary">2.5</span>
+<span class="font-body-sm text-secondary">Sets</span>
+</div>
+<div class="bg-surface-container rounded-lg p-2 flex flex-col items-center justify-center text-center">
+<span class="font-body-lg text-secondary">30</span>
+<span class="font-body-sm text-secondary">rep</span>
+</div>
+<div class="bg-[#00E5FF] rounded-lg p-2 flex flex-col items-center justify-center text-center shadow-[0_0_15px_rgba(0,229,255,0.3)]">
+<span class="font-body-lg text-black font-bold">750 kg</span>
+<span class="font-body-sm text-black font-semibold">Volume</span>
+</div>
+</div>
+<!-- Chart Area -->
+<div class="flex flex-col gap-2 mt-4">
+<div class="flex justify-between items-center text-secondary font-label-caps">
+<span>AVERAGE</span>
+<span>15 Jul - 14 Aug 2026</span>
+</div>
+<div class="relative h-64 w-full grid-bg mt-2">
+<!-- Y-Axis Labels (Right) -->
+<div class="absolute right-0 top-0 h-full flex flex-col justify-between text-right text-xs text-secondary pointer-events-none pb-6">
+<span>1,500</span>
+<span>1,000</span>
+<span>500</span>
+<span>0</span>
+</div>
+<!-- X-Axis Labels (Bottom) -->
+<div class="absolute bottom-0 w-full flex justify-between text-xs text-secondary pt-2 border-t border-[#2C2C2E]">
+<span class="w-1/5 text-center">26</span>
+<span class="w-1/5 text-center">2</span>
+<span class="w-1/5 text-center">9</span>
+<span class="w-1/5 text-center">16</span>
+<span class="w-1/5 text-center">23</span>
+</div>
+<!-- Bars -->
+<div class="absolute inset-0 flex items-end pb-8">
+<div class="w-1/5 flex justify-center h-full items-end">
+<div class="w-3 bg-[#00E5FF] rounded-t-sm" style="height: 65%;"></div>
+</div>
+<div class="w-1/5 flex justify-center h-full items-end">
+<div class="w-3 bg-[#00E5FF] rounded-t-sm" style="height: 25%;"></div>
+</div>
+<div class="w-1/5 flex justify-center h-full items-end"></div>
+<div class="w-1/5 flex justify-center h-full items-end"></div>
+<div class="w-1/5 flex justify-center h-full items-end"></div>
+</div>
+</div>
+</div>
+<!-- Time Range Segmented Control -->
+<div class="flex bg-surface-container rounded-full p-1 mt-2">
+<button class="flex-1 py-2 text-center rounded-full bg-surface-variant text-white font-body-sm">M</button>
+<button class="flex-1 py-2 text-center rounded-full text-secondary font-body-sm">6M</button>
+<button class="flex-1 py-2 text-center rounded-full text-secondary font-body-sm">Y</button>
+</div>
+<!-- View Toggle Segmented Control -->
+<div class="flex bg-surface-container rounded-full p-1 mt-4">
+<button class="flex-1 py-2 text-center rounded-full text-secondary font-body-sm">Sets</button>
+<button class="flex-1 py-2 text-center rounded-full bg-surface-variant text-white font-body-sm">Stats</button>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="bg-surface-container dark:bg-surface-container fixed bottom-0 w-full z-50 rounded-t-xl border-t border-outline-variant shadow-lg fixed bottom-0 left-0 w-full flex justify-around items-center px-md pb-xs pt-xs">
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1" href="#">
+<span class="material-symbols-outlined">exercise</span>
+<span class="font-label-caps text-label-caps">Sets</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary p-2 hover:text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">timer</span>
+<span class="font-label-caps text-label-caps mt-1">Sessions</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary p-2 hover:text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">accessibility_new</span>
+<span class="font-label-caps text-label-caps mt-1">Body</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary p-2 hover:text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">event_note</span>
+<span class="font-label-caps text-label-caps mt-1">Today</span>
+</a>
+</nav>
+</body></html>

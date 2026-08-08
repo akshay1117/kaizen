@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:kaizen/features/gym/data/gym_database.dart';
 import 'package:kaizen/features/gym/theme/gym_theme.dart';
 import 'package:kaizen/features/gym/presentation/providers/exercise_providers.dart';
+import 'package:kaizen/features/gym/presentation/providers/workout_providers.dart';
+import 'package:drift/drift.dart' as drift;
 
 class ApiExercise {
   final String id;
@@ -22,8 +24,9 @@ class ApiExercise {
 }
 
 class AddExercisesScreen extends ConsumerStatefulWidget {
+  final String workoutId;
   final String workoutName;
-  const AddExercisesScreen({super.key, required this.workoutName});
+  const AddExercisesScreen({super.key, required this.workoutId, required this.workoutName});
 
   @override
   ConsumerState<AddExercisesScreen> createState() => _AddExercisesScreenState();
@@ -61,23 +64,43 @@ class _AddExercisesScreenState extends ConsumerState<AddExercisesScreen> {
     }
   }
 
-  void _saveAndPop(List<String> existingMyExerciseNames) async {
+  void _saveAndPop(List<Exercise> existingMyExercises) async {
     final dao = ref.read(exerciseDaoProvider);
+    final workoutDao = ref.read(workoutDaoProvider);
+    final existingMyExerciseNames = existingMyExercises.map((e) => e.name).toList();
+
+    int stepOrder = DateTime.now().millisecondsSinceEpoch; // basic ordering
 
     // For any selected API exercise that isn't already in My Exercises, insert it.
     for (final id in _selectedExerciseIds) {
+      String localExerciseId = id;
+
       if (id.startsWith('api_')) {
         final name = _selectedExerciseNames[id];
-        if (name != null && !existingMyExerciseNames.contains(name)) {
-          await dao.insertExercise(
-            ExercisesCompanion.insert(
-              name: name,
-              primaryMuscles: const [],
-              secondaryMuscles: const [],
-            ),
-          );
+        if (name != null) {
+          if (!existingMyExerciseNames.contains(name)) {
+             final newExerciseId = DateTime.now().millisecondsSinceEpoch.toString();
+             await dao.insertExercise(
+              ExercisesCompanion.insert(
+                id: drift.Value(newExerciseId),
+                name: name,
+                primaryMuscles: const [],
+                secondaryMuscles: const [],
+              ),
+            );
+            localExerciseId = newExerciseId;
+          } else {
+             localExerciseId = existingMyExercises.firstWhere((e) => e.name == name).id;
+          }
         }
       }
+
+      await workoutDao.insertWorkoutStep(WorkoutStepsCompanion.insert(
+        workoutId: widget.workoutId,
+        stepType: 0,
+        refId: localExerciseId,
+        stepOrder: stepOrder++,
+      ));
     }
 
     if (mounted) {
@@ -106,8 +129,8 @@ class _AddExercisesScreenState extends ConsumerState<AddExercisesScreen> {
               child: Icon(Icons.check, color: Colors.white, size: 18),
             ),
             onPressed: () {
-              final myExerciseNames = myExercisesAsync.valueOrNull?.map((e) => e.name).toList() ?? [];
-              _saveAndPop(myExerciseNames);
+              final myExercises = myExercisesAsync.valueOrNull ?? [];
+              _saveAndPop(myExercises);
             },
           ),
           const SizedBox(width: 8),

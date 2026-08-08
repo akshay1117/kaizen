@@ -1,0 +1,12 @@
+targets:
+  $default:
+    builders:
+      drift_dev:
+        generate_for:
+          - lib/model/database.dart
+          - lib/model/habits_dao.dart
+          - lib/features/gym/data/gym_database.dart
+          - lib/features/gym/data/daos/workout_dao.dart
+          - lib/features/gym/data/daos/exercise_dao.dart
+          - lib/features/expense_tracker/data/expense_database.dart
+          - lib/features/expense_tracker/data/expense_dao.dart

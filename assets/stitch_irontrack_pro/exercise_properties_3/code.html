@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Exercise Properties</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#53e16f",
+                        "tertiary": "#cbc8cb",
+                        "error-container": "#93000a",
+                        "on-surface-variant": "#bccbb8",
+                        "on-tertiary-fixed-variant": "#474649",
+                        "on-primary": "#003911",
+                        "on-background": "#e2e2e2",
+                        "tertiary-fixed-dim": "#c8c6c8",
+                        "on-secondary": "#303032",
+                        "on-primary-container": "#004d1a",
+                        "surface-container-high": "#2a2a2a",
+                        "primary-container": "#34c759",
+                        "outline-variant": "#3d4a3c",
+                        "surface-container": "#1f1f1f",
+                        "secondary-container": "#474649",
+                        "on-tertiary-fixed": "#1b1b1d",
+                        "on-tertiary-container": "#414143",
+                        "on-secondary-fixed": "#1b1b1d",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed-dim": "#53e16f",
+                        "on-primary-fixed-variant": "#00531c",
+                        "tertiary-fixed": "#e4e2e4",
+                        "tertiary-container": "#afadaf",
+                        "inverse-surface": "#e2e2e2",
+                        "secondary-fixed-dim": "#c8c6c8",
+                        "surface-container-highest": "#353535",
+                        "on-error": "#690005",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-surface": "#e2e2e2",
+                        "primary": "#56e472",
+                        "surface-variant": "#353535",
+                        "surface-bright": "#393939",
+                        "error": "#ffb4ab",
+                        "outline": "#869584",
+                        "primary-fixed": "#72fe88",
+                        "inverse-on-surface": "#303030",
+                        "on-primary-fixed": "#002107",
+                        "inverse-primary": "#006e28",
+                        "on-tertiary": "#303032",
+                        "surface": "#131313",
+                        "on-secondary-container": "#b6b4b7",
+                        "surface-container-low": "#1b1b1b",
+                        "on-secondary-fixed-variant": "#474649",
+                        "secondary": "#c8c6c8",
+                        "background": "#000000",
+                        "secondary-fixed": "#e4e2e4",
+                        "surface-dim": "#131313",
+                        "modal-bg": "#1C1C1E"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "modal": "2rem"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "xs": "8px",
+                        "container-padding": "16px",
+                        "base": "4px",
+                        "sm": "12px",
+                        "card-gap": "12px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "body-sm": ["Hanken Grotesk"],
+                        "display-metrics": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "label-caps": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-lg": ["17px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "display-metrics": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-lg-mobile": ["26px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #000; color: #fff; }
+        
+        /* Custom toggle styles to mimic iOS */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #34c759;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #34c759;
+        }
+        .toggle-checkbox {
+            right: 0;
+            z-index: 1;
+            border-color: #474649;
+            transition: all 0.3s;
+        }
+        .toggle-label {
+            background-color: #474649;
+            border-radius: 9999px;
+            transition: all 0.3s;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased min-h-screen flex items-end justify-center pb-0 md:pb-8">
+<!-- Modal Backdrop / Container -->
+<div class="fixed inset-0 bg-black/70 z-40 flex flex-col justify-end">
+<!-- Bottom Sheet -->
+<div class="bg-modal-bg w-full md:max-w-md mx-auto rounded-t-modal md:rounded-modal shadow-2xl z-50 flex flex-col border-t md:border border-[#2C2C2E] overflow-hidden" style="max-height: 90vh;">
+<!-- Handle -->
+<div class="w-full flex justify-center pt-3 pb-1">
+<div class="w-12 h-1 bg-[#474649] rounded-full"></div>
+</div>
+<!-- Header -->
+<div class="flex items-center justify-between px-md py-sm">
+<!-- Close Button -->
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container hover:bg-surface-container-high transition-colors text-on-surface">
+<span class="material-symbols-outlined" style="font-variation-settings: 'wght' 300;">close</span>
+</button>
+<!-- Titles -->
+<div class="text-center flex-1">
+<h2 class="font-headline-md text-headline-md text-on-surface m-0">Properties</h2>
+<p class="font-body-sm text-body-sm text-secondary m-0">Bench Press</p>
+</div>
+<!-- Save Button -->
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-primary-container hover:opacity-80 transition-opacity text-on-primary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'wght' 600;">check</span>
+</button>
+</div>
+<!-- Content Area -->
+<div class="px-md py-sm flex-1 overflow-y-auto">
+<!-- Section Title -->
+<h3 class="font-body-lg text-body-lg text-secondary mb-xs">Tracked Metrics</h3>
+<!-- List Container -->
+<div class="bg-[#000000] rounded-xl border border-[#2C2C2E] overflow-hidden flex flex-col">
+<!-- Row 1: Duration (OFF) -->
+<div class="flex items-center justify-between px-md py-3 min-h-[56px] border-b border-[#2C2C2E]">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">timer</span>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface">Duration</span>
+</div>
+<!-- Toggle Switch -->
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer translate-x-0" id="toggle-duration" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-secondary-container cursor-pointer" for="toggle-duration"></label>
+</div>
+</div>
+<!-- Row 2: Repetitions (ON) -->
+<div class="flex items-center justify-between px-md py-3 min-h-[56px] border-b border-[#2C2C2E]">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">tag</span>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface">Repetitions</span>
+</div>
+<!-- Toggle Switch (Checked) -->
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer translate-x-6 border-primary-container" id="toggle-reps" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-primary-container cursor-pointer" for="toggle-reps"></label>
+</div>
+</div>
+<!-- Row 3: Weight (ON) -->
+<div class="flex items-center justify-between px-md py-3 min-h-[56px]">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">fitness_center</span>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface">Weight</span>
+</div>
+<!-- Toggle Switch (Checked) -->
+<div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer translate-x-6 border-primary-container" id="toggle-weight" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-primary-container cursor-pointer" for="toggle-weight"></label>
+</div>
+</div>
+</div>
+<!-- Footer Text -->
+<p class="font-body-sm text-body-sm text-secondary mt-sm pb-xl">
+                    Only the metrics you enable are captured when recording sets, and they shape what's shown in this exercise's history and analytics.
+                </p>
+</div>
+</div>
+</div>
+<!-- Background Mock Content (To show sheet context) -->
+<div class="w-full h-full max-w-md mx-auto bg-background pt-xl px-md opacity-30">
+<div class="w-full h-32 bg-surface-container rounded-xl mb-md"></div>
+<div class="w-full h-64 bg-surface-container rounded-xl"></div>
+</div>
+</body></html>

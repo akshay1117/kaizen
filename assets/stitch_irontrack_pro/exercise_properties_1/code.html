@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Exercise Properties</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#303032",
+                        "error": "#ffb4ab",
+                        "outline": "#869584",
+                        "surface-tint": "#53e16f",
+                        "secondary-fixed-dim": "#c8c6c8",
+                        "inverse-on-surface": "#303030",
+                        "outline-variant": "#3d4a3c",
+                        "surface-dim": "#131313",
+                        "tertiary-container": "#afadaf",
+                        "on-tertiary-container": "#414143",
+                        "on-error-container": "#ffdad6",
+                        "surface": "#131313",
+                        "primary-container": "#34c759",
+                        "inverse-primary": "#006e28",
+                        "secondary-container": "#474649",
+                        "secondary-fixed": "#e4e2e4",
+                        "on-background": "#e2e2e2",
+                        "on-secondary-fixed-variant": "#474649",
+                        "on-surface": "#e2e2e2",
+                        "surface-bright": "#393939",
+                        "primary": "#56e472",
+                        "on-primary-fixed": "#002107",
+                        "inverse-surface": "#e2e2e2",
+                        "on-primary-container": "#004d1a",
+                        "surface-container-lowest": "#0e0e0e",
+                        "tertiary-fixed-dim": "#c8c6c8",
+                        "tertiary": "#cbc8cb",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#474649",
+                        "background": "#131313",
+                        "on-primary-fixed-variant": "#00531c",
+                        "on-secondary-fixed": "#1b1b1d",
+                        "surface-container-highest": "#353535",
+                        "surface-container-low": "#1b1b1b",
+                        "primary-fixed": "#72fe88",
+                        "on-secondary-container": "#b6b4b7",
+                        "surface-container-high": "#2a2a2a",
+                        "on-surface-variant": "#bccbb8",
+                        "surface-container": "#1f1f1f",
+                        "primary-fixed-dim": "#53e16f",
+                        "on-primary": "#003911",
+                        "on-error": "#690005",
+                        "surface-variant": "#353535",
+                        "tertiary-fixed": "#e4e2e4",
+                        "on-tertiary": "#303032",
+                        "on-tertiary-fixed": "#1b1b1d",
+                        "secondary": "#c8c6c8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-padding": "16px",
+                        "card-gap": "12px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "base": "4px",
+                        "sm": "12px",
+                        "lg": "24px",
+                        "xs": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Hanken Grotesk"],
+                        "body-sm": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "display-metrics": ["Hanken Grotesk"],
+                        "label-caps": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["26px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-lg": ["17px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-metrics": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        /* Custom toggle styles */
+        .toggle-checkbox:checked {
+            background-color: theme('colors.primary-container');
+            border-color: theme('colors.primary-container');
+        }
+        .toggle-checkbox:checked::before {
+            transform: translateX(20px);
+        }
+        .toggle-checkbox::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface h-screen w-full flex items-end justify-center sm:items-center sm:p-md relative overflow-hidden font-body-sm">
+<!-- Dimmer Background -->
+<div class="absolute inset-0 bg-black/70 z-40"></div>
+<!-- Bottom Sheet / Modal -->
+<div class="relative w-full max-w-md bg-surface-container rounded-t-xl sm:rounded-xl z-50 flex flex-col max-h-[795px] border-t sm:border border-outline-variant shadow-2xl">
+<!-- Header -->
+<div class="flex items-center justify-between p-md border-b border-outline-variant shrink-0">
+<button class="text-secondary hover:text-on-surface p-xs rounded-full active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+<div class="text-center flex-1 px-md">
+<h2 class="font-headline-md text-headline-md text-on-surface m-0">Properties</h2>
+<p class="font-body-sm text-body-sm text-secondary m-0">Bench Press</p>
+</div>
+<button class="text-primary p-xs rounded-full active:scale-95 transition-transform flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="check" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check</span>
+</button>
+</div>
+<!-- Content List -->
+<div class="p-md flex-1 overflow-y-auto">
+<div class="mb-sm px-xs font-label-caps text-label-caps text-secondary uppercase tracking-wider">
+                Tracked Metrics
+            </div>
+<div class="bg-surface rounded-lg border border-outline-variant overflow-hidden shadow-inner">
+<!-- Duration Row -->
+<div class="flex items-center justify-between p-md border-b border-outline-variant min-h-[56px]">
+<div class="flex items-center gap-sm">
+<div class="w-[32px] h-[32px] bg-surface-container-high rounded flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary text-[20px]" data-icon="timer">timer</span>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface">Duration</span>
+</div>
+<div class="relative w-[44px] h-[24px] shrink-0">
+<input class="toggle-checkbox appearance-none w-full h-full bg-surface-container-highest rounded-full outline-none cursor-pointer transition-colors border border-outline-variant" type="checkbox"/>
+</div>
+</div>
+<!-- Repetitions Row -->
+<div class="flex items-center justify-between p-md border-b border-outline-variant min-h-[56px]">
+<div class="flex items-center gap-sm">
+<div class="w-[32px] h-[32px] bg-surface-container-high rounded flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary text-[20px]" data-icon="tag">tag</span>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface">Repetitions</span>
+</div>
+<div class="relative w-[44px] h-[24px] shrink-0">
+<input checked="" class="toggle-checkbox appearance-none w-full h-full bg-surface-container-highest rounded-full outline-none cursor-pointer transition-colors border border-outline-variant" type="checkbox"/>
+</div>
+</div>
+<!-- Weight Row -->
+<div class="flex items-center justify-between p-md min-h-[56px]">
+<div class="flex items-center gap-sm">
+<div class="w-[32px] h-[32px] bg-surface-container-high rounded flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary text-[20px]" data-icon="fitness_center">fitness_center</span>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface">Weight</span>
+</div>
+<div class="relative w-[44px] h-[24px] shrink-0">
+<input checked="" class="toggle-checkbox appearance-none w-full h-full bg-surface-container-highest rounded-full outline-none cursor-pointer transition-colors border border-outline-variant" type="checkbox"/>
+</div>
+</div>
+</div>
+<!-- Footer Info -->
+<div class="mt-md px-sm font-body-sm text-body-sm text-secondary text-center">
+                Only the metrics you enable are captured when recording sets, and they shape what's shown in this exercise's history and analytics.
+            </div>
+</div>
+</div>
+</body></html>

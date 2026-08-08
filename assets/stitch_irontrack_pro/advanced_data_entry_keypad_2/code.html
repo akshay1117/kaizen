@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Advanced Data Entry Keypad</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary": "#303032",
+                        "error": "#ffb4ab",
+                        "outline": "#869584",
+                        "surface-tint": "#53e16f",
+                        "secondary-fixed-dim": "#c8c6c8",
+                        "inverse-on-surface": "#303030",
+                        "outline-variant": "#3d4a3c",
+                        "surface-dim": "#131313",
+                        "tertiary-container": "#afadaf",
+                        "on-tertiary-container": "#414143",
+                        "on-error-container": "#ffdad6",
+                        "surface": "#131313",
+                        "primary-container": "#34c759",
+                        "inverse-primary": "#006e28",
+                        "secondary-container": "#474649",
+                        "secondary-fixed": "#e4e2e4",
+                        "on-background": "#e2e2e2",
+                        "on-secondary-fixed-variant": "#474649",
+                        "on-surface": "#e2e2e2",
+                        "surface-bright": "#393939",
+                        "primary": "#56e472",
+                        "on-primary-fixed": "#002107",
+                        "inverse-surface": "#e2e2e2",
+                        "on-primary-container": "#004d1a",
+                        "surface-container-lowest": "#0e0e0e",
+                        "tertiary-fixed-dim": "#c8c6c8",
+                        "tertiary": "#cbc8cb",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#474649",
+                        "background": "#131313",
+                        "on-primary-fixed-variant": "#00531c",
+                        "on-secondary-fixed": "#1b1b1d",
+                        "surface-container-highest": "#353535",
+                        "surface-container-low": "#1b1b1b",
+                        "primary-fixed": "#72fe88",
+                        "on-secondary-container": "#b6b4b7",
+                        "surface-container-high": "#2a2a2a",
+                        "on-surface-variant": "#bccbb8",
+                        "surface-container": "#1f1f1f",
+                        "primary-fixed-dim": "#53e16f",
+                        "on-primary": "#003911",
+                        "on-error": "#690005",
+                        "surface-variant": "#353535",
+                        "tertiary-fixed": "#e4e2e4",
+                        "on-tertiary": "#303032",
+                        "on-tertiary-fixed": "#1b1b1d",
+                        "secondary": "#c8c6c8",
+                        "custom-orange": "#FF9500" // Adding the requested orange highlight
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px"
+                    },
+                    spacing: {
+                        "container-padding": "16px",
+                        "card-gap": "12px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "base": "4px",
+                        "sm": "12px",
+                        "lg": "24px",
+                        "xs": "8px"
+                    },
+                    fontFamily: {
+                        "headline-md": ["Hanken Grotesk"],
+                        "body-sm": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "display-metrics": ["Hanken Grotesk"],
+                        "label-caps": ["Hanken Grotesk"]
+                    },
+                    fontSize: {
+                        "headline-md": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+                        "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+                        "headline-lg-mobile": ["26px", { lineHeight: "32px", fontWeight: "700" }],
+                        "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "700" }],
+                        "body-lg": ["17px", { lineHeight: "24px", fontWeight: "400" }],
+                        "display-metrics": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "800" }],
+                        "label-caps": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #000000; /* Pure black background behind the sheet */
+            color: #e2e2e2;
+            font-family: 'Hanken Grotesk', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        
+        .numpad-btn:active {
+            background-color: #353535;
+        }
+        
+        /* Hide scrollbar for the action row */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="h-screen w-full flex flex-col justify-end overflow-hidden antialiased">
+<!-- Dimmed Backdrop -->
+<div class="absolute inset-0 bg-black/70 z-0"></div>
+<!-- Bottom Sheet Container -->
+<div class="relative z-10 w-full bg-[#1C1C1E] rounded-t-3xl flex flex-col shadow-2xl border-t border-[#2C2C2E] max-h-[795px]">
+<!-- Drag Handle -->
+<div class="w-full flex justify-center pt-3 pb-1">
+<div class="w-12 h-1.5 bg-surface-variant rounded-full"></div>
+</div>
+<!-- Header: Metrics & Quick Adjust -->
+<div class="flex items-center justify-between px-md py-sm">
+<!-- Metrics Display -->
+<div class="flex items-end space-x-lg">
+<!-- Reps (Active) -->
+<div class="relative flex flex-col">
+<span class="font-body-sm text-body-sm text-secondary mb-1">Reps</span>
+<div class="flex items-baseline">
+<span class="font-display-metrics text-display-metrics text-on-surface tracking-tighter">12</span>
+<span class="w-2 h-2 rounded-full bg-custom-orange ml-2 mb-2"></span> <!-- Active Cursor -->
+</div>
+</div>
+<!-- Weight (Inactive) -->
+<div class="relative flex flex-col opacity-60 transition-opacity">
+<span class="font-body-sm text-body-sm text-secondary mb-1">Weight</span>
+<div class="flex items-baseline">
+<span class="font-display-metrics text-display-metrics text-on-surface tracking-tighter">35</span>
+<span class="font-body-lg text-body-lg ml-1 text-secondary">kg</span>
+</div>
+</div>
+</div>
+<!-- Quick Adjust Controls -->
+<div class="flex flex-col space-y-2">
+<div class="flex space-x-2">
+<button class="w-12 h-10 rounded-lg bg-surface-variant border border-[#2C2C2E] flex items-center justify-center font-headline-md text-headline-md text-on-surface active:bg-surface-bright transition-colors">
+                        -1
+                    </button>
+<button class="w-12 h-10 rounded-lg bg-surface-variant border border-[#2C2C2E] flex items-center justify-center font-headline-md text-headline-md text-on-surface active:bg-surface-bright transition-colors">
+                        +1
+                    </button>
+</div>
+<div class="flex space-x-2">
+<button class="w-12 h-10 rounded-lg bg-surface-variant border border-[#2C2C2E] flex items-center justify-center font-body-sm text-body-sm text-secondary active:bg-surface-bright transition-colors">
+                        -5
+                    </button>
+<button class="w-12 h-10 rounded-lg bg-surface-variant border border-[#2C2C2E] flex items-center justify-center font-body-sm text-body-sm text-secondary active:bg-surface-bright transition-colors">
+                        +5
+                    </button>
+</div>
+</div>
+</div>
+<!-- Divider -->
+<div class="w-full h-px bg-[#2C2C2E] my-xs"></div>
+<!-- Action Row (Scrollable Pills) -->
+<div class="w-full overflow-x-auto hide-scrollbar px-md py-sm">
+<div class="flex space-x-sm whitespace-nowrap min-w-max">
+<button class="h-9 px-4 rounded-full bg-surface-variant border border-[#2C2C2E] flex items-center space-x-2">
+<span class="material-symbols-outlined text-[18px] text-custom-orange" style="font-variation-settings: 'FILL' 1;">label</span>
+<span class="font-body-sm text-body-sm text-on-surface">Label</span>
+</button>
+<button class="h-9 px-4 rounded-full bg-surface-variant border border-[#2C2C2E] flex items-center space-x-2">
+<span class="material-symbols-outlined text-[18px] text-custom-orange" style="font-variation-settings: 'FILL' 1;">album</span>
+<span class="font-body-sm text-body-sm text-on-surface">Plates</span>
+</button>
+<button class="h-9 px-4 rounded-full bg-surface-variant border border-[#2C2C2E] flex items-center space-x-2">
+<span class="material-symbols-outlined text-[18px] text-custom-orange" style="font-variation-settings: 'FILL' 1;">fitness_center</span>
+<span class="font-body-sm text-body-sm text-on-surface">Weight</span>
+</button>
+<button class="h-9 px-4 rounded-full bg-surface-variant border border-[#2C2C2E] flex items-center space-x-2">
+<span class="font-body-sm text-body-sm font-bold text-custom-orange">KG</span>
+</button>
+<button class="h-9 px-4 rounded-full bg-surface-variant border border-[#2C2C2E] flex items-center space-x-2">
+<span class="material-symbols-outlined text-[18px] text-custom-orange" style="font-variation-settings: 'FILL' 1;">schedule</span>
+<span class="font-body-sm text-body-sm text-on-surface">Now</span>
+</button>
+</div>
+</div>
+<!-- Submission Row -->
+<div class="flex items-center px-md py-sm space-x-sm">
+<div class="flex-1 bg-surface-container-high border border-[#2C2C2E] rounded-xl h-14 flex items-center px-4">
+<span class="material-symbols-outlined text-secondary mr-2">edit_note</span>
+<input class="bg-transparent border-none w-full font-body-lg text-body-lg text-on-surface focus:ring-0 p-0 placeholder-secondary" placeholder="Add note..." type="text"/>
+</div>
+<button class="w-24 h-14 bg-[#34C759] rounded-xl flex items-center justify-center active:scale-95 transition-transform shadow-[0_0_15px_rgba(52,199,89,0.3)]">
+<span class="material-symbols-outlined text-white text-[32px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</button>
+</div>
+<!-- Numpad Grid -->
+<div class="grid grid-cols-3 gap-1 p-xs bg-[#1C1C1E] mt-xs pb-8">
+<button class="numpad-btn h-14 bg-surface-variant rounded-lg font-headline-lg text-headline-lg text-on-surface transition-colors">1</button>
+<button class="numpad-btn h-14 bg-surface-variant rounded-lg font-headline-lg text-headline-lg text-on-surface transition-colors">2</button>
+<button class="numpad-btn h-14 bg-surface-variant rounded-lg font-headline-lg text-headline-lg text-on-surface transition-colors">3</button>
+<button class="numpad-btn h-14 bg-surface-variant rounded-lg font-headline-lg text-headline-lg text-on-surface transition-colors">4</button>
+<button class="numpad-btn h-14 bg-surface-variant rounded-lg font-headline-lg text-headline-lg text-on-surface transition-colors">5</button>
+<button class="numpad-btn h-14 bg-surface-variant rounded-lg font-headline-lg text-headline-lg text-on-surface transition-colors">6</button>
+<button class="numpad-btn h-14 bg-surface-variant rounded-lg font-headline-lg text-headline-lg text-on-surface transition-colors">7</button>
+<button class="numpad-btn h-14 bg-surface-variant rounded-lg font-headline-lg text-headline-lg text-on-surface transition-colors">8</button>
+<button class="numpad-btn h-14 bg-surface-variant rounded-lg font-headline-lg text-headline-lg text-on-surface transition-colors">9</button>
+<button class="numpad-btn h-14 bg-surface-variant rounded-lg font-headline-lg text-headline-lg text-on-surface transition-colors">.</button>
+<button class="numpad-btn h-14 bg-surface-variant rounded-lg font-headline-lg text-headline-lg text-on-surface transition-colors">0</button>
+<button class="numpad-btn h-14 bg-surface-variant rounded-lg flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">backspace</span>
+</button>
+</div>
+<!-- Safe area padding for newer iPhones -->
+<div class="h-6 w-full bg-[#1C1C1E]"></div>
+</div>
+</body></html>

@@ -153,7 +153,7 @@ class ExercisesIndexScreen extends ConsumerWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const AddExercisesScreen(workoutName: 'Library'),
+                      builder: (context) => const AddExercisesScreen(workoutId: 'library', workoutName: 'Library'),
                       fullscreenDialog: true,
                     ),
                   );

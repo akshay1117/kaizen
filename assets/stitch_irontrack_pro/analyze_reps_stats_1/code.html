@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Analyze Tab - Reps Stats</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#c8c6c8",
+                        "surface-tint": "#53e16f",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-highest": "#353535",
+                        "on-surface-variant": "#bccbb8",
+                        "secondary-fixed": "#e4e2e4",
+                        "inverse-primary": "#006e28",
+                        "on-surface": "#e2e2e2",
+                        "surface-variant": "#353535",
+                        "primary-fixed-dim": "#53e16f",
+                        "surface-container-low": "#1b1b1b",
+                        "tertiary-container": "#afadaf",
+                        "error-container": "#93000a",
+                        "outline": "#869584",
+                        "on-background": "#e2e2e2",
+                        "primary-container": "#34c759",
+                        "surface": "#131313",
+                        "on-tertiary-fixed": "#1b1b1d",
+                        "on-tertiary": "#303032",
+                        "on-primary-container": "#004d1a",
+                        "primary": "#56e472",
+                        "on-primary-fixed": "#002107",
+                        "secondary-container": "#474649",
+                        "on-tertiary-fixed-variant": "#474649",
+                        "primary-fixed": "#72fe88",
+                        "background": "#131313",
+                        "outline-variant": "#3d4a3c",
+                        "surface-container": "#1f1f1f",
+                        "error": "#ffb4ab",
+                        "tertiary": "#cbc8cb",
+                        "inverse-surface": "#e2e2e2",
+                        "tertiary-fixed": "#e4e2e4",
+                        "on-tertiary-container": "#414143",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-error": "#690005",
+                        "on-primary-fixed-variant": "#00531c",
+                        "inverse-on-surface": "#303030",
+                        "on-secondary-fixed": "#1b1b1d",
+                        "on-secondary-container": "#b6b4b7",
+                        "on-secondary": "#303032",
+                        "on-secondary-fixed-variant": "#474649",
+                        "on-primary": "#003911",
+                        "surface-container-high": "#2a2a2a",
+                        "tertiary-fixed-dim": "#c8c6c8",
+                        "surface-bright": "#393939",
+                        "surface-dim": "#131313",
+                        "secondary-fixed-dim": "#c8c6c8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "8px",
+                        "container-padding": "16px",
+                        "card-gap": "12px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "base": "4px",
+                        "md": "16px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "label-caps": ["Hanken Grotesk"],
+                        "body-sm": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "display-metrics": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["17px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "display-metrics": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-lg-mobile": ["26px", { "lineHeight": "32px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #000000; color: #FFFFFF; font-family: 'Hanken Grotesk', sans-serif; }
+        .grid-line { border-bottom: 1px dashed #2C2C2E; }
+        .grid-line-vertical { border-right: 1px dashed #2C2C2E; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-black text-on-surface antialiased min-h-screen flex flex-col relative pb-[80px]">
+<!-- TopAppBar -->
+<header class="bg-black w-full flex justify-between items-center px-md py-xs sticky top-0 z-10">
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-high hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-on-surface">arrow_back_ios_new</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface">Bench Press</h1>
+<div class="flex gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-high hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-on-surface">sort</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-high hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-on-surface">more_horiz</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-md flex flex-col gap-6 pt-4">
+<!-- Top Navigation Tabs (Sets, Analyze, 1RM) -->
+<div class="flex gap-2 bg-black rounded-full p-1 border border-outline-variant">
+<button class="flex-1 py-2 px-4 rounded-full flex items-center justify-center gap-2 text-secondary hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[18px]">list</span>
+<span class="font-body-sm text-body-sm">Sets</span>
+</button>
+<button class="flex-1 py-2 px-4 rounded-full flex items-center justify-center gap-2 bg-on-surface text-black font-bold">
+<span class="material-symbols-outlined text-[18px]">show_chart</span>
+<span class="font-body-sm text-body-sm">Analyze</span>
+</button>
+<button class="flex-1 py-2 px-4 rounded-full flex items-center justify-center gap-2 text-secondary hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[18px]">workspace_premium</span>
+<span class="font-body-sm text-body-sm">1RM</span>
+</button>
+</div>
+<!-- Metrics Grid -->
+<div class="grid grid-cols-4 gap-2">
+<div class="bg-surface-container-high rounded-lg p-2 flex flex-col items-center justify-center border border-outline-variant opacity-70">
+<span class="font-body-lg text-body-lg text-secondary">25</span>
+<span class="font-body-sm text-body-sm text-secondary">kg/rep</span>
+</div>
+<div class="bg-surface-container-high rounded-lg p-2 flex flex-col items-center justify-center border border-outline-variant opacity-70">
+<span class="font-body-lg text-body-lg text-secondary">2.5</span>
+<span class="font-body-sm text-body-sm text-secondary">Sets</span>
+</div>
+<div class="bg-primary rounded-lg p-2 flex flex-col items-center justify-center text-black shadow-[0_0_15px_rgba(86,228,114,0.3)]">
+<span class="font-body-lg text-body-lg font-bold">30</span>
+<span class="font-body-sm text-body-sm">rep</span>
+</div>
+<div class="bg-surface-container-high rounded-lg p-2 flex flex-col items-center justify-center border border-outline-variant opacity-70">
+<span class="font-body-lg text-body-lg text-secondary">750 kg</span>
+<span class="font-body-sm text-body-sm text-secondary">Volume</span>
+</div>
+</div>
+<!-- Chart Header -->
+<div class="flex justify-between items-end mt-2">
+<span class="font-label-caps text-label-caps text-secondary uppercase tracking-widest">AVERAGE</span>
+<span class="font-body-sm text-body-sm text-secondary">15 Jul - 14 Aug 2026</span>
+</div>
+<!-- Chart Area -->
+<div class="relative h-[300px] w-full mt-2 flex">
+<!-- Y-Axis Labels -->
+<div class="absolute right-0 top-0 bottom-6 w-8 flex flex-col justify-between text-right text-xs text-secondary z-10 pointer-events-none pr-1">
+<span>60</span>
+<span>40</span>
+<span>20</span>
+<span>0</span>
+</div>
+<!-- Grid Lines -->
+<div class="absolute inset-0 right-8 bottom-6 flex flex-col justify-between">
+<div class="w-full grid-line"></div>
+<div class="w-full grid-line"></div>
+<div class="w-full grid-line"></div>
+<div class="w-full grid-line border-b-solid border-[#474649]"></div>
+</div>
+<div class="absolute inset-0 right-8 bottom-6 flex justify-between px-4">
+<div class="h-full grid-line-vertical"></div>
+<div class="h-full grid-line-vertical"></div>
+<div class="h-full grid-line-vertical"></div>
+<div class="h-full grid-line-vertical"></div>
+</div>
+<!-- Bars -->
+<div class="absolute inset-0 right-8 bottom-6 flex items-end px-4">
+<div class="w-1/4 flex justify-center h-full items-end">
+<div class="w-3 bg-primary rounded-t-sm" style="height: 50%;"></div>
+</div>
+<div class="w-1/4 flex justify-center h-full items-end">
+<div class="w-3 bg-primary rounded-t-sm" style="height: 20%;"></div>
+</div>
+<div class="w-1/4 flex justify-center h-full items-end">
+<!-- Empty -->
+</div>
+<div class="w-1/4 flex justify-center h-full items-end">
+<!-- Empty -->
+</div>
+</div>
+<!-- X-Axis Labels -->
+<div class="absolute bottom-0 left-0 right-8 h-6 flex justify-between px-4 items-center text-xs text-secondary">
+<span class="w-1/4 text-center">26</span>
+<span class="w-1/4 text-center">2</span>
+<span class="w-1/4 text-center">9</span>
+<span class="w-1/4 text-center">16</span>
+</div>
+</div>
+<!-- Time Controls -->
+<div class="flex gap-2 bg-surface-container-high rounded-full p-1 mt-4">
+<button class="flex-1 py-1.5 px-4 rounded-full bg-surface-variant text-on-surface font-body-sm text-body-sm">
+                M
+            </button>
+<button class="flex-1 py-1.5 px-4 rounded-full text-secondary hover:text-on-surface font-body-sm text-body-sm">
+                6M
+            </button>
+<button class="flex-1 py-1.5 px-4 rounded-full text-secondary hover:text-on-surface font-body-sm text-body-sm">
+                Y
+            </button>
+</div>
+<!-- Bottom Toggle (Sets / Stats) -->
+<div class="flex bg-surface-container-high rounded-full p-1 mt-2 mb-4">
+<button class="flex-1 py-2 px-4 rounded-full text-secondary font-body-sm text-body-sm">
+                Sets
+            </button>
+<button class="flex-1 py-2 px-4 rounded-full bg-surface-variant text-on-surface font-body-sm text-body-sm">
+                Stats
+            </button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-md pb-xs pt-xs bg-surface-container border-t border-outline-variant shadow-lg rounded-t-xl z-50">
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">exercise</span>
+<span class="font-label-caps text-label-caps mt-1">Sets</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary p-2 hover:text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">timer</span>
+<span class="font-label-caps text-label-caps mt-1">Sessions</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary p-2 hover:text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">accessibility_new</span>
+<span class="font-label-caps text-label-caps mt-1">Body</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary p-2 hover:text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">event_note</span>
+<span class="font-label-caps text-label-caps mt-1">Today</span>
+</button>
+</nav>
+</body></html>

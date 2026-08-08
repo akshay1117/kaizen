@@ -90,7 +90,7 @@ class _CustomMultisetBuilderScreenState
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            const AddExercisesScreen(workoutName: 'Multiset'),
+                            const AddExercisesScreen(workoutId: 'multiset', workoutName: 'Multiset'),
                         fullscreenDialog: true,
                       ),
                     );

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Edit Set - Workout</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary": "#303032",
+                      "on-secondary-container": "#b6b4b7",
+                      "surface-container-lowest": "#0e0e0e",
+                      "on-secondary-fixed-variant": "#474649",
+                      "primary": "#56e472",
+                      "secondary-container": "#474649",
+                      "on-surface": "#e2e2e2",
+                      "on-tertiary-container": "#414143",
+                      "on-tertiary-fixed": "#1b1b1d",
+                      "secondary": "#c8c6c8",
+                      "on-primary": "#003911",
+                      "primary-fixed-dim": "#53e16f",
+                      "on-tertiary": "#303032",
+                      "on-primary-container": "#004d1a",
+                      "surface-container-high": "#2a2a2a",
+                      "on-secondary-fixed": "#1b1b1d",
+                      "tertiary-fixed-dim": "#c8c6c8",
+                      "tertiary": "#cbc8cb",
+                      "surface-dim": "#131313",
+                      "surface-variant": "#353535",
+                      "on-surface-variant": "#bccbb8",
+                      "inverse-primary": "#006e28",
+                      "tertiary-fixed": "#e4e2e4",
+                      "secondary-fixed": "#e4e2e4",
+                      "inverse-on-surface": "#303030",
+                      "outline": "#869584",
+                      "surface-container-highest": "#353535",
+                      "tertiary-container": "#afadaf",
+                      "surface-tint": "#53e16f",
+                      "surface-container": "#1f1f1f",
+                      "on-error": "#690005",
+                      "error-container": "#93000a",
+                      "outline-variant": "#3d4a3c",
+                      "on-background": "#e2e2e2",
+                      "on-error-container": "#ffdad6",
+                      "background": "#131313",
+                      "surface": "#131313",
+                      "on-tertiary-fixed-variant": "#474649",
+                      "inverse-surface": "#e2e2e2",
+                      "surface-container-low": "#1b1b1b",
+                      "primary-fixed": "#72fe88",
+                      "on-primary-fixed": "#002107",
+                      "error": "#ffb4ab",
+                      "primary-container": "#34c759",
+                      "secondary-fixed-dim": "#c8c6c8",
+                      "surface-bright": "#393939",
+                      "on-primary-fixed-variant": "#00531c"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "base": "4px",
+                      "md": "16px",
+                      "card-gap": "12px",
+                      "container-padding": "16px",
+                      "xs": "8px",
+                      "lg": "24px",
+                      "xl": "32px",
+                      "sm": "12px"
+              },
+              "fontFamily": {
+                      "label-caps": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-sm": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "display-metrics": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg-mobile": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-md": [
+                              "Hanken Grotesk"
+                      ]
+              },
+              "fontSize": {
+                      "label-caps": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "17px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-metrics": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "800"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "26px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            background-color: #000000; /* Level 0 Canvas */
+            color: #e2e2e2;
+        }
+        .surface-card {
+            background-color: #1C1C1E; /* Level 1 Surface */
+            border: 1px solid #2C2C2E; /* Hairline Edge */
+            border-radius: 0.75rem;
+        }
+        .icon-box {
+            background-color: #2C2C2E; /* Level 2 Interaction */
+            border-radius: 0.5rem;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased min-h-screen flex flex-col pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="bg-background dark:bg-background docked full-width top-0 bg-background dark:bg-background flex justify-between items-center w-full px-md h-14 z-50 sticky">
+<button aria-label="Go Back" class="text-primary dark:text-primary hover:opacity-80 transition-opacity active:scale-95 transition-transform duration-150 p-2 flex items-center justify-center rounded-full">
+<span class="material-symbols-outlined text-[24px]">chevron_left</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface dark:text-on-surface flex-1 text-center truncate">Workout</h1>
+<button aria-label="Save" class="text-primary dark:text-primary hover:opacity-80 transition-opacity active:scale-95 transition-transform duration-150 p-2 flex items-center justify-center rounded-full bg-primary-container/20">
+<span class="material-symbols-outlined text-[24px] text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</button>
+</header>
+<main class="flex-1 w-full max-w-2xl mx-auto px-md py-lg flex flex-col gap-card-gap">
+<!-- Header Section (Local) -->
+<div class="mb-sm">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Edit Set</h2>
+</div>
+<!-- Exercise Card -->
+<div class="surface-card p-container-padding flex justify-between items-center cursor-pointer hover:bg-[#2C2C2E] transition-colors">
+<div class="flex items-center gap-sm">
+<div class="icon-box">
+<span class="material-symbols-outlined text-secondary text-[20px]">fitness_center</span>
+</div>
+<div>
+<div class="font-body-sm text-body-sm text-secondary">Exercise</div>
+<div class="font-body-lg text-body-lg text-on-surface font-semibold">Bench Press</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary">chevron_right</span>
+</div>
+<!-- Metrics Card Grid -->
+<div class="grid grid-cols-2 gap-card-gap">
+<div class="surface-card p-container-padding cursor-pointer hover:bg-[#2C2C2E] transition-colors flex flex-col gap-xs">
+<div class="flex items-center gap-xs text-secondary">
+<span class="material-symbols-outlined text-[18px]">repeat</span>
+<span class="font-body-sm text-body-sm">Repetitions</span>
+</div>
+<div class="font-display-metrics text-display-metrics text-on-surface">12</div>
+</div>
+<div class="surface-card p-container-padding cursor-pointer hover:bg-[#2C2C2E] transition-colors flex flex-col gap-xs">
+<div class="flex items-center gap-xs text-secondary">
+<span class="material-symbols-outlined text-[18px]">scale</span>
+<span class="font-body-sm text-body-sm">Weight (kg)</span>
+</div>
+<div class="font-display-metrics text-display-metrics text-primary">20</div>
+</div>
+</div>
+<!-- Notes Card -->
+<div class="surface-card p-container-padding flex flex-col gap-sm">
+<div class="flex items-center gap-xs text-secondary">
+<span class="material-symbols-outlined text-[18px]">notes</span>
+<span class="font-body-sm text-body-sm">Notes</span>
+</div>
+<input class="w-full bg-transparent border-b border-[#2C2C2E] pb-2 text-on-surface font-body-lg text-body-lg focus:outline-none focus:border-primary focus:ring-0 placeholder-secondary" placeholder="Add a note..." type="text" value="Comment"/>
+</div>
+<!-- Label Card -->
+<div class="surface-card p-container-padding flex justify-between items-center cursor-pointer hover:bg-[#2C2C2E] transition-colors">
+<div class="flex items-center gap-sm">
+<div class="icon-box">
+<span class="material-symbols-outlined text-secondary text-[20px]">label</span>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface">Label</span>
+</div>
+<span class="material-symbols-outlined text-secondary">chevron_right</span>
+</div>
+<!-- Date & Time Card -->
+<div class="surface-card p-container-padding flex flex-col gap-md">
+<div class="flex items-center gap-xs text-secondary mb-xs">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+<span class="font-body-sm text-body-sm">Timestamp</span>
+</div>
+<div class="flex gap-card-gap">
+<button class="flex-1 bg-[#2C2C2E] rounded-lg py-3 px-4 font-body-lg text-body-lg text-on-surface text-center hover:bg-[#353535] transition-colors">26/07/26</button>
+<button class="flex-1 bg-[#2C2C2E] rounded-lg py-3 px-4 font-body-lg text-body-lg text-on-surface text-center hover:bg-[#353535] transition-colors">8:51 AM</button>
+</div>
+<div class="font-body-sm text-body-sm text-secondary text-center">Exact Time: 8:51:12 AM</div>
+</div>
+<!-- Spacer -->
+<div class="flex-1 min-h-[32px]"></div>
+<!-- Delete Action -->
+<button class="w-full surface-card p-container-padding flex items-center justify-center gap-sm text-error hover:bg-error/10 transition-colors mt-auto">
+<span class="material-symbols-outlined">delete</span>
+<span class="font-body-lg text-body-lg font-semibold">Delete</span>
+</button>
+</main>
+<!-- BottomNavBar (Hidden on md and above since it's a sub-page, but rendered for mobile per rules if forced, though usually suppressed on linear/task focus. The prompt implies it might be hidden or persistent. We will render it but hide on md up) -->
+<nav class="md:hidden bg-surface-container dark:bg-surface-container docked full-width bottom-0 border-t border-outline-variant dark:border-outline-variant fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 pb-safe px-4 shadow-[0_-4px_24px_rgba(0,0,0,0.5)]">
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary hover:bg-surface-variant/20 flex-1 h-full rounded-lg active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">fitness_center</span>
+<span class="font-label-caps text-label-caps">Sets</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary hover:bg-surface-variant/20 flex-1 h-full rounded-lg active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined mb-1">history</span>
+<span class="font-label-caps text-label-caps">Sessions</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary hover:bg-surface-variant/20 flex-1 h-full rounded-lg active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-label-caps text-label-caps">Body</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary hover:bg-surface-variant/20 flex-1 h-full rounded-lg active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined mb-1">calendar_today</span>
+<span class="font-label-caps text-label-caps">Today</span>
+</a>
+</nav>
+</body></html>

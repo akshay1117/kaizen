@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GymTheme {
   // Brand colors
   static const Color background = Color(0xFF000000);
   static const Color cardBackground = Color(0xFF1C1C1E);
-  static const Color primaryAccent = Color(0xFF30D158);
+  static const Color cardSurface2 = Color(0xFF2C2C2E);
+  static const Color primaryAccent = Color(0xFFCCFF00); // Electric Lime
   static const Color weightAccent = Color(0xFFFF9F0A);
   static const Color volumeAccent = Color(0xFF32ADE6);
   static const Color destructive = Color(0xFFFF453A);
@@ -20,8 +22,8 @@ class GymTheme {
   static const Color pillTextSelected = Color(0xFF000000);
   
   // Radii
-  static const double cardRadius = 24.0;
-  static const double pillRadius = 100.0;
+  static double get cardRadius => 16.r;
+  static double get pillRadius => 100.r;
 
   static ThemeData get darkTheme {
     return ThemeData(
@@ -35,13 +37,13 @@ class GymTheme {
         error: destructive,
       ),
       textTheme: TextTheme(
-        displayLarge: GoogleFonts.inter(fontSize: 34, fontWeight: FontWeight.w700, color: textPrimary),
-        displayMedium: GoogleFonts.inter(fontSize: 28, fontWeight: FontWeight.w600, color: textPrimary),
-        titleLarge: GoogleFonts.inter(fontSize: 22, fontWeight: FontWeight.w600, color: textPrimary),
-        bodyLarge: GoogleFonts.inter(fontSize: 17, color: textPrimary),
-        bodyMedium: GoogleFonts.inter(fontSize: 15, color: textSecondary),
-        labelLarge: GoogleFonts.inter(fontSize: 13, color: textPrimary),
-        labelMedium: GoogleFonts.inter(fontSize: 11, color: textSecondary),
+        displayLarge: GoogleFonts.montserrat(fontSize: 34.sp, fontWeight: FontWeight.w700, color: textPrimary),
+        displayMedium: GoogleFonts.montserrat(fontSize: 28.sp, fontWeight: FontWeight.w600, color: textPrimary),
+        titleLarge: GoogleFonts.montserrat(fontSize: 22.sp, fontWeight: FontWeight.w600, color: textPrimary),
+        bodyLarge: GoogleFonts.inter(fontSize: 17.sp, color: textPrimary),
+        bodyMedium: GoogleFonts.inter(fontSize: 15.sp, color: textSecondary),
+        labelLarge: GoogleFonts.inter(fontSize: 13.sp, color: textPrimary),
+        labelMedium: GoogleFonts.inter(fontSize: 11.sp, color: textSecondary),
       ),
       cardTheme: CardThemeData(
         color: cardBackground,
@@ -59,6 +61,66 @@ class GymTheme {
         unselectedItemColor: textSecondary,
         type: BottomNavigationBarType.fixed,
       ),
+    );
+  }
+
+  // Light theme definition
+  static const Color lightBackground = Color(0xFFF2F2F7);
+  static const Color lightCardBackground = Color(0xFFFFFFFF);
+  static const Color lightTextPrimary = Color(0xFF000000);
+  static const Color lightTextSecondary = Color(0xFF8E8E93);
+
+  static ThemeData get lightTheme {
+    return ThemeData(
+      brightness: Brightness.light,
+      scaffoldBackgroundColor: lightBackground,
+      primaryColor: primaryAccent,
+      colorScheme: const ColorScheme.light(
+        primary: primaryAccent,
+        secondary: weightAccent,
+        surface: lightCardBackground,
+        error: destructive,
+      ),
+      textTheme: TextTheme(
+        displayLarge: GoogleFonts.montserrat(fontSize: 34.sp, fontWeight: FontWeight.w700, color: lightTextPrimary),
+        displayMedium: GoogleFonts.montserrat(fontSize: 28.sp, fontWeight: FontWeight.w600, color: lightTextPrimary),
+        titleLarge: GoogleFonts.montserrat(fontSize: 22.sp, fontWeight: FontWeight.w600, color: lightTextPrimary),
+        bodyLarge: GoogleFonts.inter(fontSize: 17.sp, color: lightTextPrimary),
+        bodyMedium: GoogleFonts.inter(fontSize: 15.sp, color: lightTextSecondary),
+        labelLarge: GoogleFonts.inter(fontSize: 13.sp, color: lightTextPrimary),
+        labelMedium: GoogleFonts.inter(fontSize: 11.sp, color: lightTextSecondary),
+      ),
+      cardTheme: CardThemeData(
+        color: lightCardBackground,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(cardRadius),
+        ),
+        margin: EdgeInsets.zero,
+      ),
+      iconTheme: const IconThemeData(
+        color: lightTextPrimary,
+      ),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: lightCardBackground,
+        selectedItemColor: primaryAccent,
+        unselectedItemColor: lightTextSecondary,
+        type: BottomNavigationBarType.fixed,
+      ),
+    );
+  }
+
+  // Recovery heat scale colors
+  static const Color muscleJustTrained = Color(0xFFFF3B30); // Bright Red
+  static const Color muscleRested = Color(0xFF3A3A3C); // Dark Grey / Uncolored
+  
+  // Tabular font style helper for weights and reps
+  static TextStyle tabularStyle(TextStyle baseStyle) {
+    return baseStyle.copyWith(
+      fontFeatures: const [
+        // FontFeature.tabularFigures() equivalent for some fonts
+        // Using OpenType tag 'tnum' for tabular numbers
+        FontFeature.tabularFigures(), 
+      ],
     );
   }
 }
