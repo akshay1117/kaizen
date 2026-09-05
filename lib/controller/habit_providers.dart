@@ -3,8 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:kaizen/model/database.dart';
 import 'package:kaizen/model/habits_dao.dart';
+import 'package:kaizen/features/auth/presentation/providers/auth_provider.dart';
 
-final databaseProvider = Provider<AppDatabase>((ref) => AppDatabase());
+final databaseProvider = Provider<AppDatabase>((ref) {
+  final user = ref.watch(currentUserProvider);
+  final db = AppDatabase(user?.id);
+  ref.onDispose(() => db.close());
+  return db;
+});
 
 final habitsDaoProvider = Provider<HabitsDao>((ref) {
   final db = ref.watch(databaseProvider);

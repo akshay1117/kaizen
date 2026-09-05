@@ -1,4 +1,8 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kaizen/services/supabase_config.dart';
+import 'package:kaizen/features/auth/presentation/screens/login_screen.dart';
 import 'package:kaizen/view/widget/scaffold_with_nav_bar.dart';
 import 'package:kaizen/view/screen/home_screen.dart';
 import 'package:kaizen/view/screen/fitness_hub_screen.dart';
@@ -14,9 +18,44 @@ import 'package:kaizen/features/expense_tracker/presentation/screens/costify/exp
 import 'package:kaizen/features/journal/presentation/screens/create_journal_screen.dart';
 import 'package:kaizen/features/journal/presentation/screens/journal_detail_screen.dart';
 
+class GoRouterRefreshStream extends ChangeNotifier {
+  late final StreamSubscription<dynamic> _subscription;
+
+  GoRouterRefreshStream(Stream<dynamic> stream) {
+    notifyListeners();
+    _subscription = stream.asBroadcastStream().listen((dynamic _) => notifyListeners());
+  }
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
+}
+
 final router = GoRouter(
   initialLocation: '/home',
+  refreshListenable: GoRouterRefreshStream(SupabaseConfig.client.auth.onAuthStateChange),
+  redirect: (BuildContext context, GoRouterState state) {
+    final session = SupabaseConfig.client.auth.currentSession;
+    final isLoggedIn = session != null;
+    final isLoggingIn = state.matchedLocation == '/login';
+
+    if (!isLoggedIn && !isLoggingIn) {
+      return '/login';
+    }
+    if (isLoggedIn && isLoggingIn) {
+      return '/home';
+    }
+    return null;
+  },
   routes: [
+    // Top-Level Auth Route
+    GoRoute(
+      path: '/login',
+      name: 'login',
+      builder: (_, __) => const LoginScreen(),
+    ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) => ScaffoldWithNavBar(navigationShell: navigationShell),
       branches: [

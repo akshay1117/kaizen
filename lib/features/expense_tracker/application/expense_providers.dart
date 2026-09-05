@@ -2,10 +2,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:kaizen/features/expense_tracker/data/expense_database.dart';
 import 'package:kaizen/features/expense_tracker/data/expense_dao.dart';
+import 'package:kaizen/features/auth/presentation/providers/auth_provider.dart';
 
 // Database Instance
 final expenseDatabaseProvider = Provider<ExpenseDatabase>((ref) {
-  final db = ExpenseDatabase();
+  final user = ref.watch(currentUserProvider);
+  final db = ExpenseDatabase(user?.id);
   ref.onDispose(() => db.close());
   return db;
 });

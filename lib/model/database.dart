@@ -48,7 +48,7 @@ class JournalEntries extends Table {
 
 @DriftDatabase(tables: [Habits, HabitLogs, JournalEntries])
 class AppDatabase extends _$AppDatabase {
-  AppDatabase() : super(_openConnection());
+  AppDatabase([String? userId]) : super(_openConnection(userId));
 
   @override
   int get schemaVersion => 3;
@@ -73,10 +73,11 @@ class AppDatabase extends _$AppDatabase {
       );
 }
 
-LazyDatabase _openConnection() {
+LazyDatabase _openConnection([String? userId]) {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'kaizen.sqlite'));
+    final suffix = (userId != null && userId.isNotEmpty) ? '_$userId' : '';
+    final file = File(p.join(dbFolder.path, 'kaizen$suffix.sqlite'));
     return NativeDatabase.createInBackground(file);
   });
 }

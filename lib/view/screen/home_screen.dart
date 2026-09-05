@@ -3,14 +3,122 @@ import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kaizen/services/design_tokens.dart';
 import 'package:kaizen/controller/habit_providers.dart';
+import 'package:kaizen/features/auth/presentation/providers/auth_provider.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
+
+  void _showUserProfileModal(BuildContext context, WidgetRef ref) {
+    final user = ref.read(currentUserProvider);
+    final displayName = user?.userMetadata?['display_name'] as String? ??
+        user?.email?.split('@').first ??
+        'User';
+    final email = user?.email ?? 'No email';
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (modalContext) {
+        return Container(
+          padding: const EdgeInsets.all(24),
+          decoration: const BoxDecoration(
+            color: DesignTokens.bgSecondary,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+            border: Border(
+              top: BorderSide(color: DesignTokens.borderPrimary),
+              left: BorderSide(color: DesignTokens.borderPrimary),
+              right: BorderSide(color: DesignTokens.borderPrimary),
+            ),
+          ),
+          child: SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 40,
+                  height: 4,
+                  margin: const EdgeInsets.only(bottom: 20),
+                  decoration: BoxDecoration(
+                    color: DesignTokens.borderSecondary,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                CircleAvatar(
+                  radius: 36,
+                  backgroundColor: DesignTokens.accentGym.withValues(alpha: 0.2),
+                  child: Text(
+                    displayName.isNotEmpty ? displayName[0].toUpperCase() : 'U',
+                    style: const TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: DesignTokens.accentGym,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  displayName,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: DesignTokens.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  email,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    color: DesignTokens.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                const Divider(color: DesignTokens.borderPrimary),
+                const SizedBox(height: 8),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: DesignTokens.accentBoxing.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(Icons.logout, color: DesignTokens.accentBoxing, size: 20),
+                  ),
+                  title: const Text(
+                    'Sign Out',
+                    style: TextStyle(
+                      color: DesignTokens.accentBoxing,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                    ),
+                  ),
+                  subtitle: const Text(
+                    'Switch account or sign in as another user',
+                    style: TextStyle(color: DesignTokens.textTertiary, fontSize: 12),
+                  ),
+                  onTap: () async {
+                    Navigator.pop(modalContext);
+                    await ref.read(authControllerProvider.notifier).signOut();
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final globalStreakAsync = ref.watch(globalHabitStreakProvider);
     final globalStreak = globalStreakAsync.value ?? 0;
+    final currentUser = ref.watch(currentUserProvider);
+    final userDisplayName = currentUser?.userMetadata?['display_name'] as String? ??
+        currentUser?.email?.split('@').first ??
+        'User';
 
     return GlassScaffold(
       backgroundColor: DesignTokens.bgPrimary,
@@ -60,33 +168,44 @@ class HomeScreen extends ConsumerWidget {
                                 color: DesignTokens.textPrimary, size: 22),
                           ),
                           const SizedBox(width: 8),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 6),
-                            decoration: BoxDecoration(
-                              color: DesignTokens.bgTertiary,
-                              borderRadius: BorderRadius.circular(24),
-                              border:
-                                  Border.all(color: DesignTokens.borderPrimary),
-                            ),
-                            child: Row(
-                              children: [
-                                CircleAvatar(
-                                  radius: 14,
-                                  backgroundColor: Colors.grey[700],
-                                  child: const Icon(Icons.person,
-                                      size: 18, color: Colors.white),
-                                ),
-                                const SizedBox(width: 8),
-                                const Text(
-                                  'alexsmith',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: DesignTokens.textPrimary,
-                                    fontSize: 14,
+                          GestureDetector(
+                            onTap: () => _showUserProfileModal(context, ref),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 6),
+                              decoration: BoxDecoration(
+                                color: DesignTokens.bgTertiary,
+                                borderRadius: BorderRadius.circular(24),
+                                border:
+                                    Border.all(color: DesignTokens.borderPrimary),
+                              ),
+                              child: Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 14,
+                                    backgroundColor: DesignTokens.accentGym.withValues(alpha: 0.25),
+                                    child: Text(
+                                      userDisplayName.isNotEmpty
+                                          ? userDisplayName[0].toUpperCase()
+                                          : 'U',
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        color: DesignTokens.accentGym,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    userDisplayName,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: DesignTokens.textPrimary,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],

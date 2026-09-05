@@ -53,6 +53,7 @@ dependencies:
   csv: ^8.0.0
   rxdart: ^0.28.0
   flutter_screenutil: ^5.9.3
+  flutter_slidable: ^4.0.3
 
 dev_dependencies:
   flutter_test:

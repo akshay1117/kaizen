@@ -208,7 +208,7 @@ class GymSettingsTable extends Table {
   GymSettingsTable,
 ], daos: [WorkoutDao, ExerciseDao])
 class GymDatabase extends _$GymDatabase {
-  GymDatabase() : super(_openConnection());
+  GymDatabase([String? userId]) : super(_openConnection(userId));
 
   @override
   int get schemaVersion => 2;
@@ -233,14 +233,17 @@ class GymDatabase extends _$GymDatabase {
     },
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');
+      // Temporary: Re-seed exercises to replace existing ones
+      await exerciseDao.seedDefaultExercises();
     },
   );
 }
 
-LazyDatabase _openConnection() {
+LazyDatabase _openConnection([String? userId]) {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'kaizen_gym.sqlite'));
+    final suffix = (userId != null && userId.isNotEmpty) ? '_$userId' : '';
+    final file = File(p.join(dbFolder.path, 'kaizen_gym$suffix.sqlite'));
     return NativeDatabase.createInBackground(file);
   });
 }

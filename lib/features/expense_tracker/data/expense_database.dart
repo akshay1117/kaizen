@@ -116,7 +116,7 @@ class ExpenseTransactions extends Table {
   ExpenseTransactions,
 ], daos: [ExpenseDao])
 class ExpenseDatabase extends _$ExpenseDatabase {
-  ExpenseDatabase() : super(_openConnection());
+  ExpenseDatabase([String? userId]) : super(_openConnection(userId));
 
   @override
   int get schemaVersion => 3;
@@ -175,10 +175,12 @@ class ExpenseDatabase extends _$ExpenseDatabase {
   );
 }
 
-LazyDatabase _openConnection() {
+LazyDatabase _openConnection([String? userId]) {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'kaizen_expense.sqlite'));
+    final suffix = (userId != null && userId.isNotEmpty) ? '_$userId' : '';
+    final file = File(p.join(dbFolder.path, 'kaizen_expense$suffix.sqlite'));
     return NativeDatabase.createInBackground(file);
   });
 }
+

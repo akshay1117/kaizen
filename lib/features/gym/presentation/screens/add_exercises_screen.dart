@@ -95,12 +95,18 @@ class _AddExercisesScreenState extends ConsumerState<AddExercisesScreen> {
         }
       }
 
-      await workoutDao.insertWorkoutStep(WorkoutStepsCompanion.insert(
-        workoutId: widget.workoutId,
-        stepType: 0,
-        refId: localExerciseId,
-        stepOrder: stepOrder++,
-      ));
+      if (widget.workoutId != 'library') {
+        try {
+          await workoutDao.insertWorkoutStep(WorkoutStepsCompanion.insert(
+            workoutId: widget.workoutId,
+            stepType: 0,
+            refId: localExerciseId,
+            stepOrder: stepOrder++,
+          ));
+        } catch (e) {
+          debugPrint('Error inserting workout step: $e');
+        }
+      }
     }
 
     if (mounted) {
@@ -116,9 +122,6 @@ class _AddExercisesScreenState extends ConsumerState<AddExercisesScreen> {
       backgroundColor: GymTheme.background,
       appBar: GlassAppBar(
         backgroundColor: GymTheme.background,
-
-        leading: const SizedBox.shrink(),
-
         title: Text('Add to "${widget.workoutName}"', style: const TextStyle(fontSize: 16)),
         centerTitle: true,
         actions: [
@@ -136,8 +139,9 @@ class _AddExercisesScreenState extends ConsumerState<AddExercisesScreen> {
           const SizedBox(width: 8),
         ],
       ),
-      body: CustomScrollView(
-        slivers: [
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -199,6 +203,7 @@ class _AddExercisesScreenState extends ConsumerState<AddExercisesScreen> {
             ]),
           ),
         ],
+      ),
       ),
     );
   }

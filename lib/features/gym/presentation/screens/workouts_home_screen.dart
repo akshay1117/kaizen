@@ -8,7 +8,7 @@ import 'package:kaizen/features/gym/presentation/screens/exercises_index_screen.
 import 'package:kaizen/features/gym/presentation/screens/workout_template_screen.dart';
 import 'package:kaizen/features/gym/presentation/widgets/new_workout_sheet.dart';
 import 'package:kaizen/features/gym/presentation/providers/workout_providers.dart';
-import 'package:kaizen/features/gym/presentation/providers/programme_providers.dart';
+import 'package:kaizen/features/gym/presentation/providers/exercise_providers.dart';
 import 'package:kaizen/features/gym/presentation/screens/workout_detail_screen.dart';
 import 'package:kaizen/features/gym/presentation/providers/gym_providers.dart';
 import 'package:kaizen/features/gym/data/gym_database.dart';
@@ -21,179 +21,240 @@ class WorkoutsHomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return GlassScaffold(
       appBar: GlassAppBar(
-        title: const Text(''), 
+        title: const Text(''),
         backgroundColor: Colors.transparent,
         actions: [
-          IconButton(
-            icon: Container(
-              padding: EdgeInsets.all(8.w),
-              decoration: const BoxDecoration(
-                color: GymTheme.cardSurface2,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(LucideIcons.flame, size: 20.sp),
+          Padding(
+            padding: EdgeInsets.only(top: 16.h, right: 8.w),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () {},
+                  customBorder: const CircleBorder(),
+                  child: Container(
+                    padding: EdgeInsets.all(8.w),
+                    decoration: const BoxDecoration(
+                      color: GymTheme.cardSurface2,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(LucideIcons.flame, size: 20.sp),
+                  ),
+                ),
+                SizedBox(width: 12.w),
+                InkWell(
+                  onTap: () {},
+                  borderRadius: BorderRadius.circular(20.r),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                    decoration: BoxDecoration(
+                      color: GymTheme.cardSurface2,
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
+                    child: const Text('Edit',
+                        style: TextStyle(
+                            color: GymTheme.textPrimary, fontWeight: FontWeight.bold)),
+                  ),
+                ),
+                SizedBox(width: 8.w),
+              ],
             ),
-            onPressed: () {},
           ),
-          TextButton(
-            onPressed: () {},
-            style: TextButton.styleFrom(
-              backgroundColor: GymTheme.cardSurface2,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-            ),
-            child: const Text('Edit', style: TextStyle(color: GymTheme.textPrimary, fontWeight: FontWeight.bold)),
-          ),
-          SizedBox(width: 8.w),
         ],
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 16.h),
-                  Padding(
-                    padding: EdgeInsets.only(left: 4.0.w, bottom: 16.0.h),
-                    child: Text('My Workouts', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold, color: GymTheme.textPrimary)),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: GymTheme.cardBackground,
-                      borderRadius: BorderRadius.circular(16.r),
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 60.h), // Clear GlassAppBar
+                    Padding(
+                      padding: EdgeInsets.only(left: 4.0.w, bottom: 16.0.h),
+                      child: Text('My Workouts',
+                          style: TextStyle(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
+                              color: GymTheme.textPrimary)),
                     ),
-                    child: Column(
-                      children: [
-                        // New Workout Item
-                        _buildActionRow(
-                          icon: LucideIcons.plus,
-                          title: 'New Workout...',
-                          subtitle: 'e.g., Upper Body, Leg Day, Monday Routine',
-                          isFirst: true,
-                          isLast: false,
-                          isHighlight: true,
-                          onTap: () => _showNewWorkoutSheet(context, ref),
-                        ),
-                        Divider(color: GymTheme.pillUnselected, height: 1, indent: 64.w),
-                        
-
-                        
-                        // My Exercises Item
-                        Consumer(builder: (context, ref, child) {
-                          return _buildActionRow(
-                            icon: LucideIcons.bookmark,
-                            title: 'My Exercises',
-                            isFirst: false,
-                            isLast: false, // We will append dynamic workouts below
-                            isHighlight: false,
-                            isSimpleIcon: true,
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const ExercisesIndexScreen()),
-                              );
-                            },
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text('20', style: TextStyle(color: GymTheme.textSecondary, fontSize: 14.sp)), // Stub count
-                                SizedBox(width: 8.w),
-                                Icon(LucideIcons.chevronRight, color: GymTheme.textSecondary, size: 14.sp),
-                              ],
-                            ),
-                          );
-                        }),
-                        
-                        // Dynamic Workouts
-                        Consumer(builder: (context, ref, child) {
-                          final workoutsAsync = ref.watch(ungroupedWorkoutsProvider);
-                          return workoutsAsync.when(
-                            data: (workouts) {
-                              if (workouts.isEmpty) {
-                                return const SizedBox.shrink();
-                              }
-                              return Column(
-                                children: workouts.map((workout) {
-                                  final isLast = workouts.last == workout;
-                                  return Column(
-                                    children: [
-                                      Divider(color: GymTheme.pillUnselected, height: 1, indent: 16.w),
-                                      _buildActionRow(
-                                        icon: LucideIcons.dumbbell,
-                                        title: workout.name,
-                                        subtitle: workout.description,
-                                        isFirst: false,
-                                        isLast: isLast,
-                                        isHighlight: false,
-                                        isSimpleIcon: true,
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => WorkoutDetailScreen(workoutId: workout.id, workoutName: workout.name),
-                                            ),
-                                          );
-                                        },
-                                        trailing: Icon(LucideIcons.chevronRight, color: GymTheme.textSecondary, size: 14.sp),
-                                      ),
-                                    ],
-                                  );
-                                }).toList(),
-                              );
-                            },
-                            loading: () => const Padding(padding: EdgeInsets.all(16), child: CircularProgressIndicator()),
-                            error: (err, stack) => Padding(padding: const EdgeInsets.all(16), child: Text('Error: $err')),
-                          );
-                        }),
-                      ],
-                    ),
-                  ),
-
-                  
-                  // Building Your Workouts
-                  Container(
-                    decoration: BoxDecoration(
-                      color: GymTheme.cardBackground,
-                      borderRadius: BorderRadius.circular(16.r),
-                    ),
-                    padding: EdgeInsets.all(20.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('BUILDING YOUR WORKOUTS', style: TextStyle(color: GymTheme.textSecondary, fontSize: 11.sp, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
-                        SizedBox(height: 16.h),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: 4.h),
-                              child: Icon(LucideIcons.book, color: GymTheme.textSecondary, size: 20.sp),
-                            ),
-                            SizedBox(width: 16.w),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                    Container(
+                      decoration: BoxDecoration(
+                        color: GymTheme.cardBackground,
+                        borderRadius: BorderRadius.circular(16.r),
+                      ),
+                      child: Column(
+                        children: [
+                          // New Workout Item
+                          _buildActionRow(
+                            icon: LucideIcons.plus,
+                            title: 'New Workout...',
+                            subtitle: 'e.g., Upper Body, Leg Day, Monday Routine',
+                            isFirst: true,
+                            isLast: false,
+                            isHighlight: true,
+                            onTap: () => _showNewWorkoutSheet(context, ref),
+                          ),
+                          Divider(
+                              color: GymTheme.pillUnselected,
+                              height: 1,
+                              indent: 64.w),
+  
+                          // My Exercises Item
+                          Consumer(builder: (context, ref, child) {
+                            final exercisesAsync = ref.watch(allExercisesProvider);
+                            final exerciseCount = exercisesAsync.valueOrNull?.length.toString() ?? '...';
+                            return _buildActionRow(
+                              icon: LucideIcons.bookmark,
+                              title: 'My Exercises',
+                              isFirst: false,
+                              isLast:
+                                  false, // We will append dynamic workouts below
+                              isHighlight: false,
+                              isSimpleIcon: true,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ExercisesIndexScreen()),
+                                );
+                              },
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Text('Organize by Favorites', style: TextStyle(color: GymTheme.textPrimary, fontSize: 15.sp, fontWeight: FontWeight.w600)),
-                                  SizedBox(height: 4.h),
-                                  Text('Explore common workout structures to build your personalized tracking setup.', style: TextStyle(color: GymTheme.textSecondary, fontSize: 13.sp, height: 1.3)),
+                                  Text(exerciseCount,
+                                      style: TextStyle(
+                                          color: GymTheme.textSecondary,
+                                          fontSize: 14.sp)),
+                                  SizedBox(width: 8.w),
+                                  Icon(LucideIcons.chevronRight,
+                                      color: GymTheme.textSecondary, size: 14.sp),
                                 ],
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            );
+                          }),
+  
+                          // Dynamic Workouts
+                          Consumer(builder: (context, ref, child) {
+                            final workoutsAsync =
+                                ref.watch(ungroupedWorkoutsProvider);
+                            return workoutsAsync.when(
+                              data: (workouts) {
+                                if (workouts.isEmpty) {
+                                  return const SizedBox.shrink();
+                                }
+                                return Column(
+                                  children: workouts.map((workout) {
+                                    final isLast = workouts.last == workout;
+                                    return Column(
+                                      children: [
+                                        Divider(
+                                            color: GymTheme.pillUnselected,
+                                            height: 1,
+                                            indent: 16.w),
+                                        _buildActionRow(
+                                          icon: LucideIcons.dumbbell,
+                                          title: workout.name,
+                                          subtitle: workout.description,
+                                          isFirst: false,
+                                          isLast: isLast,
+                                          isHighlight: false,
+                                          isSimpleIcon: true,
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    WorkoutDetailScreen(
+                                                        workoutId: workout.id,
+                                                        workoutName:
+                                                            workout.name),
+                                              ),
+                                            );
+                                          },
+                                          trailing: Icon(LucideIcons.chevronRight,
+                                              color: GymTheme.textSecondary,
+                                              size: 14.sp),
+                                        ),
+                                      ],
+                                    );
+                                  }).toList(),
+                                );
+                              },
+                              loading: () => const Padding(
+                                  padding: EdgeInsets.all(16),
+                                  child: CircularProgressIndicator()),
+                              error: (err, stack) => Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Text('Error: $err')),
+                            );
+                          }),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 100.h),
-                ],
+                    
+                    SizedBox(height: 24.h), // Added spacing between sections
+  
+                    // Building Your Workouts
+                    Container(
+                      decoration: BoxDecoration(
+                        color: GymTheme.cardBackground,
+                        borderRadius: BorderRadius.circular(16.r),
+                      ),
+                      padding: EdgeInsets.all(20.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('BUILDING YOUR WORKOUTS',
+                              style: TextStyle(
+                                  color: GymTheme.textSecondary,
+                                  fontSize: 11.sp,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 1.2)),
+                          SizedBox(height: 16.h),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(top: 4.h),
+                                child: Icon(LucideIcons.book,
+                                    color: GymTheme.textSecondary, size: 20.sp),
+                              ),
+                              SizedBox(width: 16.w),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Organize by Favorites',
+                                        style: TextStyle(
+                                            color: GymTheme.textPrimary,
+                                            fontSize: 15.sp,
+                                            fontWeight: FontWeight.w600)),
+                                    SizedBox(height: 4.h),
+                                    Text(
+                                        'Explore common workout structures to build your personalized tracking setup.',
+                                        style: TextStyle(
+                                            color: GymTheme.textSecondary,
+                                            fontSize: 13.sp,
+                                            height: 1.3)),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 100.h),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -227,34 +288,47 @@ class WorkoutsHomeScreen extends ConsumerWidget {
                   height: 48.w,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: GymTheme.cardSurface2,
-                    border: Border.all(color: GymTheme.primaryAccent.withValues(alpha: 0.3), width: 2),
-                    boxShadow: [
-                      BoxShadow(
-                        color: GymTheme.primaryAccent.withValues(alpha: 0.2),
-                        blurRadius: 10,
-                        spreadRadius: 0,
-                      )
-                    ]
-                  ),
+                      shape: BoxShape.circle,
+                      color: GymTheme.cardSurface2,
+                      border: Border.all(
+                          color: GymTheme.primaryAccent.withValues(alpha: 0.3),
+                          width: 2),
+                      boxShadow: [
+                        BoxShadow(
+                          color: GymTheme.primaryAccent.withValues(alpha: 0.2),
+                          blurRadius: 10,
+                          spreadRadius: 0,
+                        )
+                      ]),
                   child: Icon(icon, color: GymTheme.primaryAccent, size: 20.sp),
                 )
               else
                 Container(
                   width: 48.w,
                   alignment: Alignment.center,
-                  child: Icon(icon, color: isHighlight ? GymTheme.primaryAccent : GymTheme.textPrimary, size: 20.sp),
+                  child: Icon(icon,
+                      color: isHighlight
+                          ? GymTheme.primaryAccent
+                          : GymTheme.textPrimary,
+                      size: 20.sp),
                 ),
               SizedBox(width: 16.w),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title, style: TextStyle(color: isHighlight ? GymTheme.primaryAccent : GymTheme.textPrimary, fontSize: 17.sp, fontWeight: FontWeight.w600)),
+                    Text(title,
+                        style: TextStyle(
+                            color: isHighlight
+                                ? GymTheme.primaryAccent
+                                : GymTheme.textPrimary,
+                            fontSize: 17.sp,
+                            fontWeight: FontWeight.w600)),
                     if (subtitle != null) ...[
                       SizedBox(height: 2.h),
-                      Text(subtitle, style: TextStyle(color: GymTheme.textSecondary, fontSize: 13.sp)),
+                      Text(subtitle,
+                          style: TextStyle(
+                              color: GymTheme.textSecondary, fontSize: 13.sp)),
                     ],
                   ],
                 ),
@@ -267,14 +341,16 @@ class WorkoutsHomeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildTemplateCard(BuildContext context, String title, String subtitle) {
+  Widget _buildTemplateCard(
+      BuildContext context, String title, String subtitle) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const WorkoutTemplateScreen()),
+            MaterialPageRoute(
+                builder: (context) => const WorkoutTemplateScreen()),
           );
         },
         borderRadius: BorderRadius.circular(16.r),
@@ -288,8 +364,19 @@ class WorkoutsHomeScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(title, style: TextStyle(color: GymTheme.textPrimary, fontSize: 16.sp, fontWeight: FontWeight.w600, height: 1.2)),
-              Text(subtitle, maxLines: 2, overflow: TextOverflow.ellipsis, style: TextStyle(color: GymTheme.textSecondary, fontSize: 12.sp, height: 1.3)),
+              Text(title,
+                  style: TextStyle(
+                      color: GymTheme.textPrimary,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      height: 1.2)),
+              Text(subtitle,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      color: GymTheme.textSecondary,
+                      fontSize: 12.sp,
+                      height: 1.3)),
             ],
           ),
         ),
