@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uuid/uuid.dart';
 import 'package:kaizen/features/gym/data/gym_database.dart';
 import 'package:kaizen/features/gym/data/daos/workout_dao.dart';
 import 'package:kaizen/features/gym/presentation/providers/gym_providers.dart';
@@ -196,7 +197,7 @@ class ActiveWorkoutNotifier extends StateNotifier<ActiveWorkoutState> {
     _timer?.cancel();
     
     // Create Workout Session
-    final sessionId = DateTime.now().millisecondsSinceEpoch.toString();
+    final sessionId = const Uuid().v4();
     await _workoutDao.insertWorkoutSession(
       WorkoutSessionsCompanion.insert(
         id: drift.Value(sessionId),

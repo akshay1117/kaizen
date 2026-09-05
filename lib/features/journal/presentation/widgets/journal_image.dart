@@ -1,3 +1,5 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class JournalImageWidget extends StatelessWidget {
@@ -19,7 +21,7 @@ class JournalImageWidget extends StatelessWidget {
             opaque: false,
             pageBuilder: (context, animation, secondaryAnimation) {
               return Scaffold(
-                backgroundColor: Colors.black.withValues(alpha: 0.9),
+                backgroundColor: AppColors.surfacePitchBlack.withValues(alpha: 0.9),
                 body: Stack(
                   children: [
                     Center(
@@ -27,12 +29,12 @@ class JournalImageWidget extends StatelessWidget {
                         child: Hero(
                           tag: heroTag,
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(AppRadii.md),
                             child: Image.network(
                               imageUrl,
                               fit: BoxFit.contain,
                               errorBuilder: (context, error, stackTrace) =>
-                                  Container(color: Colors.grey[800], child: const Icon(Icons.image_not_supported, color: Colors.white, size: 50)),
+                                  Container(color: Colors.grey[800], child: const Icon(Icons.image_not_supported, color: AppColors.textPrimary, size: 50)),
                             ),
                           ),
                         ),
@@ -42,7 +44,7 @@ class JournalImageWidget extends StatelessWidget {
                       top: 48,
                       right: 16,
                       child: IconButton(
-                        icon: const Icon(Icons.close, color: Colors.white, size: 30),
+                        icon: const Icon(Icons.close, color: AppColors.textPrimary, size: 30),
                         onPressed: () => Navigator.of(context).pop(),
                       ),
                     ),
@@ -66,7 +68,7 @@ class JournalImageWidget extends StatelessWidget {
               imageUrl,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) =>
-                  Container(color: Colors.grey[800], child: const Icon(Icons.image_not_supported, color: Colors.white, size: 40)),
+                  Container(color: Colors.grey[800], child: const Icon(Icons.image_not_supported, color: AppColors.textPrimary, size: 40)),
             ),
           ),
         ),

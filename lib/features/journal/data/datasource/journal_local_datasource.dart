@@ -10,7 +10,10 @@ abstract class JournalLocalDatasource {
 }
 
 class HiveJournalLocalDatasource implements JournalLocalDatasource {
-  static const String boxName = 'journal_box_v1';
+  final String userId;
+  HiveJournalLocalDatasource({required this.userId});
+
+  String get boxName => 'journal_box_v1_$userId';
 
   Future<Box<String>> _getBox() async {
     return await Hive.openBox<String>(boxName);

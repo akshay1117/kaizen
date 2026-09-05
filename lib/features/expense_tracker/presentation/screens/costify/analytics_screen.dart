@@ -1,3 +1,5 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -22,19 +24,19 @@ class AnalyticsScreen extends ConsumerWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+          icon: const Icon(Icons.arrow_back_ios, color: AppColors.textPrimary, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
           'Analytics',
-          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+          style: TextStyle(color: AppColors.textPrimary, fontSize: 18, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
       body: transactionsAsync.when(
         data: (transactions) => _buildBody(context, ref, transactions, currentTrackerAsync.value, timePeriod, formatter),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, st) => Center(child: Text('Error: $e', style: const TextStyle(color: Colors.white))),
+        error: (e, st) => Center(child: Text('Error: $e', style: const TextStyle(color: AppColors.textPrimary))),
       ),
     );
   }
@@ -119,7 +121,7 @@ class AnalyticsScreen extends ConsumerWidget {
             children: [
               const Text(
                 'Overview',
-                style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(color: AppColors.textPrimary, fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(width: 8),
               const Icon(Icons.info_outline, color: Colors.grey, size: 18),
@@ -133,11 +135,11 @@ class AnalyticsScreen extends ConsumerWidget {
           const SizedBox(height: 16),
           Row(
             children: [
-              Expanded(child: _buildOverviewCard('Total', formatter.format(totalSpent), Colors.white, Icons.pie_chart_outline)),
+              Expanded(child: _buildOverviewCard('Total', formatter.format(totalSpent), AppColors.textPrimary, Icons.pie_chart_outline)),
               const SizedBox(width: 8),
-              Expanded(child: _buildOverviewCard('Daily Avg', formatter.format(dailyAvg), Colors.white, Icons.calendar_today)),
+              Expanded(child: _buildOverviewCard('Daily Avg', formatter.format(dailyAvg), AppColors.textPrimary, Icons.calendar_today)),
               const SizedBox(width: 8),
-              Expanded(child: _buildOverviewCard('Peak Day', peakDayAmount > 0 ? formatter.format(peakDayAmount) : '-', Colors.white, Icons.local_fire_department, subText: peakDayFormatted != '-' ? peakDayFormatted : null)),
+              Expanded(child: _buildOverviewCard('Peak Day', peakDayAmount > 0 ? formatter.format(peakDayAmount) : '-', AppColors.textPrimary, Icons.local_fire_department, subText: peakDayFormatted != '-' ? peakDayFormatted : null)),
             ],
           ),
           
@@ -146,15 +148,15 @@ class AnalyticsScreen extends ConsumerWidget {
           // Categories Section
           const Text(
             'Categories',
-            style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+            style: TextStyle(color: AppColors.textPrimary, fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
           
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: const Color(0xFF1C1C1E),
-              borderRadius: BorderRadius.circular(16),
+              color: AppColors.surfaceObsidian,
+              borderRadius: BorderRadius.circular(AppRadii.lg),
             ),
             child: transactions.isEmpty || totalSpent == 0
               ? const Center(
@@ -209,7 +211,7 @@ class AnalyticsScreen extends ConsumerWidget {
                                     Expanded(
                                       child: Text(
                                         e.key,
-                                        style: const TextStyle(color: Colors.white, fontSize: 14),
+                                        style: const TextStyle(color: AppColors.textPrimary, fontSize: 14),
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
@@ -251,7 +253,7 @@ class AnalyticsScreen extends ConsumerWidget {
                                 children: [
                                   Text(
                                     formatter.format(e.value),
-                                    style: const TextStyle(color: Colors.white, fontSize: 12),
+                                    style: const TextStyle(color: AppColors.textPrimary, fontSize: 12),
                                   ),
                                   const SizedBox(height: 4),
                                   Stack(
@@ -291,14 +293,14 @@ class AnalyticsScreen extends ConsumerWidget {
           // Trackers Comparison
           const Text(
             'Trackers Comparison',
-            style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+            style: TextStyle(color: AppColors.textPrimary, fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: const Color(0xFF1C1C1E),
-              borderRadius: BorderRadius.circular(16),
+              color: AppColors.surfaceObsidian,
+              borderRadius: BorderRadius.circular(AppRadii.lg),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -306,8 +308,8 @@ class AnalyticsScreen extends ConsumerWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(currentTracker?.name ?? 'Tracker', style: const TextStyle(color: Colors.white)),
-                    Text(formatter.format(totalSpent), style: const TextStyle(color: Colors.white)),
+                    Text(currentTracker?.name ?? 'Tracker', style: const TextStyle(color: AppColors.textPrimary)),
+                    Text(formatter.format(totalSpent), style: const TextStyle(color: AppColors.textPrimary)),
                   ],
                 ),
                 const SizedBox(height: 8),
@@ -334,27 +336,27 @@ class AnalyticsScreen extends ConsumerWidget {
         // Dropdown for period
         PopupMenuButton<String>(
           initialValue: currentPeriod,
-          color: const Color(0xFF2C2C2E),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          color: AppColors.surfaceElevatedHigh,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadii.md)),
           onSelected: (val) {
             ref.read(analyticsTimePeriodProvider.notifier).state = val;
           },
           itemBuilder: (ctx) => [
-            const PopupMenuItem(value: '24H', child: Text('Last 24 hours', style: TextStyle(color: Colors.white))),
-            const PopupMenuItem(value: '7D', child: Text('Last 7 days', style: TextStyle(color: Colors.white))),
-            const PopupMenuItem(value: '1M', child: Text('Last 30 days', style: TextStyle(color: Colors.white))),
-            const PopupMenuItem(value: '3M', child: Text('Last 3 months', style: TextStyle(color: Colors.white))),
-            const PopupMenuItem(value: '1Y', child: Text('Last 12 months', style: TextStyle(color: Colors.white))),
-            const PopupMenuItem(value: 'Custom', child: Text('Custom Range', style: TextStyle(color: Colors.white))),
+            const PopupMenuItem(value: '24H', child: Text('Last 24 hours', style: TextStyle(color: AppColors.textPrimary))),
+            const PopupMenuItem(value: '7D', child: Text('Last 7 days', style: TextStyle(color: AppColors.textPrimary))),
+            const PopupMenuItem(value: '1M', child: Text('Last 30 days', style: TextStyle(color: AppColors.textPrimary))),
+            const PopupMenuItem(value: '3M', child: Text('Last 3 months', style: TextStyle(color: AppColors.textPrimary))),
+            const PopupMenuItem(value: '1Y', child: Text('Last 12 months', style: TextStyle(color: AppColors.textPrimary))),
+            const PopupMenuItem(value: 'Custom', child: Text('Custom Range', style: TextStyle(color: AppColors.textPrimary))),
           ],
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 _getDisplayPeriod(currentPeriod),
-                style: const TextStyle(color: Colors.white, fontSize: 16),
+                style: const TextStyle(color: AppColors.textPrimary, fontSize: 16),
               ),
-              const Icon(Icons.keyboard_arrow_down, color: Colors.white),
+              const Icon(Icons.keyboard_arrow_down, color: AppColors.textPrimary),
             ],
           ),
         ),
@@ -363,7 +365,7 @@ class AnalyticsScreen extends ConsumerWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
-            color: const Color(0xFF1C1C1E), 
+            color: AppColors.surfaceObsidian, 
             border: Border.all(color: Colors.blue.withAlpha(128)), // approx 0.5 alpha
             borderRadius: BorderRadius.circular(20),
           ),
@@ -399,8 +401,8 @@ class AnalyticsScreen extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color(0xFF1C1C1E),
-        borderRadius: BorderRadius.circular(12),
+        color: AppColors.surfaceObsidian,
+        borderRadius: BorderRadius.circular(AppRadii.md),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

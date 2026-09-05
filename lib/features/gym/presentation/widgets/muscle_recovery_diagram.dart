@@ -1,3 +1,5 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:kaizen/features/gym/theme/gym_theme.dart';
 import 'package:kaizen/features/gym/data/gym_database.dart';
@@ -17,7 +19,7 @@ class MuscleRecoveryDiagram extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         color: GymTheme.cardBackground.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppRadii.lg),
       ),
       child: Center(
         child: Wrap(
@@ -49,12 +51,12 @@ class MuscleRecoveryDiagram extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
             color: animatedColor,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppRadii.lg),
           ),
           child: Text(
             name,
             style: const TextStyle(
-              color: Colors.white,
+              color: AppColors.textPrimary,
               fontSize: 12,
               fontWeight: FontWeight.bold,
             ),

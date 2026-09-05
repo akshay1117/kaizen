@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:kaizen/features/gym/theme/gym_theme.dart';
 import 'package:kaizen/features/gym/data/gym_database.dart';
@@ -65,7 +66,7 @@ class ExerciseListTile extends StatelessWidget {
                   scale: isSelected ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 200),
                   curve: Curves.easeOutBack,
-                  child: const Icon(Icons.check, size: 16, color: Colors.white),
+                  child: const Icon(Icons.check, size: 16, color: AppColors.textPrimary),
                 ),
               )
             else

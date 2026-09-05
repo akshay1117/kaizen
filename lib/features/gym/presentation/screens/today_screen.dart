@@ -1,3 +1,5 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -46,13 +48,17 @@ class TodayScreen extends ConsumerWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: List.generate(7, (index) {
-        final days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-        final isToday = index == 3; // Mock today
+        final now = DateTime.now();
+        final date = now.subtract(Duration(days: 3 - index));
+        const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+        final dayStr = days[date.weekday - 1];
+        final isToday = index == 3;
+        // Mock session data for now, ideally we read from session provider
         final hasSession = index == 1 || index == 3;
         
         return Column(
           children: [
-            Text(days[index], style: const TextStyle(color: GymTheme.textSecondary, fontSize: 12)),
+            Text(dayStr, style: const TextStyle(color: GymTheme.textSecondary, fontSize: 12)),
             const SizedBox(height: 8),
             Container(
               width: 32,
@@ -64,9 +70,9 @@ class TodayScreen extends ConsumerWidget {
               ),
               child: Center(
                 child: Text(
-                  '${15 + index}',
+                  '${date.day}',
                   style: TextStyle(
-                    color: hasSession ? Colors.white : (isToday ? GymTheme.textPrimary : GymTheme.textSecondary),
+                    color: hasSession ? AppColors.textPrimary : (isToday ? GymTheme.textPrimary : GymTheme.textSecondary),
                     fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
                   ),
                 ),
@@ -86,7 +92,7 @@ class TodayScreen extends ConsumerWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: GymTheme.cardBackground,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppRadii.lg),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -130,7 +136,7 @@ class TodayScreen extends ConsumerWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: GymTheme.cardBackground,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppRadii.lg),
       ),
       child: Column(
         children: [
@@ -171,7 +177,7 @@ class TodayScreen extends ConsumerWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: GymTheme.cardBackground,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppRadii.lg),
       ),
       child: setsAsync.when(
         data: (sets) {

@@ -1,3 +1,5 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kaizen/features/expense_tracker/application/expense_providers.dart';
@@ -49,7 +51,7 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
     return Container(
       height: MediaQuery.of(context).size.height * 0.95,
       decoration: const BoxDecoration(
-        color: Color(0xFF1C1C1E),
+        color: AppColors.surfaceObsidian,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       child: Column(
@@ -61,19 +63,19 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.close, color: Colors.white),
+                  icon: const Icon(Icons.close, color: AppColors.textPrimary),
                   onPressed: () => Navigator.pop(context),
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF2C2C2E),
-                    borderRadius: BorderRadius.circular(16),
+                    color: AppColors.surfaceElevatedHigh,
+                    borderRadius: BorderRadius.circular(AppRadii.lg),
                   ),
-                  child: const Text("Today", style: TextStyle(color: Colors.white)),
+                  child: const Text("Today", style: TextStyle(color: AppColors.textPrimary)),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.refresh, color: Colors.white),
+                  icon: const Icon(Icons.refresh, color: AppColors.textPrimary),
                   onPressed: () => setState(() => _amount = "0"),
                 ),
               ],
@@ -86,7 +88,7 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
               child: Text(
                 '₹${_amount == "0" ? "0.00" : _amount}',
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontSize: 64,
                   fontWeight: FontWeight.bold,
                 ),
@@ -100,14 +102,14 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: TextField(
               controller: _noteController,
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: AppColors.textPrimary),
               decoration: InputDecoration(
                 hintText: 'Name / Note',
-                hintStyle: const TextStyle(color: Color(0xFF8E8E93)),
+                hintStyle: const TextStyle(color: AppColors.textSecondary),
                 filled: true,
-                fillColor: const Color(0xFF2C2C2E),
+                fillColor: AppColors.surfaceElevatedHigh,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AppRadii.lg),
                   borderSide: BorderSide.none,
                 ),
               ),
@@ -123,15 +125,15 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF2C2C2E),
-                      borderRadius: BorderRadius.circular(16),
+                      color: AppColors.surfaceElevatedHigh,
+                      borderRadius: BorderRadius.circular(AppRadii.lg),
                     ),
                     child: const Row(
                       children: [
-                        Icon(Icons.credit_card, color: Color(0xFF8E8E93), size: 20),
+                        Icon(Icons.credit_card, color: AppColors.textSecondary, size: 20),
                         SizedBox(width: 8),
-                        Expanded(child: Text('No account (optional)', style: TextStyle(color: Colors.white))),
-                        Icon(Icons.chevron_right, color: Color(0xFF8E8E93), size: 20),
+                        Expanded(child: Text('No account (optional)', style: TextStyle(color: AppColors.textPrimary))),
+                        Icon(Icons.chevron_right, color: AppColors.textSecondary, size: 20),
                       ],
                     ),
                   ),
@@ -160,11 +162,11 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
                     }
                     
                     // Mix color with white for pastel pill look
-                    final pillColor = Color.lerp(catColor, Colors.white, 0.2) ?? catColor;
+                    final pillColor = Color.lerp(catColor, AppColors.textPrimary, 0.2) ?? catColor;
                     
                     return PopupMenuButton<ExpenseCategory>(
-                      color: const Color(0xFF2C2C2E),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                      color: AppColors.surfaceElevatedHigh,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadii.xl)),
                       offset: const Offset(0, -300),
                       onSelected: (cat) => setState(() => _selectedCategory = cat),
                       itemBuilder: (context) {
@@ -175,7 +177,7 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
                               children: [
                                 Text(cat.icon, style: const TextStyle(fontSize: 20)),
                                 const SizedBox(width: 12),
-                                Text(cat.name, style: const TextStyle(color: Colors.white)),
+                                Text(cat.name, style: const TextStyle(color: AppColors.textPrimary)),
                               ],
                             ),
                           );
@@ -185,7 +187,7 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                         decoration: BoxDecoration(
                           color: pillColor,
-                          borderRadius: BorderRadius.circular(24),
+                          borderRadius: BorderRadius.circular(AppRadii.xl),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -194,7 +196,7 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
                             const SizedBox(width: 8),
                             Text(
                               currentCat?.name ?? 'Select', 
-                              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                              style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
@@ -204,9 +206,9 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF8E8E93),
+                    backgroundColor: AppColors.textSecondary,
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadii.xl)),
                   ),
                   onPressed: () async {
                     final dao = ref.read(expenseDaoProvider);
@@ -231,7 +233,7 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
                     await dao.insertTransaction(newExpense);
                     if (context.mounted) Navigator.pop(context);
                   },
-                  child: const Text('Save', style: TextStyle(color: Color(0xFF2C2C2E), fontWeight: FontWeight.bold)),
+                  child: const Text('Save', style: TextStyle(color: AppColors.surfaceElevatedHigh, fontWeight: FontWeight.bold)),
                 ),
               ],
             ),
@@ -240,7 +242,7 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
           
           // Numpad
           Container(
-            color: const Color(0xFF121212),
+            color: AppColors.surfacePitchBlack,
             padding: const EdgeInsets.only(bottom: 32, top: 16),
             child: _buildNumpad(),
           ),
@@ -293,7 +295,7 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
         child: Container(
           padding: const EdgeInsets.all(16),
           alignment: Alignment.center,
-          child: Text(label, style: const TextStyle(fontSize: 28, color: Colors.white, fontWeight: FontWeight.w500)),
+          child: Text(label, style: const TextStyle(fontSize: 28, color: AppColors.textPrimary, fontWeight: FontWeight.w500)),
         ),
       ),
     );
@@ -306,7 +308,7 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
         child: Container(
           padding: const EdgeInsets.all(16),
           alignment: Alignment.center,
-          child: Icon(icon, color: Colors.white, size: 28),
+          child: Icon(icon, color: AppColors.textPrimary, size: 28),
         ),
       ),
     );

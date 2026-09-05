@@ -1,3 +1,5 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -40,7 +42,7 @@ class _ExpenseFilterBottomSheetState extends ConsumerState<ExpenseFilterBottomSh
                 const Text(
                   'Filter',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: AppColors.textPrimary,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -49,7 +51,7 @@ class _ExpenseFilterBottomSheetState extends ConsumerState<ExpenseFilterBottomSh
                   alignment: Alignment.centerRight,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: const Color(0xFF2C2C2E),
+                      color: AppColors.surfaceElevatedHigh,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: TextButton(
@@ -59,7 +61,7 @@ class _ExpenseFilterBottomSheetState extends ConsumerState<ExpenseFilterBottomSh
                         minimumSize: Size.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
-                      child: const Text('Done', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
+                      child: const Text('Done', style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold, fontSize: 14)),
                     ),
                   ),
                 ),
@@ -73,17 +75,17 @@ class _ExpenseFilterBottomSheetState extends ConsumerState<ExpenseFilterBottomSh
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
-              color: const Color(0xFF1C1C1E),
-              borderRadius: BorderRadius.circular(16),
+              color: AppColors.surfaceObsidian,
+              borderRadius: BorderRadius.circular(AppRadii.lg),
             ),
             child: ListTile(
-              title: const Text('Sort by', style: TextStyle(color: Colors.white, fontSize: 16)),
+              title: const Text('Sort by', style: TextStyle(color: AppColors.textPrimary, fontSize: 16)),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(filterState.sortBy, style: const TextStyle(color: Color(0xFF8E8E93), fontSize: 16)),
+                  Text(filterState.sortBy, style: const TextStyle(color: AppColors.textSecondary, fontSize: 16)),
                   const SizedBox(width: 4),
-                  const Icon(CupertinoIcons.chevron_up_chevron_down, color: Color(0xFF8E8E93), size: 14),
+                  const Icon(CupertinoIcons.chevron_up_chevron_down, color: AppColors.textSecondary, size: 14),
                 ],
               ),
               onTap: () => _showSortByOptions(filterState),
@@ -96,36 +98,36 @@ class _ExpenseFilterBottomSheetState extends ConsumerState<ExpenseFilterBottomSh
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
-              color: const Color(0xFF1C1C1E),
-              borderRadius: BorderRadius.circular(16),
+              color: AppColors.surfaceObsidian,
+              borderRadius: BorderRadius.circular(AppRadii.lg),
             ),
             child: Column(
               children: [
                 ListTile(
-                  leading: const Icon(Icons.credit_card, color: Colors.white),
-                  title: const Text('Installments only', style: TextStyle(color: Colors.white, fontSize: 16)),
+                  leading: const Icon(Icons.credit_card, color: AppColors.textPrimary),
+                  title: const Text('Installments only', style: TextStyle(color: AppColors.textPrimary, fontSize: 16)),
                   trailing: CupertinoSwitch(
                     value: filterState.installmentsOnly,
                     onChanged: (val) {
                       ref.read(expenseFilterProvider.notifier).state = filterState.copyWith(installmentsOnly: val);
                     },
-                    activeTrackColor: Colors.white,
+                    activeTrackColor: AppColors.textPrimary,
                     inactiveTrackColor: const Color(0xFF3A3A3C),
                   ),
                 ),
                 const Padding(
                   padding: EdgeInsets.only(left: 56),
-                  child: Divider(color: Color(0xFF2C2C2E), height: 1),
+                  child: Divider(color: AppColors.surfaceElevatedHigh, height: 1),
                 ),
                 ListTile(
-                  leading: const Icon(Icons.autorenew, color: Colors.white),
-                  title: const Text('Subscriptions only', style: TextStyle(color: Colors.white, fontSize: 16)),
+                  leading: const Icon(Icons.autorenew, color: AppColors.textPrimary),
+                  title: const Text('Subscriptions only', style: TextStyle(color: AppColors.textPrimary, fontSize: 16)),
                   trailing: CupertinoSwitch(
                     value: filterState.subscriptionsOnly,
                     onChanged: (val) {
                       ref.read(expenseFilterProvider.notifier).state = filterState.copyWith(subscriptionsOnly: val);
                     },
-                    activeTrackColor: Colors.white,
+                    activeTrackColor: AppColors.textPrimary,
                     inactiveTrackColor: const Color(0xFF3A3A3C),
                   ),
                 ),
@@ -139,19 +141,19 @@ class _ExpenseFilterBottomSheetState extends ConsumerState<ExpenseFilterBottomSh
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
-              color: const Color(0xFF1C1C1E),
-              borderRadius: BorderRadius.circular(16),
+              color: AppColors.surfaceObsidian,
+              borderRadius: BorderRadius.circular(AppRadii.lg),
             ),
             child: Column(
               children: [
                 ListTile(
-                  title: const Text('All members', style: TextStyle(color: Colors.white, fontSize: 16)),
-                  trailing: const Icon(Icons.check, color: Colors.white),
+                  title: const Text('All members', style: TextStyle(color: AppColors.textPrimary, fontSize: 16)),
+                  trailing: const Icon(Icons.check, color: AppColors.textPrimary),
                   onTap: () {},
                 ),
                 const Padding(
                   padding: EdgeInsets.only(left: 16),
-                  child: Divider(color: Color(0xFF2C2C2E), height: 1),
+                  child: Divider(color: AppColors.surfaceElevatedHigh, height: 1),
                 ),
                 ListTile(
                   leading: Container(
@@ -162,9 +164,9 @@ class _ExpenseFilterBottomSheetState extends ConsumerState<ExpenseFilterBottomSh
                       shape: BoxShape.circle,
                     ),
                     alignment: Alignment.center,
-                    child: const Text('A', style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold)),
+                    child: const Text('A', style: TextStyle(color: AppColors.accentViolet, fontWeight: FontWeight.bold)),
                   ),
-                  title: const Text('Akshaykrishnantv', style: TextStyle(color: Colors.white, fontSize: 16)),
+                  title: const Text('Akshaykrishnantv', style: TextStyle(color: AppColors.textPrimary, fontSize: 16)),
                   onTap: () {},
                 ),
               ],
@@ -183,18 +185,18 @@ class _ExpenseFilterBottomSheetState extends ConsumerState<ExpenseFilterBottomSh
       builder: (context) => Container(
         margin: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: const Color(0xFF1C1C1E),
-          borderRadius: BorderRadius.circular(16),
+          color: AppColors.surfaceObsidian,
+          borderRadius: BorderRadius.circular(AppRadii.lg),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             _buildSortOption('Date', filterState.sortBy),
-            const Divider(color: Color(0xFF2C2C2E), height: 1),
+            const Divider(color: AppColors.surfaceElevatedHigh, height: 1),
             _buildSortOption('Name', filterState.sortBy),
-            const Divider(color: Color(0xFF2C2C2E), height: 1),
+            const Divider(color: AppColors.surfaceElevatedHigh, height: 1),
             _buildSortOption('Amount', filterState.sortBy),
-            const Divider(color: Color(0xFF2C2C2E), height: 1),
+            const Divider(color: AppColors.surfaceElevatedHigh, height: 1),
             _buildSortOption('Category', filterState.sortBy),
           ],
         ),
@@ -204,8 +206,8 @@ class _ExpenseFilterBottomSheetState extends ConsumerState<ExpenseFilterBottomSh
 
   Widget _buildSortOption(String name, String currentSort) {
     return ListTile(
-      title: Text(name, style: const TextStyle(color: Colors.white)),
-      trailing: currentSort == name ? const Icon(Icons.check, color: Colors.white) : null,
+      title: Text(name, style: const TextStyle(color: AppColors.textPrimary)),
+      trailing: currentSort == name ? const Icon(Icons.check, color: AppColors.textPrimary) : null,
       onTap: () {
         final currentState = ref.read(expenseFilterProvider);
         ref.read(expenseFilterProvider.notifier).state = currentState.copyWith(sortBy: name);

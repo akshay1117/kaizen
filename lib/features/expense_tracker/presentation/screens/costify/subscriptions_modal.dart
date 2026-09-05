@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kaizen/features/expense_tracker/application/expense_providers.dart';
@@ -13,7 +14,7 @@ class SubscriptionsModal extends ConsumerWidget {
 
     return Container(
       decoration: const BoxDecoration(
-        color: Color(0xFF121212),
+        color: AppColors.surfacePitchBlack,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
@@ -26,7 +27,7 @@ class SubscriptionsModal extends ConsumerWidget {
               const Text(
                 'Subscriptions',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -34,7 +35,7 @@ class SubscriptionsModal extends ConsumerWidget {
               Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.add, color: Colors.white),
+                    icon: const Icon(Icons.add, color: AppColors.textPrimary),
                     onPressed: () {
                       showModalBottomSheet(
                         context: context,
@@ -48,7 +49,7 @@ class SubscriptionsModal extends ConsumerWidget {
                     },
                   ),
                   IconButton(
-                    icon: const Icon(Icons.close, color: Colors.white54),
+                    icon: const Icon(Icons.close, color: AppColors.textTertiary),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ],
@@ -79,7 +80,7 @@ class SubscriptionsModal extends ConsumerWidget {
                     height: 140,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      border: Border.all(color: const Color(0xFF2C2C2E), width: 8),
+                      border: Border.all(color: AppColors.surfaceElevatedHigh, width: 8),
                     ),
                     child: Center(
                       child: Column(
@@ -88,7 +89,7 @@ class SubscriptionsModal extends ConsumerWidget {
                           Text(
                             '$activeCount',
                             style: const TextStyle(
-                              color: Colors.white,
+                              color: AppColors.textPrimary,
                               fontSize: 32,
                               fontWeight: FontWeight.bold,
                             ),
@@ -96,7 +97,7 @@ class SubscriptionsModal extends ConsumerWidget {
                           const Text(
                             'Active',
                             style: TextStyle(
-                              color: Color(0xFF8E8E93),
+                              color: AppColors.textSecondary,
                               fontSize: 14,
                             ),
                           ),
@@ -110,16 +111,16 @@ class SubscriptionsModal extends ConsumerWidget {
                     children: [
                       Column(
                         children: [
-                          const Text('Monthly total', style: TextStyle(color: Color(0xFF8E8E93), fontSize: 12)),
+                          const Text('Monthly total', style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
                           const SizedBox(height: 4),
-                          Text(formatter.format(monthlyTotal), style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                          Text(formatter.format(monthlyTotal), style: const TextStyle(color: AppColors.textPrimary, fontSize: 18, fontWeight: FontWeight.bold)),
                         ],
                       ),
                       Column(
                         children: [
-                          const Text('Yearly total', style: TextStyle(color: Color(0xFF8E8E93), fontSize: 12)),
+                          const Text('Yearly total', style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
                           const SizedBox(height: 4),
-                          Text(formatter.format(yearlyTotal), style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                          Text(formatter.format(yearlyTotal), style: const TextStyle(color: AppColors.textPrimary, fontSize: 18, fontWeight: FontWeight.bold)),
                         ],
                       ),
                     ],
@@ -127,13 +128,13 @@ class SubscriptionsModal extends ConsumerWidget {
                   const SizedBox(height: 24),
                   const Align(
                     alignment: Alignment.centerLeft,
-                    child: Text('Active', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                    child: Text('Active', style: TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.bold)),
                   ),
                   const SizedBox(height: 16),
                   if (subscriptions.isEmpty)
                     const Padding(
                       padding: EdgeInsets.symmetric(vertical: 32.0),
-                      child: Text('No active subscriptions.', style: TextStyle(color: Color(0xFF8E8E93))),
+                      child: Text('No active subscriptions.', style: TextStyle(color: AppColors.textSecondary)),
                     )
                   else
                     ListView.builder(
@@ -144,9 +145,9 @@ class SubscriptionsModal extends ConsumerWidget {
                         final sub = subscriptions[index];
                         return ListTile(
                           contentPadding: EdgeInsets.zero,
-                          title: Text(sub.name, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                          subtitle: Text(sub.interval, style: const TextStyle(color: Color(0xFF8E8E93))),
-                          trailing: Text(formatter.format(sub.amount), style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                          title: Text(sub.name, style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold)),
+                          subtitle: Text(sub.interval, style: const TextStyle(color: AppColors.textSecondary)),
+                          trailing: Text(formatter.format(sub.amount), style: const TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.bold)),
                         );
                       },
                     ),
@@ -154,7 +155,7 @@ class SubscriptionsModal extends ConsumerWidget {
               );
             },
             loading: () => const Center(child: CircularProgressIndicator()),
-            error: (err, stack) => Center(child: Text('Error: $err', style: const TextStyle(color: Colors.red))),
+            error: (err, stack) => Center(child: Text('Error: $err', style: const TextStyle(color: AppColors.semanticUrgent))),
           ),
           const SizedBox(height: 32),
         ],

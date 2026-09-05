@@ -1,10 +1,12 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:kaizen/features/expense_tracker/application/expense_providers.dart';
 import 'package:kaizen/features/expense_tracker/presentation/screens/costify/add_expense_modal.dart';
 import 'package:kaizen/features/expense_tracker/presentation/screens/costify/quick_actions_sheet.dart';
-import 'package:kaizen/features/expense_tracker/presentation/screens/costify/expense_detail_view.dart';
 import 'package:kaizen/features/expense_tracker/presentation/screens/costify/tracker_drawer.dart';
 import 'package:kaizen/features/expense_tracker/presentation/widgets/donut_chart_widget.dart';
 import 'package:kaizen/features/expense_tracker/presentation/screens/costify/new_tracker_modal.dart';
@@ -55,16 +57,16 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.account_balance_wallet_outlined, size: 64, color: Colors.white.withValues(alpha: 0.2)),
+                          Icon(Icons.account_balance_wallet_outlined, size: 64, color: AppColors.textPrimary.withValues(alpha: 0.2)),
                           const SizedBox(height: 16),
                           const Text(
                             'No trackers found',
-                            style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                            style: TextStyle(color: AppColors.textPrimary, fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 8),
                           const Text(
                             'Create a tracker to start managing your expenses.',
-                            style: TextStyle(color: Color(0xFF8E8E93), fontSize: 14),
+                            style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
                           ),
                           const SizedBox(height: 24),
                           ElevatedButton(
@@ -80,11 +82,11 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
                               );
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF0A84FF),
+                              backgroundColor: AppColors.accentViolet,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                             ),
-                            child: const Text('Create Tracker', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                            child: const Text('Create Tracker', style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold)),
                           ),
                         ],
                       ),
@@ -94,63 +96,59 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
               ),
             );
           }
-          return Stack(
-            children: [
-              SafeArea(
-                child: Column(
-                  children: [
-                    _buildAppBar(),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 16),
-                            const DonutChartWidget(),
-                            const SizedBox(height: 24),
-                            _buildTimePeriodSelector(),
-                            const SizedBox(height: 24),
-                            _buildCategoryChips(),
-                            const SizedBox(height: 16),
-                            _buildExpenseList(),
-                            const SizedBox(height: 200), // padding for FABs
-                          ],
-                        ),
-                      ),
+          return SafeArea(
+            child: Column(
+              children: [
+                _buildAppBar(),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 16),
+                        const DonutChartWidget(),
+                        const SizedBox(height: 24),
+                        _buildTimePeriodSelector(),
+                        const SizedBox(height: 24),
+                        _buildCategoryChips(),
+                        const SizedBox(height: 16),
+                        _buildExpenseList(),
+                        const SizedBox(height: 100), // padding for bottom nav
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              // Bottom FABs
-              Positioned(
-                bottom: 120,
-                left: 24,
-                child: FloatingActionButton(
-                  heroTag: 'quick_actions_fab',
-                  backgroundColor: const Color(0xFF1C1C1E),
-                  onPressed: _showQuickActions,
-                  child: const Icon(Icons.grid_view, color: Colors.white),
-                ),
-              ),
-              Positioned(
-                bottom: 120,
-                right: 24,
-                child: SizedBox(
-                  width: 64,
-                  height: 64,
-                  child: FloatingActionButton(
-                    heroTag: 'add_expense_fab',
-                    backgroundColor: const Color(0xFF1C1C1E),
-                    onPressed: _showAddExpenseModal,
-                    child: const Icon(Icons.add, color: Colors.white, size: 32),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, s) => Center(child: Text('Error: $e')),
+        error: (e, s) => Center(child: Text('Error: $e', style: const TextStyle(color: AppColors.semanticUrgent))),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            FloatingActionButton(
+              heroTag: 'quick_actions_fab',
+              backgroundColor: AppColors.surfaceObsidian,
+              onPressed: _showQuickActions,
+              child: const Icon(Icons.grid_view, color: AppColors.textPrimary),
+            ),
+            SizedBox(
+              width: 64,
+              height: 64,
+              child: FloatingActionButton(
+                heroTag: 'add_expense_fab',
+                backgroundColor: AppColors.surfaceObsidian,
+                onPressed: _showAddExpenseModal,
+                child: const Icon(Icons.add, color: AppColors.textPrimary, size: 32),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -163,30 +161,30 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
         children: [
           Builder(
             builder: (context) => IconButton(
-              icon: const Icon(Icons.menu, color: Colors.white),
+              icon: const Icon(Icons.menu, color: AppColors.textPrimary),
               onPressed: () => Scaffold.of(context).openDrawer(),
             ),
           ),
           Container(
             padding: const EdgeInsets.all(8),
             decoration: const BoxDecoration(
-              color: Color(0xFF1C1C1E),
+              color: AppColors.surfaceObsidian,
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.wallet, color: Colors.white, size: 20),
+            child: const Icon(Icons.wallet, color: AppColors.textPrimary, size: 20),
           ),
           const Row(
             children: [
               CircleAvatar(
                 radius: 16,
-                backgroundColor: Color(0xFF1C1C1E),
-                child: Icon(Icons.person, color: Colors.white, size: 16),
+                backgroundColor: AppColors.surfaceObsidian,
+                child: Icon(Icons.person, color: AppColors.textPrimary, size: 16),
               ),
               SizedBox(width: 8),
               CircleAvatar(
                 radius: 16,
-                backgroundColor: Color(0xFF1C1C1E),
-                child: Icon(Icons.person_outline, color: Colors.white, size: 16),
+                backgroundColor: AppColors.surfaceObsidian,
+                child: Icon(Icons.person_outline, color: AppColors.textPrimary, size: 16),
               ),
             ],
           )
@@ -238,13 +236,13 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1C1C1E),
+                  color: AppColors.surfaceObsidian,
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(color: color.withValues(alpha: 0.5)),
                 ),
                 child: Text(
                   '${cat.key} ${formatter.format(cat.value)}',
-                  style: const TextStyle(color: Colors.white, fontSize: 13),
+                  style: const TextStyle(color: AppColors.textPrimary, fontSize: 13),
                 ),
               );
             },
@@ -270,13 +268,13 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: isActive ? const Color(0xFF1C1C1E) : Colors.transparent,
-                borderRadius: BorderRadius.circular(16),
+                color: isActive ? AppColors.surfaceObsidian : Colors.transparent,
+                borderRadius: BorderRadius.circular(AppRadii.lg),
               ),
               child: Text(
                 period,
                 style: TextStyle(
-                  color: isActive ? Colors.white : const Color(0xFF8E8E93),
+                  color: isActive ? AppColors.textPrimary : AppColors.textSecondary,
                   fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
                 ),
               ),
@@ -294,12 +292,25 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
     return transactionsAsync.when(
       data: (transactions) {
         if (transactions.isEmpty) {
-          return const Padding(
-            padding: EdgeInsets.all(32.0),
+          return Padding(
+            padding: const EdgeInsets.all(48.0),
             child: Center(
-              child: Text(
-                'No expenses during the selected period.',
-                style: TextStyle(color: Color(0xFF8E8E93)),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.receipt_long, size: 48, color: AppColors.textSecondary.withValues(alpha: 0.5)),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'No expenses found',
+                    style: TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Try changing the period or add a new expense.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                  ),
+                ],
               ),
             ),
           );
@@ -317,23 +328,20 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
             
             return ListTile(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => ExpenseDetailView(
-                    title: t.transaction.note ?? t.category.name,
-                    amount: formatter.format(t.transaction.amount),
-                    category: t.category.name,
-                    date: dateStr,
-                    onDelete: () async {
-                      final dao = ref.read(expenseDaoProvider);
-                      await dao.deleteTransaction(t.transaction);
-                      if (context.mounted) Navigator.pop(context);
-                    },
-                  )),
-                );
+                context.pushNamed('expense-detail', extra: {
+                  'title': t.transaction.note ?? t.category.name,
+                  'amount': formatter.format(t.transaction.amount),
+                  'category': t.category.name,
+                  'date': dateStr,
+                  'onDelete': () async {
+                    final dao = ref.read(expenseDaoProvider);
+                    await dao.deleteTransaction(t.transaction);
+                    if (context.mounted) context.pop();
+                  },
+                });
               },
-              title: Text(t.transaction.note ?? t.category.name, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
-              subtitle: Text('${t.category.name} • $dateStr', style: const TextStyle(color: Color(0xFF8E8E93), fontSize: 12)),
+              title: Text(t.transaction.note ?? t.category.name, style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w500)),
+              subtitle: Text('${t.category.name} • $dateStr', style: const TextStyle(color: AppColors.textSecondary, fontSize: 12)),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -342,7 +350,7 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
                     style: TextStyle(color: amountColor, fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   const SizedBox(width: 4),
-                  const Icon(Icons.chevron_right, color: Color(0xFF8E8E93)),
+                  const Icon(Icons.chevron_right, color: AppColors.textSecondary),
                 ],
               ),
             );
@@ -350,7 +358,7 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, s) => Center(child: Text('Error: $e', style: const TextStyle(color: Colors.red))),
+      error: (e, s) => Center(child: Text('Error: $e', style: const TextStyle(color: AppColors.semanticUrgent))),
     );
   }
 }

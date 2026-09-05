@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kaizen/features/expense_tracker/application/expense_providers.dart';
@@ -62,7 +63,7 @@ class DonutChartWidget extends ConsumerWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: const Color(0xFF151517),
-              border: Border.all(color: Colors.white12, width: 1),
+              border: Border.all(color: AppColors.borderSpecular, width: 1),
             ),
             padding: const EdgeInsets.all(24),
             child: Stack(
@@ -81,17 +82,17 @@ class DonutChartWidget extends ConsumerWidget {
                   children: [
                     Text(
                       periodTitle,
-                      style: const TextStyle(color: Color(0xFF8E8E93), fontSize: 12),
+                      style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
                     ),
                     const SizedBox(height: 4),
                     const Text(
                       'Total:',
-                      style: TextStyle(color: Color(0xFF8E8E93), fontSize: 14),
+                      style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
                     ),
                     Text(
                       formatter.format(totalExpense),
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: AppColors.textPrimary,
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                       ),
@@ -102,17 +103,17 @@ class DonutChartWidget extends ConsumerWidget {
                       children: [
                         Column(
                           children: [
-                            const Text('ø per day:', style: TextStyle(color: Color(0xFF8E8E93), fontSize: 12)),
+                            const Text('ø per day:', style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
                             const SizedBox(height: 2),
-                            Text(formatter.format(dailyAvg), style: const TextStyle(color: Color(0xFF8E8E93), fontSize: 12)),
+                            Text(formatter.format(dailyAvg), style: const TextStyle(color: AppColors.textSecondary, fontSize: 12)),
                           ],
                         ),
                         const SizedBox(width: 24),
                         Column(
                           children: [
-                            const Text('ø per person:', style: TextStyle(color: Color(0xFF8E8E93), fontSize: 12)),
+                            const Text('ø per person:', style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
                             const SizedBox(height: 2),
-                            Text(formatter.format(totalExpense), style: const TextStyle(color: Color(0xFF8E8E93), fontSize: 12)),
+                            Text(formatter.format(totalExpense), style: const TextStyle(color: AppColors.textSecondary, fontSize: 12)),
                           ],
                         ),
                       ],
@@ -145,7 +146,7 @@ class DonutPainter extends CustomPainter {
 
     // Draw background track
     final bgPaint = Paint()
-      ..color = const Color(0xFF2C2C2E)
+      ..color = AppColors.surfaceElevatedHigh
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth;
     canvas.drawCircle(center, radius, bgPaint);

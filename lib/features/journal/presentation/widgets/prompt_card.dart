@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class PromptCard extends StatelessWidget {
@@ -16,22 +17,22 @@ class PromptCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF2C2C2E),
+        color: AppColors.surfaceElevatedHigh,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: const Color(0xFF9b51e0).withValues(alpha: 0.4)),
+        border: Border.all(color: AppColors.accentViolet.withValues(alpha: 0.4)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Icon(Icons.psychology_outlined, color: Color(0xFF9b51e0), size: 20),
+              const Icon(Icons.psychology_outlined, color: AppColors.accentViolet, size: 20),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   prompt,
                   style: const TextStyle(
-                    color: Color(0xFF9b51e0),
+                    color: AppColors.accentViolet,
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
                     fontStyle: FontStyle.italic,

@@ -1,3 +1,5 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kaizen/features/expense_tracker/application/expense_providers.dart';
@@ -52,7 +54,7 @@ class BalancesModal extends ConsumerWidget {
               const Text(
                 'Balances',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -66,7 +68,7 @@ class BalancesModal extends ConsumerWidget {
                 mainAxisSpacing: 16,
                 childAspectRatio: 1.5,
                 children: [
-                  _buildStatCard('Total spent', formatter.format(totalSpent), Icons.credit_card, const Color(0xFF0A84FF)),
+                  _buildStatCard('Total spent', formatter.format(totalSpent), Icons.credit_card, AppColors.accentViolet),
                   _buildStatCard('Avg / person', formatter.format(avgPerPerson), Icons.people, const Color(0xFF34C759)),
                   _buildStatCard('Members', memberCount.toString(), Icons.group, const Color(0xFFFF2D55)),
                   _buildStatCard('Expenses', expenseCount.toString(), Icons.receipt_long, const Color(0xFFFF9500)),
@@ -76,7 +78,7 @@ class BalancesModal extends ConsumerWidget {
               const Text(
                 'Members',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
@@ -102,7 +104,7 @@ class BalancesModal extends ConsumerWidget {
           color: Color(0xFF161618),
           borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
-        child: Center(child: Text('Error: $err', style: const TextStyle(color: Colors.red))),
+        child: Center(child: Text('Error: $err', style: const TextStyle(color: AppColors.semanticUrgent))),
       ),
     );
   }
@@ -111,8 +113,8 @@ class BalancesModal extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color(0xFF1C1C1E),
-        borderRadius: BorderRadius.circular(16),
+        color: AppColors.surfaceObsidian,
+        borderRadius: BorderRadius.circular(AppRadii.lg),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,7 +127,7 @@ class BalancesModal extends ConsumerWidget {
               Text(
                 value,
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -134,7 +136,7 @@ class BalancesModal extends ConsumerWidget {
               Text(
                 title,
                 style: const TextStyle(
-                  color: Color(0xFF8E8E93),
+                  color: AppColors.textSecondary,
                   fontSize: 12,
                 ),
               ),
@@ -152,8 +154,8 @@ class BalancesModal extends ConsumerWidget {
       ),
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFF1C1C1E),
-          borderRadius: BorderRadius.circular(16),
+          color: AppColors.surfaceObsidian,
+          borderRadius: BorderRadius.circular(AppRadii.lg),
         ),
         child: ExpansionTile(
           tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -165,42 +167,42 @@ class BalancesModal extends ConsumerWidget {
               shape: BoxShape.circle,
             ),
             alignment: Alignment.center,
-            child: const Icon(Icons.person, color: Colors.blueAccent),
+            child: const Icon(Icons.person, color: AppColors.accentViolet),
           ),
           title: Row(
             children: [
               Text(
                 name,
-                style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                style: const TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(width: 8),
               const Text(
                 'You',
-                style: TextStyle(color: Colors.blueAccent, fontSize: 12),
+                style: TextStyle(color: AppColors.accentViolet, fontSize: 12),
               ),
             ],
           ),
-          subtitle: const Text('Real cost in this tracker', style: TextStyle(color: Color(0xFF8E8E93), fontSize: 12)),
+          subtitle: const Text('Real cost in this tracker', style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
           trailing: Text(
             formatter.format(total),
-            style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+            style: const TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.bold),
           ),
           children: [
-            const Divider(color: Color(0xFF2C2C2E)),
+            const Divider(color: AppColors.surfaceElevatedHigh),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Details', style: TextStyle(color: Color(0xFF8E8E93), fontSize: 12)),
+                  const Text('Details', style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
                   const SizedBox(height: 8),
                   ...categoryTotals.entries.map((e) => Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(e.key, style: const TextStyle(color: Colors.white)),
-                        Text(formatter.format(e.value), style: const TextStyle(color: Color(0xFF8E8E93))),
+                        Text(e.key, style: const TextStyle(color: AppColors.textPrimary)),
+                        Text(formatter.format(e.value), style: const TextStyle(color: AppColors.textSecondary)),
                       ],
                     ),
                   )),

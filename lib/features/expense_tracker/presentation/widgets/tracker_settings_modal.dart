@@ -1,3 +1,5 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:drift/drift.dart' as drift;
@@ -104,7 +106,7 @@ class _TrackerSettingsModalState extends ConsumerState<TrackerSettingsModal> {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        color: Color(0xFF121212),
+        color: AppColors.surfacePitchBlack,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       child: Column(
@@ -115,18 +117,18 @@ class _TrackerSettingsModalState extends ConsumerState<TrackerSettingsModal> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.close, color: Colors.white),
+                  icon: const Icon(Icons.close, color: AppColors.textPrimary),
                   onPressed: () => Navigator.pop(context),
                 ),
-                Text(widget.existingTracker != null ? 'Edit Tracker' : 'New Tracker', style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                Text(widget.existingTracker != null ? 'Edit Tracker' : 'New Tracker', style: const TextStyle(color: AppColors.textPrimary, fontSize: 18, fontWeight: FontWeight.bold)),
                 TextButton(
                   onPressed: _saveTracker,
-                  child: const Text('Save', style: TextStyle(color: Color(0xFF0A84FF), fontSize: 16, fontWeight: FontWeight.bold)),
+                  child: const Text('Save', style: TextStyle(color: AppColors.accentViolet, fontSize: 16, fontWeight: FontWeight.bold)),
                 ),
               ],
             ),
           ),
-          const Divider(color: Color(0xFF2C2C2E), height: 1),
+          const Divider(color: AppColors.surfaceElevatedHigh, height: 1),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(24),
@@ -135,20 +137,20 @@ class _TrackerSettingsModalState extends ConsumerState<TrackerSettingsModal> {
                 children: [
                   TextField(
                     controller: _nameController,
-                    style: const TextStyle(color: Colors.white),
+                    style: const TextStyle(color: AppColors.textPrimary),
                     decoration: InputDecoration(
                       hintText: 'Tracker Name (e.g. Goa Trip, Family)',
-                      hintStyle: const TextStyle(color: Color(0xFF8E8E93)),
+                      hintStyle: const TextStyle(color: AppColors.textSecondary),
                       filled: true,
-                      fillColor: const Color(0xFF1C1C1E),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
+                      fillColor: AppColors.surfaceObsidian,
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppRadii.lg), borderSide: BorderSide.none),
                     ),
                   ),
                   const SizedBox(height: 24),
                   SwitchListTile(
-                    title: const Text('Monthly Budget', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500)),
-                    subtitle: const Text('Set a limit for this tracker.', style: TextStyle(color: Color(0xFF8E8E93), fontSize: 14)),
-                    activeTrackColor: const Color(0xFF0A84FF),
+                    title: const Text('Monthly Budget', style: TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.w500)),
+                    subtitle: const Text('Set a limit for this tracker.', style: TextStyle(color: AppColors.textSecondary, fontSize: 14)),
+                    activeTrackColor: AppColors.accentViolet,
                     value: _budgetEnabled,
                     onChanged: (val) => setState(() => _budgetEnabled = val),
                     contentPadding: EdgeInsets.zero,
@@ -156,7 +158,7 @@ class _TrackerSettingsModalState extends ConsumerState<TrackerSettingsModal> {
                   if (_budgetEnabled) ...[
                     const SizedBox(height: 16),
                     Center(
-                      child: Text('₹$_budgetAmount', style: const TextStyle(color: Colors.white, fontSize: 48, fontWeight: FontWeight.bold)),
+                      child: Text('₹$_budgetAmount', style: const TextStyle(color: AppColors.textPrimary, fontSize: 48, fontWeight: FontWeight.bold)),
                     ),
                   ]
                 ],

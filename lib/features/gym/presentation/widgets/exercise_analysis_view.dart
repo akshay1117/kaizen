@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kaizen/features/gym/theme/gym_theme.dart';
@@ -503,8 +504,8 @@ class _ExerciseAnalysisViewState extends ConsumerState<ExerciseAnalysisView> {
     final accentColor = _metricColors[metric]!;
     // Use dark text on bright backgrounds (green, cyan), white on darker ones (orange, pink)
     final textOnAccent = (metric == _StatsMetric.reps || metric == _StatsMetric.volume)
-        ? Colors.black
-        : Colors.white;
+        ? AppColors.surfacePitchBlack
+        : AppColors.textPrimary;
 
     return GestureDetector(
       onTap: () => setState(() => _statsMetric = metric),

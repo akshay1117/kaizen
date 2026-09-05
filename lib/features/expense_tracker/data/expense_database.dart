@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:drift/drift.dart';
+import 'package:uuid/uuid.dart';
 import 'package:drift/native.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -10,7 +11,7 @@ part 'expense_database.g.dart';
 
 @DataClassName('ExpenseTracker')
 class ExpenseTrackers extends Table {
-  TextColumn get id => text().clientDefault(() => '${DateTime.now().millisecondsSinceEpoch}')();
+  TextColumn get id => text().clientDefault(() => const Uuid().v4())();
   TextColumn get name => text()();
   RealColumn get budget => real().nullable()();
   TextColumn get cycleType => text().withDefault(const Constant('Monthly'))(); // One-Time, Monthly
@@ -22,7 +23,7 @@ class ExpenseTrackers extends Table {
 
 @DataClassName('ExpenseMember')
 class ExpenseMembers extends Table {
-  TextColumn get id => text().clientDefault(() => '${DateTime.now().millisecondsSinceEpoch}')();
+  TextColumn get id => text().clientDefault(() => const Uuid().v4())();
   TextColumn get trackerId => text().references(ExpenseTrackers, #id, onDelete: KeyAction.cascade)();
   TextColumn get name => text()();
   TextColumn get avatarPath => text().nullable()();
@@ -34,7 +35,7 @@ class ExpenseMembers extends Table {
 
 @DataClassName('ExpenseAccount')
 class ExpenseAccounts extends Table {
-  TextColumn get id => text().clientDefault(() => '${DateTime.now().millisecondsSinceEpoch}')();
+  TextColumn get id => text().clientDefault(() => const Uuid().v4())();
   TextColumn get name => text()();
   TextColumn get icon => text().withDefault(const Constant('wallet'))();
   RealColumn get initialBalance => real().withDefault(const Constant(0.0))();
@@ -46,7 +47,7 @@ class ExpenseAccounts extends Table {
 
 @DataClassName('ExpenseCategory')
 class ExpenseCategories extends Table {
-  TextColumn get id => text().clientDefault(() => '${DateTime.now().millisecondsSinceEpoch}')();
+  TextColumn get id => text().clientDefault(() => const Uuid().v4())();
   TextColumn get name => text()();
   TextColumn get icon => text()();
   TextColumn get colorHex => text()();
@@ -59,7 +60,7 @@ class ExpenseCategories extends Table {
 
 @DataClassName('ExpenseSubscription')
 class ExpenseSubscriptions extends Table {
-  TextColumn get id => text().clientDefault(() => '${DateTime.now().millisecondsSinceEpoch}')();
+  TextColumn get id => text().clientDefault(() => const Uuid().v4())();
   TextColumn get trackerId => text().references(ExpenseTrackers, #id, onDelete: KeyAction.cascade)();
   TextColumn get accountId => text().nullable().references(ExpenseAccounts, #id, onDelete: KeyAction.setNull)();
   TextColumn get name => text()();
@@ -75,7 +76,7 @@ class ExpenseSubscriptions extends Table {
 
 @DataClassName('ExpenseInstallment')
 class ExpenseInstallments extends Table {
-  TextColumn get id => text().clientDefault(() => '${DateTime.now().millisecondsSinceEpoch}')();
+  TextColumn get id => text().clientDefault(() => const Uuid().v4())();
   TextColumn get trackerId => text().references(ExpenseTrackers, #id, onDelete: KeyAction.cascade)();
   TextColumn get accountId => text().nullable().references(ExpenseAccounts, #id, onDelete: KeyAction.setNull)();
   TextColumn get name => text()();
@@ -90,7 +91,7 @@ class ExpenseInstallments extends Table {
 
 @DataClassName('ExpenseTransaction')
 class ExpenseTransactions extends Table {
-  TextColumn get id => text().clientDefault(() => '${DateTime.now().millisecondsSinceEpoch}')();
+  TextColumn get id => text().clientDefault(() => const Uuid().v4())();
   TextColumn get trackerId => text().nullable().references(ExpenseTrackers, #id, onDelete: KeyAction.cascade)();
   TextColumn get accountId => text().nullable().references(ExpenseAccounts, #id, onDelete: KeyAction.setNull)();
   TextColumn get categoryId => text().references(ExpenseCategories, #id, onDelete: KeyAction.cascade)();

@@ -1,4 +1,6 @@
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -19,8 +21,8 @@ class JournalCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bgColor = isDark ? const Color(0xFF1C1C1E) : Colors.white;
-    final textColor = isDark ? Colors.white : Colors.black;
+    final bgColor = isDark ? AppColors.surfaceObsidian : AppColors.textPrimary;
+    final textColor = isDark ? AppColors.textPrimary : AppColors.surfacePitchBlack;
     final bodyColor = isDark ? Colors.grey[300] : Colors.grey[800];
     final dateColor = isDark ? Colors.grey[500] : Colors.grey[600];
 
@@ -34,16 +36,16 @@ class JournalCard extends ConsumerWidget {
           color: Colors.amber[700],
           borderRadius: BorderRadius.circular(22),
         ),
-        child: const Icon(Icons.favorite, color: Colors.white, size: 28),
+        child: const Icon(Icons.favorite, color: AppColors.textPrimary, size: 28),
       ),
       secondaryBackground: Container(
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.symmetric(horizontal: 24),
         decoration: BoxDecoration(
-          color: Colors.redAccent,
+          color: AppColors.semanticUrgent,
           borderRadius: BorderRadius.circular(22),
         ),
-        child: const Icon(Icons.delete_outline, color: Colors.white, size: 28),
+        child: const Icon(Icons.delete_outline, color: AppColors.textPrimary, size: 28),
       ),
       confirmDismiss: (direction) async {
         if (direction == DismissDirection.startToEnd) {
@@ -97,7 +99,7 @@ class JournalCard extends ConsumerWidget {
                     IconButton(
                       icon: Icon(
                         entry.favorite ? Icons.favorite : Icons.favorite_border,
-                        color: entry.favorite ? Colors.redAccent : Colors.grey,
+                        color: entry.favorite ? AppColors.semanticUrgent : Colors.grey,
                       ),
                       onPressed: () {
                         ref.read(journalListProvider.notifier).toggleFavorite(entry.id);
@@ -189,9 +191,9 @@ class DeleteConfirmationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: const Color(0xFF2C2C2E),
+      backgroundColor: AppColors.surfaceElevatedHigh,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
-      title: const Text('Delete Journal', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+      title: const Text('Delete Journal', style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold)),
       content: const Text('Are you sure you want to delete this journal entry? This action cannot be undone.', style: TextStyle(color: Colors.grey)),
       actions: [
         TextButton(
@@ -200,7 +202,7 @@ class DeleteConfirmationDialog extends StatelessWidget {
         ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(true),
-          child: const Text('Delete', style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
+          child: const Text('Delete', style: TextStyle(color: AppColors.semanticUrgent, fontWeight: FontWeight.bold)),
         ),
       ],
     );
@@ -216,7 +218,7 @@ class BottomActionSheet extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: const BoxDecoration(
-        color: Color(0xFF2C2C2E),
+        color: AppColors.surfaceElevatedHigh,
         borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
       ),
       child: Column(
@@ -238,7 +240,7 @@ class BottomActionSheet extends ConsumerWidget {
             onTap: () {
               Navigator.of(context).pop();
               final duplicated = entry.copyWith(
-                id: DateTime.now().millisecondsSinceEpoch.toString(),
+                id: const Uuid().v4(),
                 title: '${entry.title} (Copy)',
                 createdAt: DateTime.now(),
                 updatedAt: DateTime.now(),
@@ -282,7 +284,7 @@ class BottomActionSheet extends ConsumerWidget {
   }
 
   Widget _buildActionItem({required IconData icon, required String title, required VoidCallback onTap, bool isDestructive = false}) {
-    final color = isDestructive ? Colors.redAccent : Colors.white;
+    final color = isDestructive ? AppColors.semanticUrgent : AppColors.textPrimary;
     return ListTile(
       leading: Icon(icon, color: color, size: 26),
       title: Text(title, style: TextStyle(color: color, fontSize: 18, fontWeight: FontWeight.w500)),

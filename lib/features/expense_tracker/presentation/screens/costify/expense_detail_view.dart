@@ -1,3 +1,5 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class ExpenseDetailView extends StatelessWidget {
@@ -26,16 +28,16 @@ class ExpenseDetailView extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Container(
             decoration: const BoxDecoration(
-              color: Color(0xFF1C1C1E),
+              color: AppColors.surfaceObsidian,
               shape: BoxShape.circle,
             ),
             child: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 16),
+              icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.textPrimary, size: 16),
               onPressed: () => Navigator.pop(context),
             ),
           ),
         ),
-        title: const Text('Detail', style: TextStyle(color: Colors.white)),
+        title: const Text('Detail', style: TextStyle(color: AppColors.textPrimary)),
         centerTitle: true,
       ),
       body: Padding(
@@ -47,8 +49,8 @@ class ExpenseDetailView extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: const Color(0xFF1C1C1E),
-                borderRadius: BorderRadius.circular(16),
+                color: AppColors.surfaceObsidian,
+                borderRadius: BorderRadius.circular(AppRadii.lg),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,14 +66,14 @@ class ExpenseDetailView extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Added by', style: TextStyle(color: Color(0xFF8E8E93), fontSize: 12)),
-                          Text('Akshaykrishnantv', style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
+                          Text('Added by', style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
+                          Text('Akshaykrishnantv', style: TextStyle(color: AppColors.textPrimary, fontSize: 14, fontWeight: FontWeight.bold)),
                         ],
                       ),
                     ],
                   ),
                   const SizedBox(height: 16),
-                  Text(title, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                  Text(title, style: const TextStyle(color: AppColors.textPrimary, fontSize: 18, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 4),
                   Text(
                     amount.replaceAll('-', ''), 
@@ -83,12 +85,12 @@ class ExpenseDetailView extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          const Icon(Icons.local_offer_outlined, color: Color(0xFF8E8E93), size: 16),
+                          const Icon(Icons.local_offer_outlined, color: AppColors.textSecondary, size: 16),
                           const SizedBox(width: 4),
-                          Text(category, style: const TextStyle(color: Color(0xFF8E8E93), fontSize: 12)),
+                          Text(category, style: const TextStyle(color: AppColors.textSecondary, fontSize: 12)),
                         ],
                       ),
-                      Text(date, style: const TextStyle(color: Color(0xFF8E8E93), fontSize: 12)),
+                      Text(date, style: const TextStyle(color: AppColors.textSecondary, fontSize: 12)),
                     ],
                   ),
                 ],
@@ -101,15 +103,15 @@ class ExpenseDetailView extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: const Color(0xFF1C1C1E),
-                borderRadius: BorderRadius.circular(16),
+                color: AppColors.surfaceObsidian,
+                borderRadius: BorderRadius.circular(AppRadii.lg),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Comments', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                  const Text('Comments', style: TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
-                  const Text('No comments available.', style: TextStyle(color: Color(0xFF8E8E93), fontSize: 12)),
+                  const Text('No comments available.', style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
                   const SizedBox(height: 12),
                   Row(
                     children: [
@@ -118,7 +120,7 @@ class ExpenseDetailView extends StatelessWidget {
                           height: 40,
                           decoration: BoxDecoration(
                             color: const Color(0xFF000000),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(AppRadii.sm),
                           ),
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           alignment: Alignment.centerLeft,
@@ -130,10 +132,10 @@ class ExpenseDetailView extends StatelessWidget {
                         width: 40,
                         height: 40,
                         decoration: const BoxDecoration(
-                          color: Color(0xFF0A84FF),
+                          color: AppColors.accentViolet,
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.send, color: Colors.white, size: 20),
+                        child: const Icon(Icons.send, color: AppColors.textPrimary, size: 20),
                       ),
                     ],
                   ),
@@ -147,19 +149,19 @@ class ExpenseDetailView extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: const Color(0xFF1C1C1E),
-                borderRadius: BorderRadius.circular(16),
+                color: AppColors.surfaceObsidian,
+                borderRadius: BorderRadius.circular(AppRadii.lg),
               ),
               child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Attachments', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                  Text('Attachments', style: TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.bold)),
                   SizedBox(height: 12),
                   Row(
                     children: [
-                      Icon(Icons.attach_file, color: Color(0xFF8E8E93), size: 16),
+                      Icon(Icons.attach_file, color: AppColors.textSecondary, size: 16),
                       SizedBox(width: 8),
-                      Text('No attachments', style: TextStyle(color: Color(0xFF8E8E93), fontSize: 14)),
+                      Text('No attachments', style: TextStyle(color: AppColors.textSecondary, fontSize: 14)),
                     ],
                   ),
                 ],
@@ -174,11 +176,11 @@ class ExpenseDetailView extends StatelessWidget {
               height: 56,
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF0A84FF),
+                  backgroundColor: AppColors.accentViolet,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
                 ),
-                icon: const Icon(Icons.edit, color: Colors.white, size: 18),
-                label: const Text('Edit expense', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                icon: const Icon(Icons.edit, color: AppColors.textPrimary, size: 18),
+                label: const Text('Edit expense', style: TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.bold)),
                 onPressed: () {},
               ),
             ),
@@ -191,8 +193,8 @@ class ExpenseDetailView extends StatelessWidget {
                   backgroundColor: const Color(0xFFFF3B30),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
                 ),
-                icon: const Icon(Icons.delete_outline, color: Colors.white, size: 20),
-                label: const Text('Delete expense', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                icon: const Icon(Icons.delete_outline, color: AppColors.textPrimary, size: 20),
+                label: const Text('Delete expense', style: TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.bold)),
                 onPressed: onDelete,
               ),
             ),

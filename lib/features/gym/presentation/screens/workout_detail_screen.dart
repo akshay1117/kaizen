@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -200,7 +201,7 @@ class _WorkoutDetailScreenState extends ConsumerState<WorkoutDetailScreen> {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: GymTheme.cardBackground,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppRadii.lg),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,7 +233,7 @@ class _WorkoutDetailScreenState extends ConsumerState<WorkoutDetailScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
             color: GymTheme.cardBackground,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppRadii.lg),
           ),
           child: const TextField(
             style: TextStyle(color: GymTheme.textPrimary),
@@ -252,7 +253,7 @@ class _WorkoutDetailScreenState extends ConsumerState<WorkoutDetailScreen> {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: GymTheme.cardBackground,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppRadii.lg),
           ),
           child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,

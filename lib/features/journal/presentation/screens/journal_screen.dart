@@ -1,3 +1,5 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,6 +8,7 @@ import '../widgets/journal_card.dart';
 import '../widgets/empty_state.dart';
 import '../widgets/floating_create_button.dart';
 import '../widgets/search_bar.dart';
+import 'package:kaizen/core/widgets/streak_badge.dart';
 
 class JournalScreen extends ConsumerStatefulWidget {
   const JournalScreen({super.key});
@@ -28,8 +31,8 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
       body: Stack(
         children: [
           RefreshIndicator(
-            color: const Color(0xFF9b51e0),
-            backgroundColor: const Color(0xFF2C2C2E),
+            color: AppColors.accentViolet,
+            backgroundColor: AppColors.surfaceElevatedHigh,
             onRefresh: () async {
               await ref.read(journalListProvider.notifier).loadEntries();
             },
@@ -45,6 +48,14 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
                     style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                   ),
                   actions: [
+                    const Padding(
+                      padding: EdgeInsets.only(right: 8.0, top: 8.0, bottom: 8.0),
+                      child: StreakBadge(
+                        streak: 2,
+                        icon: Icons.edit_note,
+                        iconColor: AppColors.textPrimary,
+                      ),
+                    ),
                     IconButton(
                       icon: Icon(_showSearch ? Icons.search_off : Icons.search, size: 26),
                       onPressed: () {
@@ -58,8 +69,8 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
                     ),
                     PopupMenuButton<String>(
                       icon: const Icon(Icons.more_vert, size: 26),
-                      color: const Color(0xFF2C2C2E),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      color: AppColors.surfaceElevatedHigh,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadii.lg)),
                       onSelected: (value) async {
                         final notifier = ref.read(journalFilterProvider.notifier);
                         final listNotifier = ref.read(journalListProvider.notifier);
@@ -73,13 +84,13 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
                           final confirm = await showDialog<bool>(
                             context: context,
                             builder: (context) => AlertDialog(
-                              backgroundColor: const Color(0xFF2C2C2E),
+                              backgroundColor: AppColors.surfaceElevatedHigh,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
-                              title: const Text('Delete All Entries', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                              title: const Text('Delete All Entries', style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold)),
                               content: const Text('Are you sure you want to delete all journal entries? This cannot be undone.', style: TextStyle(color: Colors.grey)),
                               actions: [
                                 TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancel', style: TextStyle(color: Colors.grey))),
-                                TextButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('Delete All', style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold))),
+                                TextButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('Delete All', style: TextStyle(color: AppColors.semanticUrgent, fontWeight: FontWeight.bold))),
                               ],
                             ),
                           );
@@ -95,9 +106,9 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
                           value: 'date',
                           child: Row(
                             children: [
-                              Icon(Icons.calendar_today, color: filterState.sortBy == 'date' ? const Color(0xFF9b51e0) : Colors.white, size: 20),
+                              Icon(Icons.calendar_today, color: filterState.sortBy == 'date' ? AppColors.accentViolet : AppColors.textPrimary, size: 20),
                               const SizedBox(width: 12),
-                              Text('Sort by Date', style: TextStyle(color: filterState.sortBy == 'date' ? const Color(0xFF9b51e0) : Colors.white)),
+                              Text('Sort by Date', style: TextStyle(color: filterState.sortBy == 'date' ? AppColors.accentViolet : AppColors.textPrimary)),
                             ],
                           ),
                         ),
@@ -105,9 +116,9 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
                           value: 'title',
                           child: Row(
                             children: [
-                              Icon(Icons.sort_by_alpha, color: filterState.sortBy == 'title' ? const Color(0xFF9b51e0) : Colors.white, size: 20),
+                              Icon(Icons.sort_by_alpha, color: filterState.sortBy == 'title' ? AppColors.accentViolet : AppColors.textPrimary, size: 20),
                               const SizedBox(width: 12),
-                              Text('Sort by Title', style: TextStyle(color: filterState.sortBy == 'title' ? const Color(0xFF9b51e0) : Colors.white)),
+                              Text('Sort by Title', style: TextStyle(color: filterState.sortBy == 'title' ? AppColors.accentViolet : AppColors.textPrimary)),
                             ],
                           ),
                         ),
@@ -115,9 +126,9 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
                           value: 'favorites',
                           child: Row(
                             children: [
-                              Icon(filterState.favoritesOnly ? Icons.favorite : Icons.favorite_border, color: filterState.favoritesOnly ? Colors.redAccent : Colors.white, size: 20),
+                              Icon(filterState.favoritesOnly ? Icons.favorite : Icons.favorite_border, color: filterState.favoritesOnly ? AppColors.semanticUrgent : AppColors.textPrimary, size: 20),
                               const SizedBox(width: 12),
-                              Text('Favorites Only', style: TextStyle(color: filterState.favoritesOnly ? Colors.redAccent : Colors.white)),
+                              Text('Favorites Only', style: TextStyle(color: filterState.favoritesOnly ? AppColors.semanticUrgent : AppColors.textPrimary)),
                             ],
                           ),
                         ),
@@ -125,9 +136,9 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
                           value: 'delete_all',
                           child: Row(
                             children: [
-                              Icon(Icons.delete_sweep, color: Colors.redAccent, size: 20),
+                              Icon(Icons.delete_sweep, color: AppColors.semanticUrgent, size: 20),
                               SizedBox(width: 12),
-                              Text('Delete All', style: TextStyle(color: Colors.redAccent)),
+                              Text('Delete All', style: TextStyle(color: AppColors.semanticUrgent)),
                             ],
                           ),
                         ),
@@ -135,9 +146,9 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
                           value: 'settings',
                           child: Row(
                             children: [
-                              Icon(Icons.settings_outlined, color: Colors.white, size: 20),
+                              Icon(Icons.settings_outlined, color: AppColors.textPrimary, size: 20),
                               SizedBox(width: 12),
-                              Text('Settings', style: TextStyle(color: Colors.white)),
+                              Text('Settings', style: TextStyle(color: AppColors.textPrimary)),
                             ],
                           ),
                         ),
@@ -152,23 +163,33 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
                       child: JournalSearchBar(),
                     ),
                   ),
-                if (entries.isEmpty)
-                  const SliverFillRemaining(
-                    child: EmptyStateWidget(),
-                  )
-                else
-                  SliverPadding(
-                    padding: const EdgeInsets.all(16),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          final entry = entries[index];
-                          return JournalCard(entry: entry);
-                        },
-                        childCount: entries.length,
+                entries.when(
+                  data: (data) {
+                    if (data.isEmpty) {
+                      return const SliverFillRemaining(
+                        child: EmptyStateWidget(),
+                      );
+                    }
+                    return SliverPadding(
+                      padding: const EdgeInsets.all(16),
+                      sliver: SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            final entry = data[index];
+                            return JournalCard(entry: entry);
+                          },
+                          childCount: data.length,
+                        ),
                       ),
-                    ),
+                    );
+                  },
+                  loading: () => const SliverFillRemaining(
+                    child: Center(child: CircularProgressIndicator(color: AppColors.accentViolet)),
                   ),
+                  error: (err, stack) => const SliverFillRemaining(
+                    child: Center(child: Text('Error loading entries', style: TextStyle(color: AppColors.semanticUrgent))),
+                  ),
+                ),
               ],
             ),
           ),

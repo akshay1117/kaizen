@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'balances_modal.dart';
 import 'subscriptions_modal.dart';
@@ -23,7 +24,7 @@ class QuickActionsSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        color: Color(0xFF121212),
+        color: AppColors.surfacePitchBlack,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       padding: const EdgeInsets.symmetric(vertical: 24),
@@ -43,8 +44,8 @@ class QuickActionsSheet extends StatelessWidget {
 
   Widget _buildActionItem(IconData icon, String title, VoidCallback onTap) {
     return ListTile(
-      leading: Icon(icon, color: Colors.white),
-      title: Text(title, style: const TextStyle(color: Colors.white)),
+      leading: Icon(icon, color: AppColors.textPrimary),
+      title: Text(title, style: const TextStyle(color: AppColors.textPrimary)),
       onTap: onTap,
     );
   }

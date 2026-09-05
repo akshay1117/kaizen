@@ -1,10 +1,13 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
-import 'package:kaizen/services/design_tokens.dart';
+
 import 'package:kaizen/features/auth/presentation/providers/auth_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -73,15 +76,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          backgroundColor: DesignTokens.bgSecondary,
+          backgroundColor: AppColors.surfaceElevatedLow,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
-            side: const BorderSide(color: DesignTokens.borderPrimary),
+            borderRadius: BorderRadius.circular(AppRadii.lg),
+            side: const BorderSide(color: AppColors.borderSpecular),
           ),
           title: Text(
             'Reset Password',
             style: GoogleFonts.inter(
-              color: DesignTokens.textPrimary,
+              color: AppColors.textPrimary,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -92,7 +95,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               Text(
                 'Enter your email to receive a password reset link.',
                 style: GoogleFonts.inter(
-                  color: DesignTokens.textSecondary,
+                  color: AppColors.textSecondary,
                   fontSize: 13.sp,
                 ),
               ),
@@ -100,15 +103,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               TextField(
                 controller: resetEmailController,
                 keyboardType: TextInputType.emailAddress,
-                style: const TextStyle(color: DesignTokens.textPrimary),
+                style: const TextStyle(color: AppColors.textPrimary),
                 decoration: InputDecoration(
                   hintText: 'name@example.com',
-                  hintStyle: const TextStyle(color: DesignTokens.textTertiary),
-                  prefixIcon: const Icon(LucideIcons.mail, color: DesignTokens.textSecondary, size: 18),
+                  hintStyle: const TextStyle(color: AppColors.textTertiary),
+                  prefixIcon: const Icon(LucideIcons.mail, color: AppColors.textSecondary, size: 18),
                   filled: true,
-                  fillColor: DesignTokens.bgTertiary,
+                  fillColor: AppColors.surfaceElevatedMid,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(DesignTokens.radiusMedium),
+                    borderRadius: BorderRadius.circular(AppRadii.md),
                     borderSide: BorderSide.none,
                   ),
                 ),
@@ -118,7 +121,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext),
-              child: const Text('Cancel', style: TextStyle(color: DesignTokens.textSecondary)),
+              child: const Text('Cancel', style: TextStyle(color: AppColors.textSecondary)),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -129,20 +132,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      backgroundColor: sent ? DesignTokens.accentHabit : DesignTokens.accentBoxing,
+                      backgroundColor: sent ? AppColors.semanticPositive : AppColors.semanticUrgent,
                       content: Text(
                         sent ? 'Password reset link sent to $email' : 'Failed to send reset link',
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(color: AppColors.textPrimary),
                       ),
                     ),
                   );
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: DesignTokens.accentGym,
+                backgroundColor: AppColors.accentViolet,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
               ),
-              child: const Text('Send Link', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600)),
+              child: const Text('Send Link', style: TextStyle(color: AppColors.surfacePitchBlack, fontWeight: FontWeight.w600)),
             ),
           ],
         );
@@ -156,7 +159,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final isLoading = authState.isLoading;
 
     return GlassScaffold(
-      backgroundColor: DesignTokens.bgPrimary,
+      backgroundColor: AppColors.surfacePitchBlack,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -177,13 +180,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           gradient: const LinearGradient(
-                            colors: [DesignTokens.accentGym, Color(0xFF00897B)],
+                            colors: [AppColors.accentViolet, Color(0xFF00897B)],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: DesignTokens.accentGym.withValues(alpha: 0.35),
+                              color: AppColors.accentViolet.withValues(alpha: 0.35),
                               blurRadius: 24,
                               spreadRadius: 2,
                             ),
@@ -192,7 +195,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         child: Center(
                           child: Icon(
                             LucideIcons.flame,
-                            color: Colors.black,
+                            color: AppColors.surfacePitchBlack,
                             size: 36.sp,
                           ),
                         ),
@@ -207,7 +210,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       style: GoogleFonts.inter(
                         fontSize: 26.sp,
                         fontWeight: FontWeight.w800,
-                        color: DesignTokens.textPrimary,
+                        color: AppColors.textPrimary,
                         letterSpacing: -0.5,
                       ),
                     ),
@@ -219,7 +222,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       textAlign: TextAlign.center,
                       style: GoogleFonts.inter(
                         fontSize: 13.sp,
-                        color: DesignTokens.textSecondary,
+                        color: AppColors.textSecondary,
                       ),
                     ),
                     SizedBox(height: 28.h),
@@ -228,9 +231,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     Container(
                       padding: EdgeInsets.all(4.w),
                       decoration: BoxDecoration(
-                        color: DesignTokens.bgSecondary,
-                        borderRadius: BorderRadius.circular(DesignTokens.radiusLarge),
-                        border: Border.all(color: DesignTokens.borderPrimary),
+                        color: AppColors.surfaceElevatedLow,
+                        borderRadius: BorderRadius.circular(AppRadii.lg),
+                        border: Border.all(color: AppColors.borderSpecular),
                       ),
                       child: Row(
                         children: [
@@ -248,10 +251,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 duration: const Duration(milliseconds: 200),
                                 padding: EdgeInsets.symmetric(vertical: 10.h),
                                 decoration: BoxDecoration(
-                                  color: !_isSignUp ? DesignTokens.bgTertiary : Colors.transparent,
+                                  color: !_isSignUp ? AppColors.surfaceElevatedMid : Colors.transparent,
                                   borderRadius: BorderRadius.circular(20.r),
                                   border: !_isSignUp
-                                      ? Border.all(color: DesignTokens.borderSecondary)
+                                      ? Border.all(color: AppColors.borderActive)
                                       : null,
                                 ),
                                 child: Text(
@@ -260,7 +263,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   style: GoogleFonts.inter(
                                     fontSize: 13.sp,
                                     fontWeight: !_isSignUp ? FontWeight.w700 : FontWeight.w500,
-                                    color: !_isSignUp ? DesignTokens.textPrimary : DesignTokens.textTertiary,
+                                    color: !_isSignUp ? AppColors.textPrimary : AppColors.textTertiary,
                                   ),
                                 ),
                               ),
@@ -280,10 +283,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 duration: const Duration(milliseconds: 200),
                                 padding: EdgeInsets.symmetric(vertical: 10.h),
                                 decoration: BoxDecoration(
-                                  color: _isSignUp ? DesignTokens.bgTertiary : Colors.transparent,
+                                  color: _isSignUp ? AppColors.surfaceElevatedMid : Colors.transparent,
                                   borderRadius: BorderRadius.circular(20.r),
                                   border: _isSignUp
-                                      ? Border.all(color: DesignTokens.borderSecondary)
+                                      ? Border.all(color: AppColors.borderActive)
                                       : null,
                                 ),
                                 child: Text(
@@ -292,7 +295,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   style: GoogleFonts.inter(
                                     fontSize: 13.sp,
                                     fontWeight: _isSignUp ? FontWeight.w700 : FontWeight.w500,
-                                    color: _isSignUp ? DesignTokens.textPrimary : DesignTokens.textTertiary,
+                                    color: _isSignUp ? AppColors.textPrimary : AppColors.textTertiary,
                                   ),
                                 ),
                               ),
@@ -308,19 +311,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
                         decoration: BoxDecoration(
-                          color: DesignTokens.accentBoxing.withValues(alpha: 0.15),
-                          borderRadius: BorderRadius.circular(DesignTokens.radiusMedium),
-                          border: Border.all(color: DesignTokens.accentBoxing.withValues(alpha: 0.4)),
+                          color: AppColors.semanticUrgent.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(AppRadii.md),
+                          border: Border.all(color: AppColors.semanticUrgent.withValues(alpha: 0.4)),
                         ),
                         child: Row(
                           children: [
-                            Icon(LucideIcons.alertCircle, color: DesignTokens.accentBoxing, size: 18.sp),
+                            Icon(LucideIcons.alertCircle, color: AppColors.semanticUrgent, size: 18.sp),
                             SizedBox(width: 10.w),
                             Expanded(
                               child: Text(
                                 _errorMessage!,
                                 style: GoogleFonts.inter(
-                                  color: DesignTokens.accentBoxing,
+                                  color: AppColors.semanticUrgent,
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -337,7 +340,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       Text(
                         'Full Name',
                         style: GoogleFonts.inter(
-                          color: DesignTokens.textSecondary,
+                          color: AppColors.textSecondary,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w600,
                         ),
@@ -345,25 +348,25 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       SizedBox(height: 6.h),
                       TextFormField(
                         controller: _nameController,
-                        style: const TextStyle(color: DesignTokens.textPrimary),
+                        style: const TextStyle(color: AppColors.textPrimary),
                         textInputAction: TextInputAction.next,
                         decoration: InputDecoration(
                           hintText: 'e.g. Alex Smith',
-                          hintStyle: const TextStyle(color: DesignTokens.textTertiary),
-                          prefixIcon: const Icon(LucideIcons.user, color: DesignTokens.textSecondary, size: 18),
+                          hintStyle: const TextStyle(color: AppColors.textTertiary),
+                          prefixIcon: const Icon(LucideIcons.user, color: AppColors.textSecondary, size: 18),
                           filled: true,
-                          fillColor: DesignTokens.bgSecondary,
+                          fillColor: AppColors.surfaceElevatedLow,
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(DesignTokens.radiusMedium),
-                            borderSide: const BorderSide(color: DesignTokens.borderPrimary),
+                            borderRadius: BorderRadius.circular(AppRadii.md),
+                            borderSide: const BorderSide(color: AppColors.borderSpecular),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(DesignTokens.radiusMedium),
-                            borderSide: const BorderSide(color: DesignTokens.borderPrimary),
+                            borderRadius: BorderRadius.circular(AppRadii.md),
+                            borderSide: const BorderSide(color: AppColors.borderSpecular),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(DesignTokens.radiusMedium),
-                            borderSide: const BorderSide(color: DesignTokens.accentGym, width: 1.5),
+                            borderRadius: BorderRadius.circular(AppRadii.md),
+                            borderSide: const BorderSide(color: AppColors.accentViolet, width: 1.5),
                           ),
                         ),
                         validator: (val) {
@@ -380,7 +383,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     Text(
                       'Email Address',
                       style: GoogleFonts.inter(
-                        color: DesignTokens.textSecondary,
+                        color: AppColors.textSecondary,
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w600,
                       ),
@@ -389,25 +392,25 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     TextFormField(
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
-                      style: const TextStyle(color: DesignTokens.textPrimary),
+                      style: const TextStyle(color: AppColors.textPrimary),
                       textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
                         hintText: 'name@example.com',
-                        hintStyle: const TextStyle(color: DesignTokens.textTertiary),
-                        prefixIcon: const Icon(LucideIcons.mail, color: DesignTokens.textSecondary, size: 18),
+                        hintStyle: const TextStyle(color: AppColors.textTertiary),
+                        prefixIcon: const Icon(LucideIcons.mail, color: AppColors.textSecondary, size: 18),
                         filled: true,
-                        fillColor: DesignTokens.bgSecondary,
+                        fillColor: AppColors.surfaceElevatedLow,
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(DesignTokens.radiusMedium),
-                          borderSide: const BorderSide(color: DesignTokens.borderPrimary),
+                          borderRadius: BorderRadius.circular(AppRadii.md),
+                          borderSide: const BorderSide(color: AppColors.borderSpecular),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(DesignTokens.radiusMedium),
-                          borderSide: const BorderSide(color: DesignTokens.borderPrimary),
+                          borderRadius: BorderRadius.circular(AppRadii.md),
+                          borderSide: const BorderSide(color: AppColors.borderSpecular),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(DesignTokens.radiusMedium),
-                          borderSide: const BorderSide(color: DesignTokens.accentGym, width: 1.5),
+                          borderRadius: BorderRadius.circular(AppRadii.md),
+                          borderSide: const BorderSide(color: AppColors.accentViolet, width: 1.5),
                         ),
                       ),
                       validator: (val) {
@@ -425,7 +428,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         Text(
                           'Password',
                           style: GoogleFonts.inter(
-                            color: DesignTokens.textSecondary,
+                            color: AppColors.textSecondary,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w600,
                           ),
@@ -436,7 +439,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             child: Text(
                               'Forgot?',
                               style: GoogleFonts.inter(
-                                color: DesignTokens.accentGym,
+                                color: AppColors.accentViolet,
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -448,34 +451,34 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     TextFormField(
                       controller: _passwordController,
                       obscureText: _obscurePassword,
-                      style: const TextStyle(color: DesignTokens.textPrimary),
+                      style: const TextStyle(color: AppColors.textPrimary),
                       textInputAction: TextInputAction.done,
                       onFieldSubmitted: (_) => _submit(),
                       decoration: InputDecoration(
                         hintText: '••••••••',
-                        hintStyle: const TextStyle(color: DesignTokens.textTertiary),
-                        prefixIcon: const Icon(LucideIcons.lock, color: DesignTokens.textSecondary, size: 18),
+                        hintStyle: const TextStyle(color: AppColors.textTertiary),
+                        prefixIcon: const Icon(LucideIcons.lock, color: AppColors.textSecondary, size: 18),
                         suffixIcon: IconButton(
                           icon: Icon(
                             _obscurePassword ? LucideIcons.eyeOff : LucideIcons.eye,
-                            color: DesignTokens.textSecondary,
+                            color: AppColors.textSecondary,
                             size: 18,
                           ),
                           onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
                         ),
                         filled: true,
-                        fillColor: DesignTokens.bgSecondary,
+                        fillColor: AppColors.surfaceElevatedLow,
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(DesignTokens.radiusMedium),
-                          borderSide: const BorderSide(color: DesignTokens.borderPrimary),
+                          borderRadius: BorderRadius.circular(AppRadii.md),
+                          borderSide: const BorderSide(color: AppColors.borderSpecular),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(DesignTokens.radiusMedium),
-                          borderSide: const BorderSide(color: DesignTokens.borderPrimary),
+                          borderRadius: BorderRadius.circular(AppRadii.md),
+                          borderSide: const BorderSide(color: AppColors.borderSpecular),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(DesignTokens.radiusMedium),
-                          borderSide: const BorderSide(color: DesignTokens.accentGym, width: 1.5),
+                          borderRadius: BorderRadius.circular(AppRadii.md),
+                          borderSide: const BorderSide(color: AppColors.accentViolet, width: 1.5),
                         ),
                       ),
                       validator: (val) {
@@ -486,19 +489,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     SizedBox(height: 28.h),
 
-                    // Submit Button
                     ElevatedButton(
                       onPressed: isLoading ? null : _submit,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: DesignTokens.accentGym,
-                        foregroundColor: Colors.black,
-                        disabledBackgroundColor: DesignTokens.accentGym.withValues(alpha: 0.5),
+                        backgroundColor: AppColors.accentViolet,
+                        foregroundColor: AppColors.surfacePitchBlack,
+                        disabledBackgroundColor: AppColors.accentViolet.withValues(alpha: 0.5),
                         padding: EdgeInsets.symmetric(vertical: 14.h),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(DesignTokens.radiusMedium),
+                          borderRadius: BorderRadius.circular(AppRadii.md),
                         ),
                         elevation: 4,
-                        shadowColor: DesignTokens.accentGym.withValues(alpha: 0.4),
+                        shadowColor: AppColors.accentViolet.withValues(alpha: 0.4),
                       ),
                       child: isLoading
                           ? SizedBox(
@@ -506,7 +508,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               height: 22.w,
                               child: const CircularProgressIndicator(
                                 strokeWidth: 2.5,
-                                valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                                valueColor: AlwaysStoppedAnimation<Color>(AppColors.surfacePitchBlack),
                               ),
                             )
                           : Text(
@@ -516,6 +518,68 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
+                    ),
+                    SizedBox(height: 32.h),
+
+                    // Divider
+                    Row(
+                      children: [
+                        const Expanded(child: Divider(color: AppColors.borderSpecular)),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.w),
+                          child: Text(
+                            'Or continue with',
+                            style: GoogleFonts.inter(
+                              color: AppColors.textTertiary,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        const Expanded(child: Divider(color: AppColors.borderSpecular)),
+                      ],
+                    ),
+                    SizedBox(height: 24.h),
+
+                    // Social Auth Buttons
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: isLoading
+                                ? null
+                                : () async {
+                                    final authController = ref.read(authControllerProvider.notifier);
+                                    await authController.signInWithGoogle();
+                                  },
+                            icon: FaIcon(FontAwesomeIcons.google, color: AppColors.textPrimary, size: 20.sp),
+                            label: const Text('Google', style: TextStyle(color: AppColors.textPrimary)),
+                            style: OutlinedButton.styleFrom(
+                              padding: EdgeInsets.symmetric(vertical: 14.h),
+                              side: const BorderSide(color: AppColors.borderSpecular),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadii.md)),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 16.w),
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: isLoading
+                                ? null
+                                : () async {
+                                    final authController = ref.read(authControllerProvider.notifier);
+                                    await authController.signInWithApple();
+                                  },
+                            icon: FaIcon(FontAwesomeIcons.apple, color: AppColors.textPrimary, size: 20.sp),
+                            label: const Text('Apple', style: TextStyle(color: AppColors.textPrimary)),
+                            style: OutlinedButton.styleFrom(
+                              padding: EdgeInsets.symmetric(vertical: 14.h),
+                              side: const BorderSide(color: AppColors.borderSpecular),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadii.md)),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

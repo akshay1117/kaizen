@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,7 +18,7 @@ class CustomNumpad extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      color: const Color(0xFF121212),
+      color: AppColors.surfacePitchBlack,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -66,13 +67,13 @@ class CustomNumpad extends StatelessWidget {
         child: isIcon
             ? const Icon(
                 Icons.backspace_outlined,
-                color: Colors.white,
+                color: AppColors.textPrimary,
                 size: 28,
               )
             : Text(
                 label,
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontSize: 24,
                   fontWeight: FontWeight.w400,
                 ),

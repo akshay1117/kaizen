@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -76,7 +77,7 @@ class ExerciseSetHistoryView extends ConsumerWidget {
                           return Container(
                             decoration: BoxDecoration(
                               border: isLast ? null : const Border(
-                                bottom: BorderSide(color: Color(0xFF2C2C2E), width: 1),
+                                bottom: BorderSide(color: AppColors.surfaceElevatedHigh, width: 1),
                               ),
                             ),
                             padding: EdgeInsets.symmetric(vertical: 8.h),
@@ -120,14 +121,14 @@ class ExerciseSetHistoryView extends ConsumerWidget {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.5),
+                        color: AppColors.surfacePitchBlack.withValues(alpha: 0.5),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       ),
                     ],
                   ),
                   alignment: Alignment.center,
-                  child: Icon(LucideIcons.plus, color: Colors.white, size: 36.sp),
+                  child: Icon(LucideIcons.plus, color: AppColors.textPrimary, size: 36.sp),
                 ),
               ),
               SizedBox(width: 16.w),
@@ -142,7 +143,7 @@ class ExerciseSetHistoryView extends ConsumerWidget {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.5),
+                        color: AppColors.surfacePitchBlack.withValues(alpha: 0.5),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       ),

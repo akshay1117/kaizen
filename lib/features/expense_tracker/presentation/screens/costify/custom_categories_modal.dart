@@ -1,3 +1,5 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kaizen/features/expense_tracker/application/expense_providers.dart';
@@ -26,7 +28,7 @@ class CustomCategoriesModal extends ConsumerWidget {
 
     return Container(
       decoration: const BoxDecoration(
-        color: Color(0xFF121212),
+        color: AppColors.surfacePitchBlack,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
@@ -39,7 +41,7 @@ class CustomCategoriesModal extends ConsumerWidget {
               const Text(
                 'Custom Categories',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -47,11 +49,11 @@ class CustomCategoriesModal extends ConsumerWidget {
               Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.add, color: Color(0xFF0A84FF)),
+                    icon: const Icon(Icons.add, color: AppColors.accentViolet),
                     onPressed: () => _showNewCategorySheet(context),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.close, color: Colors.white54),
+                    icon: const Icon(Icons.close, color: AppColors.textTertiary),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ],
@@ -65,7 +67,7 @@ class CustomCategoriesModal extends ConsumerWidget {
                 return ListView.separated(
                   itemCount: categories.length,
                   separatorBuilder: (context, index) => const Divider(
-                    color: Color(0xFF2C2C2E),
+                    color: AppColors.surfaceElevatedHigh,
                     height: 1,
                   ),
                   itemBuilder: (context, index) {
@@ -86,7 +88,7 @@ class CustomCategoriesModal extends ConsumerWidget {
                       ),
                       title: Text(
                         category.name,
-                        style: const TextStyle(color: Colors.white, fontSize: 16),
+                        style: const TextStyle(color: AppColors.textPrimary, fontSize: 16),
                       ),
                       trailing: Container(
                         width: 12,
@@ -102,7 +104,7 @@ class CustomCategoriesModal extends ConsumerWidget {
                 );
               },
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (err, stack) => Center(child: Text('Error: $err', style: const TextStyle(color: Colors.red))),
+              error: (err, stack) => Center(child: Text('Error: $err', style: const TextStyle(color: AppColors.semanticUrgent))),
             ),
           ),
         ],
@@ -121,10 +123,10 @@ class NewCategorySheet extends ConsumerStatefulWidget {
 class _NewCategorySheetState extends ConsumerState<NewCategorySheet> {
   final TextEditingController _nameController = TextEditingController();
   final List<Color> _colors = [
-    Colors.red,
+    AppColors.semanticUrgent,
     Colors.orange,
     Colors.yellow,
-    Colors.green,
+    AppColors.semanticPositive,
     Colors.blue,
     Colors.purple,
     Colors.pink,
@@ -141,7 +143,7 @@ class _NewCategorySheetState extends ConsumerState<NewCategorySheet> {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        color: Color(0xFF1C1C1E),
+        color: AppColors.surfaceObsidian,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       padding: const EdgeInsets.all(24),
@@ -155,13 +157,13 @@ class _NewCategorySheetState extends ConsumerState<NewCategorySheet> {
               const Text(
                 'New Category',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               IconButton(
-                icon: const Icon(Icons.close, color: Colors.white54),
+                icon: const Icon(Icons.close, color: AppColors.textTertiary),
                 onPressed: () => Navigator.pop(context),
               ),
             ],
@@ -170,21 +172,21 @@ class _NewCategorySheetState extends ConsumerState<NewCategorySheet> {
           const Text(
             'Name',
             style: TextStyle(
-              color: Colors.white54,
+              color: AppColors.textTertiary,
               fontSize: 14,
             ),
           ),
           const SizedBox(height: 8),
           TextField(
             controller: _nameController,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: AppColors.textPrimary),
             decoration: InputDecoration(
               hintText: 'e.g. Groceries',
-              hintStyle: const TextStyle(color: Colors.white24),
+              hintStyle: const TextStyle(color: AppColors.borderSpecular),
               filled: true,
-              fillColor: const Color(0xFF2C2C2E),
+              fillColor: AppColors.surfaceElevatedHigh,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppRadii.md),
                 borderSide: BorderSide.none,
               ),
             ),
@@ -193,7 +195,7 @@ class _NewCategorySheetState extends ConsumerState<NewCategorySheet> {
           const Text(
             'Color',
             style: TextStyle(
-              color: Colors.white54,
+              color: AppColors.textTertiary,
               fontSize: 14,
             ),
           ),
@@ -212,7 +214,7 @@ class _NewCategorySheetState extends ConsumerState<NewCategorySheet> {
                     color: color,
                     shape: BoxShape.circle,
                     border: isSelected
-                        ? Border.all(color: Colors.white, width: 3)
+                        ? Border.all(color: AppColors.textPrimary, width: 3)
                         : null,
                   ),
                 ),
@@ -242,15 +244,15 @@ class _NewCategorySheetState extends ConsumerState<NewCategorySheet> {
                 if (context.mounted) Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF0A84FF),
+                backgroundColor: AppColors.accentViolet,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(AppRadii.lg),
                 ),
               ),
               child: const Text(
                 'Save Category',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),

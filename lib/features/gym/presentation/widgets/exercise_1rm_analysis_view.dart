@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kaizen/features/gym/theme/gym_theme.dart';
@@ -166,9 +167,9 @@ class ExerciseOneRmAnalysisView extends ConsumerWidget {
             child: Row(
               children: [
                 Expanded(child: _buildTimeFilter('M', isSelected: true)),
-                Container(width: 1, height: 20.h, color: Colors.white24),
+                Container(width: 1, height: 20.h, color: AppColors.borderSpecular),
                 Expanded(child: _buildTimeFilter('6M', isSelected: false)),
-                Container(width: 1, height: 20.h, color: Colors.white24),
+                Container(width: 1, height: 20.h, color: AppColors.borderSpecular),
                 Expanded(child: _buildTimeFilter('Y', isSelected: false)),
               ],
             ),
@@ -185,7 +186,7 @@ class ExerciseOneRmAnalysisView extends ConsumerWidget {
   Widget _buildGridLine() {
     return Divider(
       height: 1,
-      color: Colors.white.withValues(alpha: 0.1),
+      color: AppColors.textPrimary.withValues(alpha: 0.1),
     );
   }
 
@@ -215,14 +216,14 @@ class ExerciseOneRmAnalysisView extends ConsumerWidget {
   Widget _buildTimeFilter(String text, {required bool isSelected}) {
     return Container(
       decoration: BoxDecoration(
-        color: isSelected ? Colors.white.withValues(alpha: 0.15) : Colors.transparent,
+        color: isSelected ? AppColors.textPrimary.withValues(alpha: 0.15) : Colors.transparent,
         borderRadius: BorderRadius.circular(8.r),
       ),
       alignment: Alignment.center,
       child: Text(
         text,
         style: TextStyle(
-          color: isSelected ? Colors.white : GymTheme.textSecondary,
+          color: isSelected ? AppColors.textPrimary : GymTheme.textSecondary,
           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           fontSize: 14.sp,
         ),
@@ -242,7 +243,7 @@ class ExerciseOneRmAnalysisView extends ConsumerWidget {
           Text(
             value,
             style: TextStyle(
-              color: isSelected ? Colors.black : Colors.white,
+              color: isSelected ? AppColors.surfacePitchBlack : AppColors.textPrimary,
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
             ),
@@ -251,7 +252,7 @@ class ExerciseOneRmAnalysisView extends ConsumerWidget {
           Text(
             label,
             style: TextStyle(
-              color: isSelected ? Colors.black87 : GymTheme.textSecondary,
+              color: isSelected ? AppColors.surfacePitchBlack : GymTheme.textSecondary,
               fontSize: 12.sp,
             ),
           ),

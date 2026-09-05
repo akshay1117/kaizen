@@ -1,4 +1,7 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -50,7 +53,7 @@ class _CreateJournalScreenState extends ConsumerState<CreateJournalScreen> {
     final images = _imageUrlController.text.isNotEmpty ? [_imageUrlController.text.trim()] : <String>[];
 
     final newEntry = JournalEntry(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      id: const Uuid().v4(),
       title: _titleController.text.trim(),
       body: _bodyController.text.trim(),
       images: images,
@@ -71,14 +74,14 @@ class _CreateJournalScreenState extends ConsumerState<CreateJournalScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return GlassScaffold(
-      backgroundColor: isDark ? const Color(0xFF141415) : Colors.white,
+      backgroundColor: isDark ? const Color(0xFF141415) : AppColors.textPrimary,
       appBar: GlassAppBar(
         backgroundColor: Colors.transparent,
 
         title: const Text('New Journal', style: TextStyle(fontWeight: FontWeight.bold)),
         actions: [
           IconButton(
-            icon: Icon(_isFavorite ? Icons.favorite : Icons.favorite_border, color: _isFavorite ? Colors.redAccent : Colors.grey),
+            icon: Icon(_isFavorite ? Icons.favorite : Icons.favorite_border, color: _isFavorite ? AppColors.semanticUrgent : Colors.grey),
             onPressed: () {
               setState(() {
                 _isFavorite = !_isFavorite;
@@ -89,7 +92,7 @@ class _CreateJournalScreenState extends ConsumerState<CreateJournalScreen> {
             onPressed: _saveEntry,
             child: const Text(
               'Save',
-              style: TextStyle(color: Color(0xFF9b51e0), fontWeight: FontWeight.bold, fontSize: 16),
+              style: TextStyle(color: AppColors.accentViolet, fontWeight: FontWeight.bold, fontSize: 16),
             ),
           ),
           const SizedBox(width: 8),
@@ -119,7 +122,7 @@ class _CreateJournalScreenState extends ConsumerState<CreateJournalScreen> {
                         padding: const EdgeInsets.only(right: 12),
                         child: Container(
                           decoration: BoxDecoration(
-                            border: isSelected ? Border.all(color: const Color(0xFF9b51e0), width: 2) : null,
+                            border: isSelected ? Border.all(color: AppColors.accentViolet, width: 2) : null,
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: MoodChip(mood: mood),
@@ -177,7 +180,7 @@ class _CreateJournalScreenState extends ConsumerState<CreateJournalScreen> {
                           },
                           icon: Icon(
                             _showAddDetails ? Icons.remove_circle_outline : Icons.add_circle_outline,
-                            color: const Color(0xFF9b51e0),
+                            color: AppColors.accentViolet,
                             size: 28,
                           ),
                         ),
@@ -193,10 +196,10 @@ class _CreateJournalScreenState extends ConsumerState<CreateJournalScreen> {
                       // Image URL
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                        decoration: BoxDecoration(color: const Color(0xFF2C2C2E), borderRadius: BorderRadius.circular(16)),
+                        decoration: BoxDecoration(color: AppColors.surfaceElevatedHigh, borderRadius: BorderRadius.circular(AppRadii.lg)),
                         child: TextField(
                           controller: _imageUrlController,
-                          style: const TextStyle(color: Colors.white),
+                          style: const TextStyle(color: AppColors.textPrimary),
                           decoration: const InputDecoration(
                             icon: Icon(Icons.image_outlined, color: Colors.grey),
                             hintText: 'Image URL (optional)',
@@ -210,10 +213,10 @@ class _CreateJournalScreenState extends ConsumerState<CreateJournalScreen> {
                       // Location
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                        decoration: BoxDecoration(color: const Color(0xFF2C2C2E), borderRadius: BorderRadius.circular(16)),
+                        decoration: BoxDecoration(color: AppColors.surfaceElevatedHigh, borderRadius: BorderRadius.circular(AppRadii.lg)),
                         child: TextField(
                           controller: _locationController,
-                          style: const TextStyle(color: Colors.white),
+                          style: const TextStyle(color: AppColors.textPrimary),
                           decoration: const InputDecoration(
                             icon: Icon(Icons.location_on_outlined, color: Colors.grey),
                             hintText: 'Location (optional)',
@@ -227,10 +230,10 @@ class _CreateJournalScreenState extends ConsumerState<CreateJournalScreen> {
                       // Tags
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                        decoration: BoxDecoration(color: const Color(0xFF2C2C2E), borderRadius: BorderRadius.circular(16)),
+                        decoration: BoxDecoration(color: AppColors.surfaceElevatedHigh, borderRadius: BorderRadius.circular(AppRadii.lg)),
                         child: TextField(
                           controller: _tagsController,
-                          style: const TextStyle(color: Colors.white),
+                          style: const TextStyle(color: AppColors.textPrimary),
                           decoration: const InputDecoration(
                             icon: Icon(Icons.tag, color: Colors.grey),
                             hintText: 'Tags (comma separated)',

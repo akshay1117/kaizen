@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import '../../domain/models/journal_entry.dart';
 
@@ -16,7 +17,7 @@ class MoodChip extends StatelessWidget {
       case Mood.sad:
         return Colors.indigo.withValues(alpha: 0.2);
       case Mood.angry:
-        return Colors.red.withValues(alpha: 0.2);
+        return AppColors.semanticUrgent.withValues(alpha: 0.2);
     }
   }
 
@@ -31,7 +32,7 @@ class MoodChip extends StatelessWidget {
       case Mood.sad:
         return Colors.indigoAccent;
       case Mood.angry:
-        return Colors.redAccent;
+        return AppColors.semanticUrgent;
     }
   }
 

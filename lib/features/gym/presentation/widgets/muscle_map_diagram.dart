@@ -1,3 +1,5 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:kaizen/features/gym/data/gym_database.dart';
 import 'package:kaizen/features/gym/theme/gym_theme.dart';
@@ -21,7 +23,7 @@ class MuscleMapDiagram extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
         color: GymTheme.cardBackground,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppRadii.lg),
       ),
       child: Stack(
         alignment: Alignment.center,
@@ -108,7 +110,7 @@ class _MuscleMapPainter extends CustomPainter {
         center, 
         radius, 
         Paint()
-          ..color = Colors.white.withValues(alpha: 0.2)
+          ..color = AppColors.textPrimary.withValues(alpha: 0.2)
           ..strokeWidth = 1
           ..style = PaintingStyle.stroke
       );

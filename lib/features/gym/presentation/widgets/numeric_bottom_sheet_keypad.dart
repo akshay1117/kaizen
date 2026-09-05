@@ -1,3 +1,5 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:kaizen/features/gym/theme/gym_theme.dart';
 
@@ -90,10 +92,10 @@ class NumericBottomSheetKeypad extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: theme.primaryColor,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppRadii.md),
                 ),
               ),
-              child: const Icon(Icons.check, color: Colors.white, size: 32),
+              child: const Icon(Icons.check, color: AppColors.textPrimary, size: 32),
             ),
           ),
           const SizedBox(height: 16),
@@ -108,12 +110,12 @@ class NumericBottomSheetKeypad extends StatelessWidget {
       onTap: () {
         // Mock tap handler
       },
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(AppRadii.sm),
       child: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: isDark ? GymTheme.background : GymTheme.lightBackground,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(AppRadii.sm),
         ),
         child: Text(
           label,

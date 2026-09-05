@@ -1,6 +1,8 @@
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'dart:convert';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:kaizen/features/gym/data/gym_database.dart';
@@ -79,7 +81,7 @@ class _AddExercisesScreenState extends ConsumerState<AddExercisesScreen> {
         final name = _selectedExerciseNames[id];
         if (name != null) {
           if (!existingMyExerciseNames.contains(name)) {
-             final newExerciseId = DateTime.now().millisecondsSinceEpoch.toString();
+             final newExerciseId = const Uuid().v4();
              await dao.insertExercise(
               ExercisesCompanion.insert(
                 id: drift.Value(newExerciseId),
@@ -129,7 +131,7 @@ class _AddExercisesScreenState extends ConsumerState<AddExercisesScreen> {
             icon: const CircleAvatar(
               backgroundColor: GymTheme.primaryAccent,
               radius: 14,
-              child: Icon(Icons.check, color: Colors.white, size: 18),
+              child: Icon(Icons.check, color: AppColors.textPrimary, size: 18),
             ),
             onPressed: () {
               final myExercises = myExercisesAsync.valueOrNull ?? [];

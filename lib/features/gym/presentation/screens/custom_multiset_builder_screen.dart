@@ -1,3 +1,5 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,7 +33,7 @@ class _CustomMultisetBuilderScreenState
             icon: const CircleAvatar(
               backgroundColor: GymTheme.primaryAccent,
               radius: 14,
-              child: Icon(Icons.check, color: Colors.white, size: 18),
+              child: Icon(Icons.check, color: AppColors.textPrimary, size: 18),
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -47,7 +49,7 @@ class _CustomMultisetBuilderScreenState
             padding: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
               color: GymTheme.cardBackground,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppRadii.lg),
             ),
             child: TextField(
               controller: _nameController,
@@ -67,7 +69,7 @@ class _CustomMultisetBuilderScreenState
           Container(
             decoration: BoxDecoration(
               color: GymTheme.cardBackground,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppRadii.lg),
             ),
             child: Column(
               children: [
@@ -107,7 +109,7 @@ class _CustomMultisetBuilderScreenState
           Container(
             decoration: BoxDecoration(
               color: GymTheme.cardBackground,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppRadii.lg),
             ),
             child: Column(
               children: [
@@ -149,7 +151,7 @@ class _CustomMultisetBuilderScreenState
           Container(
             decoration: BoxDecoration(
               color: GymTheme.cardBackground,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppRadii.lg),
             ),
             child: SwitchListTile(
               title: const Text('Check off each set',

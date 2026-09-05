@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'dart:math';
 import 'package:flutter/material.dart';
 
@@ -59,9 +60,9 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with SingleTicker
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF2C2C2E),
+        color: AppColors.surfaceElevatedHigh,
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: Colors.blueAccent.withValues(alpha: 0.4)),
+        border: Border.all(color: AppColors.accentViolet.withValues(alpha: 0.4)),
       ),
       child: Column(
         children: [
@@ -73,12 +74,12 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with SingleTicker
                   width: 48,
                   height: 48,
                   decoration: const BoxDecoration(
-                    color: Colors.blueAccent,
+                    color: AppColors.accentViolet,
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     _isPlaying ? Icons.pause : Icons.play_arrow,
-                    color: Colors.black,
+                    color: AppColors.surfacePitchBlack,
                     size: 28,
                   ),
                 ),
@@ -99,7 +100,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with SingleTicker
                           width: 4,
                           height: height,
                           decoration: BoxDecoration(
-                            color: _isPlaying ? Colors.blueAccent : Colors.grey[600],
+                            color: _isPlaying ? AppColors.accentViolet : Colors.grey[600],
                             borderRadius: BorderRadius.circular(2),
                           ),
                         );
@@ -114,14 +115,14 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with SingleTicker
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
-                    color: Colors.blueAccent.withValues(alpha: 0.2),
+                    color: AppColors.accentViolet.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: Colors.blueAccent),
+                    border: Border.all(color: AppColors.accentViolet),
                   ),
                   child: Text(
                     '${_playbackSpeed}x',
                     style: const TextStyle(
-                      color: Colors.blueAccent,
+                      color: AppColors.accentViolet,
                       fontWeight: FontWeight.bold,
                       fontSize: 12,
                     ),
@@ -143,9 +144,9 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with SingleTicker
                     trackHeight: 3,
                     thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
                     overlayShape: const RoundSliderOverlayShape(overlayRadius: 12),
-                    activeTrackColor: Colors.blueAccent,
+                    activeTrackColor: AppColors.accentViolet,
                     inactiveTrackColor: Colors.grey[700],
-                    thumbColor: Colors.blueAccent,
+                    thumbColor: AppColors.accentViolet,
                   ),
                   child: Slider(
                     value: _progress,

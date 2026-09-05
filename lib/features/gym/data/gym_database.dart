@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:drift/drift.dart';
+import 'package:uuid/uuid.dart';
 import 'package:drift/native.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -44,7 +45,7 @@ class MuscleGroupListConverter extends TypeConverter<List<MuscleGroup>, String> 
 
 @DataClassName('Exercise')
 class Exercises extends Table {
-  TextColumn get id => text().clientDefault(() => '${DateTime.now().millisecondsSinceEpoch}')();
+  TextColumn get id => text().clientDefault(() => const Uuid().v4())();
   TextColumn get name => text()();
   TextColumn get primaryMuscles => text().map(const MuscleGroupListConverter())();
   TextColumn get secondaryMuscles => text().map(const MuscleGroupListConverter())();
@@ -58,7 +59,7 @@ class Exercises extends Table {
 
 @DataClassName('SetEntry')
 class SetEntries extends Table {
-  TextColumn get id => text().clientDefault(() => '${DateTime.now().millisecondsSinceEpoch}')();
+  TextColumn get id => text().clientDefault(() => const Uuid().v4())();
   TextColumn get exerciseId => text().references(Exercises, #id, onDelete: KeyAction.cascade)();
   TextColumn get workoutSessionId => text().nullable()();
   TextColumn get multisetId => text().nullable()();
@@ -75,7 +76,7 @@ class SetEntries extends Table {
 
 @DataClassName('Workout')
 class Workouts extends Table {
-  TextColumn get id => text().clientDefault(() => '${DateTime.now().millisecondsSinceEpoch}')();
+  TextColumn get id => text().clientDefault(() => const Uuid().v4())();
   TextColumn get name => text()();
   TextColumn get description => text().nullable()();
   TextColumn get groupId => text().nullable()();
@@ -88,7 +89,7 @@ class Workouts extends Table {
 
 @DataClassName('WorkoutStep')
 class WorkoutSteps extends Table {
-  TextColumn get id => text().clientDefault(() => '${DateTime.now().millisecondsSinceEpoch}')();
+  TextColumn get id => text().clientDefault(() => const Uuid().v4())();
   TextColumn get workoutId => text().references(Workouts, #id, onDelete: KeyAction.cascade)();
   IntColumn get stepType => integer()(); // 0 = exercise, 1 = multiset
   TextColumn get refId => text()(); // exerciseId or multisetId
@@ -100,7 +101,7 @@ class WorkoutSteps extends Table {
 
 @DataClassName('Multiset')
 class Multisets extends Table {
-  TextColumn get id => text().clientDefault(() => '${DateTime.now().millisecondsSinceEpoch}')();
+  TextColumn get id => text().clientDefault(() => const Uuid().v4())();
   IntColumn get templateIndex => integer()();
   TextColumn get name => text().nullable()();
   IntColumn get sets => integer().withDefault(const Constant(1))();
@@ -117,7 +118,7 @@ class Multisets extends Table {
 
 @DataClassName('MultisetExerciseConfig')
 class MultisetExerciseConfigs extends Table {
-  TextColumn get id => text().clientDefault(() => '${DateTime.now().millisecondsSinceEpoch}')();
+  TextColumn get id => text().clientDefault(() => const Uuid().v4())();
   TextColumn get multisetId => text().references(Multisets, #id, onDelete: KeyAction.cascade)();
   TextColumn get exerciseId => text().references(Exercises, #id, onDelete: KeyAction.cascade)();
   IntColumn get orderIndex => integer()();
@@ -128,7 +129,7 @@ class MultisetExerciseConfigs extends Table {
 
 @DataClassName('WorkoutGroup')
 class WorkoutGroups extends Table {
-  TextColumn get id => text().clientDefault(() => '${DateTime.now().millisecondsSinceEpoch}')();
+  TextColumn get id => text().clientDefault(() => const Uuid().v4())();
   TextColumn get name => text()();
   TextColumn get description => text().nullable()();
   IntColumn get colorIndex => integer().withDefault(const Constant(0))(); // 0..8
@@ -139,7 +140,7 @@ class WorkoutGroups extends Table {
 
 @DataClassName('WorkoutSession')
 class WorkoutSessions extends Table {
-  TextColumn get id => text().clientDefault(() => '${DateTime.now().millisecondsSinceEpoch}')();
+  TextColumn get id => text().clientDefault(() => const Uuid().v4())();
   TextColumn get workoutId => text().nullable().references(Workouts, #id, onDelete: KeyAction.setNull)();
   DateTimeColumn get date => dateTime().clientDefault(() => DateTime.now())();
   IntColumn get durationSeconds => integer().nullable()();
@@ -150,7 +151,7 @@ class WorkoutSessions extends Table {
 
 @DataClassName('BodyWeightEntry')
 class BodyWeightEntries extends Table {
-  TextColumn get id => text().clientDefault(() => '${DateTime.now().millisecondsSinceEpoch}')();
+  TextColumn get id => text().clientDefault(() => const Uuid().v4())();
   DateTimeColumn get date => dateTime().clientDefault(() => DateTime.now())();
   RealColumn get weightKg => real()();
 
@@ -160,7 +161,7 @@ class BodyWeightEntries extends Table {
 
 @DataClassName('Programme')
 class Programmes extends Table {
-  TextColumn get id => text().clientDefault(() => '${DateTime.now().millisecondsSinceEpoch}')();
+  TextColumn get id => text().clientDefault(() => const Uuid().v4())();
   TextColumn get name => text()();
   TextColumn get description => text().nullable()();
   IntColumn get durationWeeks => integer().withDefault(const Constant(4))();
@@ -172,7 +173,7 @@ class Programmes extends Table {
 
 @DataClassName('ProgrammeWorkout')
 class ProgrammeWorkouts extends Table {
-  TextColumn get id => text().clientDefault(() => '${DateTime.now().millisecondsSinceEpoch}')();
+  TextColumn get id => text().clientDefault(() => const Uuid().v4())();
   TextColumn get programmeId => text().references(Programmes, #id, onDelete: KeyAction.cascade)();
   TextColumn get workoutId => text().references(Workouts, #id, onDelete: KeyAction.cascade)();
   IntColumn get weekNumber => integer()();
@@ -233,8 +234,6 @@ class GymDatabase extends _$GymDatabase {
     },
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');
-      // Temporary: Re-seed exercises to replace existing ones
-      await exerciseDao.seedDefaultExercises();
     },
   );
 }

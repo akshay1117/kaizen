@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,11 +25,11 @@ class JournalDetailScreen extends ConsumerWidget {
     );
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final textColor = isDark ? Colors.white : Colors.black;
+    final textColor = isDark ? AppColors.textPrimary : AppColors.surfacePitchBlack;
     final bodyColor = isDark ? Colors.grey[300] : Colors.grey[800];
 
     return GlassScaffold(
-      backgroundColor: isDark ? const Color(0xFF141415) : Colors.white,
+      backgroundColor: isDark ? const Color(0xFF141415) : AppColors.textPrimary,
       appBar: GlassAppBar(
         backgroundColor: Colors.transparent,
 
@@ -36,7 +37,7 @@ class JournalDetailScreen extends ConsumerWidget {
           IconButton(
             icon: Icon(
               entry.favorite ? Icons.favorite : Icons.favorite_border,
-              color: entry.favorite ? Colors.redAccent : Colors.grey,
+              color: entry.favorite ? AppColors.semanticUrgent : Colors.grey,
             ),
             onPressed: () {
               ref.read(journalListProvider.notifier).toggleFavorite(entry.id);

@@ -3,9 +3,12 @@ import '../domain/models/journal_entry.dart';
 import '../domain/repositories/journal_repository.dart';
 import '../data/datasource/journal_local_datasource.dart';
 import '../data/repositories/journal_repository_impl.dart';
+import '../../auth/presentation/providers/auth_provider.dart';
 
 final journalRepositoryProvider = Provider<JournalRepository>((ref) {
-  return JournalRepositoryImpl(localDatasource: HiveJournalLocalDatasource());
+  final user = ref.watch(currentUserProvider);
+  final userId = user?.id ?? 'anonymous';
+  return JournalRepositoryImpl(localDatasource: HiveJournalLocalDatasource(userId: userId));
 });
 
 class JournalFilterState {
@@ -105,38 +108,38 @@ class JournalListNotifier extends StateNotifier<AsyncValue<List<JournalEntry>>> 
   }
 }
 
-final filteredJournalListProvider = Provider<List<JournalEntry>>((ref) {
+final filteredJournalListProvider = Provider<AsyncValue<List<JournalEntry>>>((ref) {
   final entriesState = ref.watch(journalListProvider);
   final filterState = ref.watch(journalFilterProvider);
 
-  final entries = entriesState.value ?? [];
-  var result = List<JournalEntry>.from(entries);
+  return entriesState.whenData((entries) {
+    var result = List<JournalEntry>.from(entries);
 
-  // Filter favorites
-  if (filterState.favoritesOnly) {
-    result = result.where((e) => e.favorite).toList();
-  }
+    // Filter favorites
+    if (filterState.favoritesOnly) {
+      result = result.where((e) => e.favorite).toList();
+    }
 
-  // Filter by search query (instant real-time filtering on title, body, tags, mood, location)
-  if (filterState.searchQuery.isNotEmpty) {
-    final query = filterState.searchQuery.toLowerCase();
-    result = result.where((e) {
-      final titleMatch = e.title.toLowerCase().contains(query);
-      final bodyMatch = e.body.toLowerCase().contains(query);
-      final locationMatch = (e.location ?? '').toLowerCase().contains(query);
-      final moodMatch = e.mood.displayName.toLowerCase().contains(query);
-      final tagsMatch = e.tags.any((t) => t.toLowerCase().contains(query));
-      return titleMatch || bodyMatch || locationMatch || moodMatch || tagsMatch;
-    }).toList();
-  }
+    // Filter by search query
+    if (filterState.searchQuery.isNotEmpty) {
+      final query = filterState.searchQuery.toLowerCase();
+      result = result.where((e) {
+        final titleMatch = e.title.toLowerCase().contains(query);
+        final bodyMatch = e.body.toLowerCase().contains(query);
+        final locationMatch = (e.location ?? '').toLowerCase().contains(query);
+        final moodMatch = e.mood.displayName.toLowerCase().contains(query);
+        final tagsMatch = e.tags.any((t) => t.toLowerCase().contains(query));
+        return titleMatch || bodyMatch || locationMatch || moodMatch || tagsMatch;
+      }).toList();
+    }
 
-  // Sort
-  if (filterState.sortBy == 'title') {
-    result.sort((a, b) => a.title.compareTo(b.title));
-  } else {
-    // default date sort (newest first)
-    result.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-  }
+    // Sorting
+    if (filterState.sortBy == 'title') {
+      result.sort((a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
+    } else {
+      result.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    }
 
-  return result;
+    return result;
+  });
 });

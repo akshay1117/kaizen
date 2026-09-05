@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -115,7 +116,7 @@ class WorkoutTemplateScreen extends ConsumerWidget {
               );
             },
             loading: () => const Center(child: CircularProgressIndicator()),
-            error: (e, st) => Center(child: Text('Error: $e', style: const TextStyle(color: Colors.red))),
+            error: (e, st) => Center(child: Text('Error: $e', style: const TextStyle(color: AppColors.semanticUrgent))),
           ),
           
           // Floating Add Exercises Button
@@ -126,7 +127,7 @@ class WorkoutTemplateScreen extends ConsumerWidget {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: GymTheme.primaryAccent,
-                foregroundColor: Colors.black,
+                foregroundColor: AppColors.surfacePitchBlack,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(24.r),
                 ),

@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -153,7 +154,7 @@ class _ExerciseSelectionScreenState extends ConsumerState<ExerciseSelectionScree
               alignment: Alignment.center,
               child: Icon(
                 isSelected ? LucideIcons.check : LucideIcons.plus,
-                color: isSelected ? Colors.black : GymTheme.primaryAccent,
+                color: isSelected ? AppColors.surfacePitchBlack : GymTheme.primaryAccent,
                 size: 16.sp,
               ),
             ),

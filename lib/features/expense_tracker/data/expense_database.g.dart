@@ -15,7 +15,7 @@ class $ExpenseTrackersTable extends ExpenseTrackers
       'id', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      clientDefault: () => '${DateTime.now().millisecondsSinceEpoch}');
+      clientDefault: () => const Uuid().v4());
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -319,7 +319,7 @@ class $ExpenseMembersTable extends ExpenseMembers
       'id', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      clientDefault: () => '${DateTime.now().millisecondsSinceEpoch}');
+      clientDefault: () => const Uuid().v4());
   static const VerificationMeta _trackerIdMeta =
       const VerificationMeta('trackerId');
   @override
@@ -632,7 +632,7 @@ class $ExpenseAccountsTable extends ExpenseAccounts
       'id', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      clientDefault: () => '${DateTime.now().millisecondsSinceEpoch}');
+      clientDefault: () => const Uuid().v4());
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -939,7 +939,7 @@ class $ExpenseCategoriesTable extends ExpenseCategories
       'id', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      clientDefault: () => '${DateTime.now().millisecondsSinceEpoch}');
+      clientDefault: () => const Uuid().v4());
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -1283,7 +1283,7 @@ class $ExpenseSubscriptionsTable extends ExpenseSubscriptions
       'id', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      clientDefault: () => '${DateTime.now().millisecondsSinceEpoch}');
+      clientDefault: () => const Uuid().v4());
   static const VerificationMeta _trackerIdMeta =
       const VerificationMeta('trackerId');
   @override
@@ -1756,7 +1756,7 @@ class $ExpenseInstallmentsTable extends ExpenseInstallments
       'id', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      clientDefault: () => '${DateTime.now().millisecondsSinceEpoch}');
+      clientDefault: () => const Uuid().v4());
   static const VerificationMeta _trackerIdMeta =
       const VerificationMeta('trackerId');
   @override
@@ -2197,7 +2197,7 @@ class $ExpenseTransactionsTable extends ExpenseTransactions
       'id', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      clientDefault: () => '${DateTime.now().millisecondsSinceEpoch}');
+      clientDefault: () => const Uuid().v4());
   static const VerificationMeta _trackerIdMeta =
       const VerificationMeta('trackerId');
   @override

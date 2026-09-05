@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class EmptyStateWidget extends StatefulWidget {
@@ -42,13 +43,13 @@ class _EmptyStateWidgetState extends State<EmptyStateWidget> with SingleTickerPr
                 width: 120,
                 height: 120,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF9b51e0).withValues(alpha: 0.15),
+                  color: AppColors.accentViolet.withValues(alpha: 0.15),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
                   Icons.book_online_outlined,
                   size: 54,
-                  color: Color(0xFF9b51e0),
+                  color: AppColors.accentViolet,
                 ),
               ),
               const SizedBox(height: 24),
@@ -57,7 +58,7 @@ class _EmptyStateWidgetState extends State<EmptyStateWidget> with SingleTickerPr
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                 ),
               ),
               const SizedBox(height: 12),

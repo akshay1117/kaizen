@@ -94,6 +94,30 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
       return false;
     }
   }
+
+  Future<bool> signInWithGoogle() async {
+    state = const AsyncValue.loading();
+    try {
+      final response = await _client.auth.signInWithOAuth(OAuthProvider.google);
+      state = const AsyncValue.data(null);
+      return response;
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+      return false;
+    }
+  }
+
+  Future<bool> signInWithApple() async {
+    state = const AsyncValue.loading();
+    try {
+      final response = await _client.auth.signInWithOAuth(OAuthProvider.apple);
+      state = const AsyncValue.data(null);
+      return response;
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+      return false;
+    }
+  }
 }
 
 final authControllerProvider = StateNotifierProvider<AuthController, AsyncValue<void>>((ref) {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kaizen/services/router.dart';
-import 'package:kaizen/services/app_theme.dart';
+import 'package:kaizen/core/theme/app_theme.dart';
 
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 

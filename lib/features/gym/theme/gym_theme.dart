@@ -1,24 +1,25 @@
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GymTheme {
   // Brand colors
-  static const Color background = Color(0xFF000000);
-  static const Color cardBackground = Color(0xFF1C1C1E);
-  static const Color cardSurface2 = Color(0xFF2C2C2E);
-  static const Color primaryAccent = Color(0xFFCCFF00); // Electric Lime
-  static const Color weightAccent = Color(0xFFFF9F0A);
-  static const Color volumeAccent = Color(0xFF32ADE6);
-  static const Color destructive = Color(0xFFFF453A);
+  static const Color background = AppColors.surfacePitchBlack;
+  static const Color cardBackground = AppColors.surfaceObsidian;
+  static const Color cardSurface2 = AppColors.surfaceElevatedHigh;
+  static const Color primaryAccent = AppColors.accentViolet;
+  static const Color weightAccent = AppColors.accentNeon;
+  static const Color volumeAccent = AppColors.accentLavender;
+  static const Color destructive = AppColors.semanticUrgent;
   
   // Text colors
-  static const Color textPrimary = Color(0xFFFFFFFF);
-  static const Color textSecondary = Color(0xFF8E8E93);
+  static const Color textPrimary = AppColors.textPrimary;
+  static const Color textSecondary = AppColors.textSecondary;
 
   // Pill segment colors
   static const Color pillUnselected = Color(0x338E8E93); // translucent dark grey
-  static const Color pillSelected = Color(0xFFFFFFFF);
+  static const Color pillSelected = AppColors.textPrimary;
   static const Color pillTextSelected = Color(0xFF000000);
   
   // Radii
@@ -66,9 +67,9 @@ class GymTheme {
 
   // Light theme definition
   static const Color lightBackground = Color(0xFFF2F2F7);
-  static const Color lightCardBackground = Color(0xFFFFFFFF);
+  static const Color lightCardBackground = AppColors.textPrimary;
   static const Color lightTextPrimary = Color(0xFF000000);
-  static const Color lightTextSecondary = Color(0xFF8E8E93);
+  static const Color lightTextSecondary = AppColors.textSecondary;
 
   static ThemeData get lightTheme {
     return ThemeData(

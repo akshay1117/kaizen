@@ -15,7 +15,7 @@ class $ExercisesTable extends Exercises
       'id', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      clientDefault: () => '${DateTime.now().millisecondsSinceEpoch}');
+      clientDefault: () => const Uuid().v4());
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -426,7 +426,7 @@ class $SetEntriesTable extends SetEntries
       'id', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      clientDefault: () => '${DateTime.now().millisecondsSinceEpoch}');
+      clientDefault: () => const Uuid().v4());
   static const VerificationMeta _exerciseIdMeta =
       const VerificationMeta('exerciseId');
   @override
@@ -954,7 +954,7 @@ class $WorkoutsTable extends Workouts with TableInfo<$WorkoutsTable, Workout> {
       'id', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      clientDefault: () => '${DateTime.now().millisecondsSinceEpoch}');
+      clientDefault: () => const Uuid().v4());
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -1302,7 +1302,7 @@ class $WorkoutStepsTable extends WorkoutSteps
       'id', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      clientDefault: () => '${DateTime.now().millisecondsSinceEpoch}');
+      clientDefault: () => const Uuid().v4());
   static const VerificationMeta _workoutIdMeta =
       const VerificationMeta('workoutId');
   @override
@@ -1612,7 +1612,7 @@ class $MultisetsTable extends Multisets
       'id', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      clientDefault: () => '${DateTime.now().millisecondsSinceEpoch}');
+      clientDefault: () => const Uuid().v4());
   static const VerificationMeta _templateIndexMeta =
       const VerificationMeta('templateIndex');
   @override
@@ -2158,7 +2158,7 @@ class $MultisetExerciseConfigsTable extends MultisetExerciseConfigs
       'id', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      clientDefault: () => '${DateTime.now().millisecondsSinceEpoch}');
+      clientDefault: () => const Uuid().v4());
   static const VerificationMeta _multisetIdMeta =
       const VerificationMeta('multisetId');
   @override
@@ -2448,7 +2448,7 @@ class $WorkoutGroupsTable extends WorkoutGroups
       'id', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      clientDefault: () => '${DateTime.now().millisecondsSinceEpoch}');
+      clientDefault: () => const Uuid().v4());
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -2723,7 +2723,7 @@ class $WorkoutSessionsTable extends WorkoutSessions
       'id', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      clientDefault: () => '${DateTime.now().millisecondsSinceEpoch}');
+      clientDefault: () => const Uuid().v4());
   static const VerificationMeta _workoutIdMeta =
       const VerificationMeta('workoutId');
   @override
@@ -3003,7 +3003,7 @@ class $BodyWeightEntriesTable extends BodyWeightEntries
       'id', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      clientDefault: () => '${DateTime.now().millisecondsSinceEpoch}');
+      clientDefault: () => const Uuid().v4());
   static const VerificationMeta _dateMeta = const VerificationMeta('date');
   @override
   late final GeneratedColumn<DateTime> date = GeneratedColumn<DateTime>(
@@ -3229,7 +3229,7 @@ class $ProgrammesTable extends Programmes
       'id', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      clientDefault: () => '${DateTime.now().millisecondsSinceEpoch}');
+      clientDefault: () => const Uuid().v4());
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -3543,7 +3543,7 @@ class $ProgrammeWorkoutsTable extends ProgrammeWorkouts
       'id', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      clientDefault: () => '${DateTime.now().millisecondsSinceEpoch}');
+      clientDefault: () => const Uuid().v4());
   static const VerificationMeta _programmeIdMeta =
       const VerificationMeta('programmeId');
   @override

@@ -1,3 +1,5 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -76,7 +78,7 @@ class ExercisesIndexScreen extends ConsumerWidget {
                       child: Container(
                         decoration: BoxDecoration(
                           color: GymTheme.cardBackground,
-                          borderRadius: BorderRadius.circular(16), // Match list container radius
+                          borderRadius: BorderRadius.circular(AppRadii.lg), // Match list container radius
                         ),
                         child: const TextField(
                           style: TextStyle(color: GymTheme.textPrimary),
@@ -96,7 +98,7 @@ class ExercisesIndexScreen extends ConsumerWidget {
                         child: Container(
                           decoration: BoxDecoration(
                             color: GymTheme.cardBackground,
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius: BorderRadius.circular(AppRadii.lg),
                           ),
                           clipBehavior: Clip.antiAlias,
                           child: exercises.isEmpty
@@ -121,8 +123,8 @@ class ExercisesIndexScreen extends ConsumerWidget {
                                             onPressed: (context) {
                                               ref.read(exerciseDaoProvider).deleteExercise(exercise);
                                             },
-                                            backgroundColor: Colors.red,
-                                            foregroundColor: Colors.white,
+                                            backgroundColor: AppColors.semanticUrgent,
+                                            foregroundColor: AppColors.textPrimary,
                                             icon: Icons.delete,
                                             label: 'Delete',
                                           ),

@@ -1,3 +1,5 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../application/expense_providers.dart';
@@ -78,7 +80,7 @@ class _AddInstallmentModalState extends ConsumerState<AddInstallmentModal> {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        color: Color(0xFF121212),
+        color: AppColors.surfacePitchBlack,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       child: Column(
@@ -89,35 +91,35 @@ class _AddInstallmentModalState extends ConsumerState<AddInstallmentModal> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.close, color: Colors.white),
+                  icon: const Icon(Icons.close, color: AppColors.textPrimary),
                   onPressed: () => Navigator.pop(context),
                 ),
-                const Text('New Installment', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                const Text('New Installment', style: TextStyle(color: AppColors.textPrimary, fontSize: 18, fontWeight: FontWeight.bold)),
                 TextButton(
                   onPressed: _saveInstallment,
-                  child: const Text('Save', style: TextStyle(color: Color(0xFF0A84FF), fontSize: 16, fontWeight: FontWeight.bold)),
+                  child: const Text('Save', style: TextStyle(color: AppColors.accentViolet, fontSize: 16, fontWeight: FontWeight.bold)),
                 ),
               ],
             ),
           ),
-          const Divider(color: Color(0xFF2C2C2E), height: 1),
+          const Divider(color: AppColors.surfaceElevatedHigh, height: 1),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(24),
               child: Column(
                 children: [
-                  const Text('Total Amount', style: TextStyle(color: Color(0xFF8E8E93), fontSize: 16)),
-                  Text('₹$_amount', style: const TextStyle(color: Colors.white, fontSize: 56, fontWeight: FontWeight.bold)),
+                  const Text('Total Amount', style: TextStyle(color: AppColors.textSecondary, fontSize: 16)),
+                  Text('₹$_amount', style: const TextStyle(color: AppColors.textPrimary, fontSize: 56, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 32),
                   TextField(
                     controller: _nameController,
-                    style: const TextStyle(color: Colors.white),
+                    style: const TextStyle(color: AppColors.textPrimary),
                     decoration: InputDecoration(
                       hintText: 'Installment Name (e.g. Car EMI)',
-                      hintStyle: const TextStyle(color: Color(0xFF8E8E93)),
+                      hintStyle: const TextStyle(color: AppColors.textSecondary),
                       filled: true,
-                      fillColor: const Color(0xFF1C1C1E),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
+                      fillColor: AppColors.surfaceObsidian,
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppRadii.lg), borderSide: BorderSide.none),
                     ),
                   ),
                 ],

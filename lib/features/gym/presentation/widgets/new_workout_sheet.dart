@@ -1,4 +1,6 @@
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:kaizen/features/gym/theme/gym_theme.dart';
@@ -20,14 +22,14 @@ class _NewWorkoutSheetState extends ConsumerState<NewWorkoutSheet> {
   final TextEditingController _descController = TextEditingController();
   
   final List<Color> _colors = [
-    Colors.redAccent,
+    AppColors.semanticUrgent,
     Colors.orangeAccent,
     Colors.yellowAccent,
     GymTheme.primaryAccent,
-    Colors.blueAccent,
+    AppColors.accentViolet,
     Colors.purpleAccent,
     Colors.grey,
-    Colors.white, // placeholder for rainbow
+    AppColors.textPrimary, // placeholder for rainbow
   ];
   
   int _selectedColorIndex = 3; // Default to green
@@ -43,7 +45,7 @@ class _NewWorkoutSheetState extends ConsumerState<NewWorkoutSheet> {
     final name = _nameController.text.trim();
     final desc = _descController.text.trim();
     if (name.isNotEmpty) {
-      final id = DateTime.now().millisecondsSinceEpoch.toString();
+      final id = const Uuid().v4();
       final dao = ref.read(workoutDaoProvider);
       final nav = Navigator.of(context);
       await dao.insertWorkout(WorkoutsCompanion.insert(
@@ -109,7 +111,7 @@ class _NewWorkoutSheetState extends ConsumerState<NewWorkoutSheet> {
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: GymTheme.primaryAccent,
-                      foregroundColor: Colors.black,
+                      foregroundColor: AppColors.surfacePitchBlack,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(GymTheme.pillRadius),
                       ),
@@ -213,7 +215,7 @@ class _NewWorkoutSheetState extends ConsumerState<NewWorkoutSheet> {
                               decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 gradient: SweepGradient(
-                                  colors: [Colors.red, Colors.yellow, Colors.green, Colors.blue, Colors.purple, Colors.red],
+                                  colors: [AppColors.semanticUrgent, Colors.yellow, AppColors.semanticPositive, Colors.blue, Colors.purple, AppColors.semanticUrgent],
                                 ),
                               ),
                             )

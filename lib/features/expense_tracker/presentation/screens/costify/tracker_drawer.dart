@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kaizen/features/expense_tracker/application/expense_providers.dart';
@@ -13,7 +14,7 @@ class TrackerDrawer extends ConsumerWidget {
     final selectedTrackerId = ref.watch(selectedTrackerIdProvider);
 
     return Drawer(
-      backgroundColor: const Color(0xFF1C1C1E),
+      backgroundColor: AppColors.surfaceObsidian,
       child: SafeArea(
         child: Column(
           children: [
@@ -39,22 +40,22 @@ class TrackerDrawer extends ConsumerWidget {
                               width: 36,
                               height: 36,
                               decoration: const BoxDecoration(
-                                color: Color(0xFF2C2C2E),
+                                color: AppColors.surfaceElevatedHigh,
                                 shape: BoxShape.circle,
                               ),
-                              child: const Icon(Icons.wallet, color: Colors.white, size: 20),
+                              child: const Icon(Icons.wallet, color: AppColors.textPrimary, size: 20),
                             ),
                             const SizedBox(width: 12),
                             Expanded(
                               child: Text(
                                 tracker.name,
-                                style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                                style: const TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                             ),
                             if (isSelected)
                               const Icon(Icons.check_circle, color: Color(0xFF34C759), size: 20),
                             IconButton(
-                              icon: const Icon(Icons.delete_outline, color: Colors.white54, size: 20),
+                              icon: const Icon(Icons.delete_outline, color: AppColors.textTertiary, size: 20),
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
                               onPressed: () async {
@@ -76,7 +77,7 @@ class TrackerDrawer extends ConsumerWidget {
               error: (e, st) => const SizedBox.shrink(),
             ),
             
-            const Divider(color: Color(0xFF2C2C2E), thickness: 1),
+            const Divider(color: AppColors.surfaceElevatedHigh, thickness: 1),
             
             // Main Links
             Expanded(
@@ -126,7 +127,7 @@ class TrackerDrawer extends ConsumerWidget {
     );
   }
 
-  Widget _buildDrawerItem(BuildContext context, IconData icon, String title, {bool isPro = false, Color color = Colors.white, VoidCallback? onTap}) {
+  Widget _buildDrawerItem(BuildContext context, IconData icon, String title, {bool isPro = false, Color color = AppColors.textPrimary, VoidCallback? onTap}) {
     return ListTile(
       visualDensity: VisualDensity.compact,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -139,10 +140,10 @@ class TrackerDrawer extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
               decoration: BoxDecoration(
-                color: const Color(0xFF0A84FF).withValues(alpha: 0.2),
+                color: AppColors.accentViolet.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(4),
               ),
-              child: const Text('PRO', style: TextStyle(color: Color(0xFF0A84FF), fontSize: 9, fontWeight: FontWeight.bold)),
+              child: const Text('PRO', style: TextStyle(color: AppColors.accentViolet, fontSize: 9, fontWeight: FontWeight.bold)),
             ),
           ],
         ],

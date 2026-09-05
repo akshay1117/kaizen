@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -36,23 +37,23 @@ class _FloatingCreateButtonState extends State<FloatingCreateButton> with Single
       child: Hero(
         tag: 'journal_fab',
         child: Material(
-          color: const Color(0xFF9b51e0),
+          color: AppColors.accentViolet,
           shape: const CircleBorder(),
 
-          shadowColor: const Color(0xFF9b51e0).withValues(alpha: 0.5),
+          shadowColor: AppColors.accentViolet.withValues(alpha: 0.5),
           child: InkWell(
             onTap: () {
               context.push('/journal/create');
             },
             customBorder: const CircleBorder(),
-            splashColor: Colors.white.withValues(alpha: 0.3),
+            splashColor: AppColors.textPrimary.withValues(alpha: 0.3),
             child: const SizedBox(
               width: 64,
               height: 64,
               child: Icon(
                 Icons.add,
                 size: 32,
-                color: Colors.white,
+                color: AppColors.textPrimary,
               ),
             ),
           ),

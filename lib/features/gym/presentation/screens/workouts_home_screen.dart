@@ -4,15 +4,15 @@ import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:kaizen/features/gym/theme/gym_theme.dart';
-import 'package:kaizen/features/gym/presentation/screens/exercises_index_screen.dart';
-import 'package:kaizen/features/gym/presentation/screens/workout_template_screen.dart';
+
+
 import 'package:kaizen/features/gym/presentation/widgets/new_workout_sheet.dart';
 import 'package:kaizen/features/gym/presentation/providers/workout_providers.dart';
 import 'package:kaizen/features/gym/presentation/providers/exercise_providers.dart';
-import 'package:kaizen/features/gym/presentation/screens/workout_detail_screen.dart';
-import 'package:kaizen/features/gym/presentation/providers/gym_providers.dart';
-import 'package:kaizen/features/gym/data/gym_database.dart';
-import 'package:drift/drift.dart' as drift;
+import 'package:kaizen/core/widgets/streak_badge.dart';
+
+
+import 'package:go_router/go_router.dart';
 
 class WorkoutsHomeScreen extends ConsumerWidget {
   const WorkoutsHomeScreen({super.key});
@@ -23,40 +23,53 @@ class WorkoutsHomeScreen extends ConsumerWidget {
       appBar: GlassAppBar(
         title: const Text(''),
         backgroundColor: Colors.transparent,
+        leading: Padding(
+          padding: EdgeInsets.only(left: 16.w, top: 32.h),
+          child: InkWell(
+            onTap: () {},
+            borderRadius: BorderRadius.circular(20.r),
+            child: Container(
+              height: 40.h,
+              width: 40.h,
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                color: GymTheme.cardSurface2,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(LucideIcons.settings, color: GymTheme.textPrimary, size: 20.sp),
+            ),
+          ),
+        ),
         actions: [
           Padding(
-            padding: EdgeInsets.only(top: 16.h, right: 8.w),
+            padding: EdgeInsets.only(top: 32.h, right: 16.w),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                InkWell(
-                  onTap: () {},
-                  customBorder: const CircleBorder(),
-                  child: Container(
-                    padding: EdgeInsets.all(8.w),
-                    decoration: const BoxDecoration(
-                      color: GymTheme.cardSurface2,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(LucideIcons.flame, size: 20.sp),
-                  ),
+                const StreakBadge(
+                  streak: 5,
+                  icon: LucideIcons.flame,
+                  iconColor: GymTheme.textPrimary,
                 ),
                 SizedBox(width: 12.w),
                 InkWell(
                   onTap: () {},
                   borderRadius: BorderRadius.circular(20.r),
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                    height: 38.h,
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: GymTheme.cardSurface2,
                       borderRadius: BorderRadius.circular(20.r),
                     ),
-                    child: const Text('Edit',
+                    child: Text('Edit',
                         style: TextStyle(
-                            color: GymTheme.textPrimary, fontWeight: FontWeight.bold)),
+                            color: GymTheme.textPrimary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14.sp)),
                   ),
                 ),
-                SizedBox(width: 8.w),
               ],
             ),
           ),
@@ -101,6 +114,21 @@ class WorkoutsHomeScreen extends ConsumerWidget {
                               color: GymTheme.pillUnselected,
                               height: 1,
                               indent: 64.w),
+                          
+                          // New Custom Plan Item
+                          _buildActionRow(
+                            icon: LucideIcons.wand2, // Wand icon for Custom Plan
+                            title: 'New Custom Plan...',
+                            isFirst: false,
+                            isLast: false,
+                            isHighlight: true,
+                            isSimpleIcon: true,
+                            onTap: () {},
+                          ),
+                          Divider(
+                              color: GymTheme.pillUnselected,
+                              height: 1,
+                              indent: 64.w),
   
                           // My Exercises Item
                           Consumer(builder: (context, ref, child) {
@@ -115,12 +143,7 @@ class WorkoutsHomeScreen extends ConsumerWidget {
                               isHighlight: false,
                               isSimpleIcon: true,
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ExercisesIndexScreen()),
-                                );
+                                context.pushNamed('exercises-index');
                               },
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -144,7 +167,18 @@ class WorkoutsHomeScreen extends ConsumerWidget {
                             return workoutsAsync.when(
                               data: (workouts) {
                                 if (workouts.isEmpty) {
-                                  return const SizedBox.shrink();
+                                  return Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 32.h),
+                                    child: Column(
+                                      children: [
+                                        Icon(LucideIcons.dumbbell, size: 48.sp, color: GymTheme.textSecondary.withValues(alpha: 0.3)),
+                                        SizedBox(height: 16.h),
+                                        Text('No workouts yet', style: TextStyle(color: GymTheme.textPrimary, fontSize: 16.sp, fontWeight: FontWeight.w600)),
+                                        SizedBox(height: 8.h),
+                                        Text('Tap "New Workout..." to get started.', style: TextStyle(color: GymTheme.textSecondary, fontSize: 13.sp)),
+                                      ],
+                                    ),
+                                  );
                                 }
                                 return Column(
                                   children: workouts.map((workout) {
@@ -164,16 +198,10 @@ class WorkoutsHomeScreen extends ConsumerWidget {
                                           isHighlight: false,
                                           isSimpleIcon: true,
                                           onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    WorkoutDetailScreen(
-                                                        workoutId: workout.id,
-                                                        workoutName:
-                                                            workout.name),
-                                              ),
-                                            );
+                                            context.pushNamed('workout-detail', extra: {
+                                              'workoutId': workout.id,
+                                              'workoutName': workout.name,
+                                            });
                                           },
                                           trailing: Icon(LucideIcons.chevronRight,
                                               color: GymTheme.textSecondary,
@@ -197,6 +225,43 @@ class WorkoutsHomeScreen extends ConsumerWidget {
                     ),
                     
                     SizedBox(height: 24.h), // Added spacing between sections
+
+                    // Workout Templates Section
+                    Padding(
+                      padding: EdgeInsets.only(left: 4.0.w, bottom: 16.0.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Workout Templates',
+                              style: TextStyle(
+                                  fontSize: 20.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: GymTheme.textPrimary)),
+                          Icon(LucideIcons.chevronDown,
+                              color: GymTheme.textSecondary, size: 20.sp),
+                        ],
+                      ),
+                    ),
+                    GridView.count(
+                      crossAxisCount: 2,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisSpacing: 12.w,
+                      mainAxisSpacing: 12.h,
+                      childAspectRatio: 1.2,
+                      children: [
+                        _buildTemplateCard('Grow Your\nUpper Body',
+                            'Incline Bench Press, Seated Cable Row, D...'),
+                        _buildTemplateCard('Burn Fat &\nBoost Endurance',
+                            'Goblet Squat, Kettlebell Swing, Dum...'),
+                        _buildTemplateCard('Build Powerful Legs\n& Glutes',
+                            'Barbell Lunge, Leg Press, Leg Extension,...'),
+                        _buildTemplateCard('Starting Strength',
+                            'Squat, Bench Press, Overhead Press, Dea...'),
+                      ],
+                    ),
+                    SizedBox(height: 32.h),
+
   
                     // Building Your Workouts
                     Container(
@@ -341,49 +406,6 @@ class WorkoutsHomeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildTemplateCard(
-      BuildContext context, String title, String subtitle) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const WorkoutTemplateScreen()),
-          );
-        },
-        borderRadius: BorderRadius.circular(16.r),
-        child: Container(
-          decoration: BoxDecoration(
-            color: GymTheme.cardBackground,
-            borderRadius: BorderRadius.circular(16.r),
-          ),
-          padding: EdgeInsets.all(16.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(title,
-                  style: TextStyle(
-                      color: GymTheme.textPrimary,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                      height: 1.2)),
-              Text(subtitle,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      color: GymTheme.textSecondary,
-                      fontSize: 12.sp,
-                      height: 1.3)),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   void _showNewWorkoutSheet(BuildContext context, WidgetRef ref) {
     showModalBottomSheet(
       context: context,
@@ -393,15 +415,33 @@ class WorkoutsHomeScreen extends ConsumerWidget {
     );
   }
 
-  void _createNewProgramme(BuildContext context, WidgetRef ref) async {
-    final dao = ref.read(programmeDaoProvider);
-    final name = 'New Programme ${DateTime.now().millisecond}';
-    await dao.insertProgramme(
-      ProgrammesCompanion.insert(
-        name: name,
-        description: const drift.Value('A new 4 week training programme'),
-        durationWeeks: const drift.Value(4),
+  Widget _buildTemplateCard(String title, String subtitle) {
+    return Container(
+      decoration: BoxDecoration(
+        color: GymTheme.cardBackground,
+        borderRadius: BorderRadius.circular(16.r),
+      ),
+      padding: EdgeInsets.all(16.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(title,
+              style: TextStyle(
+                  color: GymTheme.textPrimary,
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w600,
+                  height: 1.2)),
+          Text(subtitle,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  color: GymTheme.textSecondary,
+                  fontSize: 12.sp,
+                  height: 1.3)),
+        ],
       ),
     );
   }
+
 }

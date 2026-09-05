@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -36,9 +37,9 @@ class _AddSetBottomSheetState extends ConsumerState<AddSetBottomSheet> {
   String _selectedLabel = 'None';
   final Map<String, Color> _labelColors = {
     'Warm-Up': Colors.orange,
-    'AMRAP': Colors.green,
+    'AMRAP': AppColors.semanticPositive,
     'PR': Colors.amber,
-    'Failure': Colors.red,
+    'Failure': AppColors.semanticUrgent,
     'None': Colors.grey,
   };
 
@@ -64,7 +65,7 @@ class _AddSetBottomSheetState extends ConsumerState<AddSetBottomSheet> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to save set: $e'), backgroundColor: Colors.red),
+          SnackBar(content: Text('Failed to save set: $e'), backgroundColor: AppColors.semanticUrgent),
         );
       }
     }
@@ -123,7 +124,7 @@ class _AddSetBottomSheetState extends ConsumerState<AddSetBottomSheet> {
         return Container(
           margin: EdgeInsets.all(16.w),
           decoration: BoxDecoration(
-            color: const Color(0xFF2C2C2E).withValues(alpha: 0.95), // Glassy feel
+            color: AppColors.surfaceElevatedHigh.withValues(alpha: 0.95), // Glassy feel
             borderRadius: BorderRadius.circular(24.r),
           ),
           child: Column(
@@ -132,7 +133,7 @@ class _AddSetBottomSheetState extends ConsumerState<AddSetBottomSheet> {
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
-                child: Text('Labels', style: TextStyle(color: Colors.white54, fontSize: 16.sp, fontWeight: FontWeight.w600)),
+                child: Text('Labels', style: TextStyle(color: AppColors.textTertiary, fontSize: 16.sp, fontWeight: FontWeight.w600)),
               ),
               ..._labelColors.entries.map((e) {
                  bool isSelected = _selectedLabel == e.key;
@@ -149,12 +150,12 @@ class _AddSetBottomSheetState extends ConsumerState<AddSetBottomSheet> {
                            children: [
                              CircleAvatar(radius: 6.r, backgroundColor: e.value),
                              SizedBox(width: 16.w),
-                             Expanded(child: Text(e.key, style: TextStyle(color: Colors.white, fontSize: 16.sp, fontWeight: FontWeight.w500))),
-                             if (isSelected) Icon(LucideIcons.check, color: Colors.white70, size: 20.sp),
+                             Expanded(child: Text(e.key, style: TextStyle(color: AppColors.textPrimary, fontSize: 16.sp, fontWeight: FontWeight.w500))),
+                             if (isSelected) Icon(LucideIcons.check, color: AppColors.textSecondary, size: 20.sp),
                            ],
                          ),
                        ),
-                       if (e.key != 'None') Divider(color: Colors.white12, height: 1, indent: 44.w, endIndent: 20.w),
+                       if (e.key != 'None') Divider(color: AppColors.borderSpecular, height: 1, indent: 44.w, endIndent: 20.w),
                      ],
                    ),
                  );
@@ -202,10 +203,10 @@ class _AddSetBottomSheetState extends ConsumerState<AddSetBottomSheet> {
                });
             },
             child: count > 0 
-                ? CircleAvatar(radius: 14.r, backgroundColor: Colors.black87, child: Text(count.toString(), style: TextStyle(color: Colors.white, fontSize: 14.sp, fontWeight: FontWeight.bold)))
-                : Icon(LucideIcons.plus, color: Colors.white70, size: 20.sp),
+                ? CircleAvatar(radius: 14.r, backgroundColor: AppColors.surfacePitchBlack, child: Text(count.toString(), style: TextStyle(color: AppColors.textPrimary, fontSize: 14.sp, fontWeight: FontWeight.bold)))
+                : Icon(LucideIcons.plus, color: AppColors.textSecondary, size: 20.sp),
           ),
-          Text(plate == plate.toInt() ? plate.toInt().toString() : plate.toString(), style: TextStyle(color: Colors.white, fontSize: 20.sp, fontWeight: FontWeight.bold)),
+          Text(plate == plate.toInt() ? plate.toInt().toString() : plate.toString(), style: TextStyle(color: AppColors.textPrimary, fontSize: 20.sp, fontWeight: FontWeight.bold)),
           GestureDetector(
             onTap: () {
                if (count > 0) {
@@ -218,7 +219,7 @@ class _AddSetBottomSheetState extends ConsumerState<AddSetBottomSheet> {
                  });
                }
             },
-            child: Icon(LucideIcons.minus, color: Colors.white70, size: 20.sp),
+            child: Icon(LucideIcons.minus, color: AppColors.textSecondary, size: 20.sp),
           ),
         ],
       ),
@@ -231,7 +232,7 @@ class _AddSetBottomSheetState extends ConsumerState<AddSetBottomSheet> {
 
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF2C2C2E),
+        color: AppColors.surfaceElevatedHigh,
         borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
       ),
       child: Column(
@@ -243,7 +244,7 @@ class _AddSetBottomSheetState extends ConsumerState<AddSetBottomSheet> {
             width: 36.w,
             height: 4.h,
             decoration: BoxDecoration(
-              color: Colors.white24,
+              color: AppColors.borderSpecular,
               borderRadius: BorderRadius.circular(2.r),
             ),
           ),
@@ -467,7 +468,7 @@ class _AddSetBottomSheetState extends ConsumerState<AddSetBottomSheet> {
                       borderRadius: BorderRadius.circular(22.r),
                     ),
                     alignment: Alignment.center,
-                    child: Icon(LucideIcons.check, color: Colors.white, size: 24.sp),
+                    child: Icon(LucideIcons.check, color: AppColors.textPrimary, size: 24.sp),
                   ),
                 ),
               ],
@@ -520,11 +521,11 @@ class _AddSetBottomSheetState extends ConsumerState<AddSetBottomSheet> {
                       Navigator.pop(context);
                     }
                   },
-                  child: Icon(LucideIcons.keyboard, color: Colors.white54, size: 22.sp),
+                  child: Icon(LucideIcons.keyboard, color: AppColors.textTertiary, size: 22.sp),
                 ),
                 GestureDetector(
                   onTap: () {},
-                  child: Icon(LucideIcons.share2, color: Colors.white54, size: 22.sp),
+                  child: Icon(LucideIcons.share2, color: AppColors.textTertiary, size: 22.sp),
                 ),
               ],
             ),
@@ -546,7 +547,7 @@ class _AddSetBottomSheetState extends ConsumerState<AddSetBottomSheet> {
           shape: BoxShape.circle,
         ),
         alignment: Alignment.center,
-        child: Icon(icon, color: Colors.white70, size: 14.sp),
+        child: Icon(icon, color: AppColors.textSecondary, size: 14.sp),
       ),
     );
   }
@@ -566,7 +567,7 @@ class _AddSetBottomSheetState extends ConsumerState<AddSetBottomSheet> {
         child: Text(
           '$sign $value',
           style: TextStyle(
-            color: Colors.white60,
+            color: AppColors.textTertiary,
             fontSize: 11.sp,
             fontWeight: FontWeight.w600,
           ),
@@ -592,12 +593,12 @@ class _AddSetBottomSheetState extends ConsumerState<AddSetBottomSheet> {
               // Custom dot for Label instead of icon if selected
               CircleAvatar(radius: 5.r, backgroundColor: iconColor)
             else
-              Icon(icon, color: iconColor ?? Colors.white54, size: 14.sp),
+              Icon(icon, color: iconColor ?? AppColors.textTertiary, size: 14.sp),
             SizedBox(width: 4.w),
             Text(
               label,
               style: TextStyle(
-                color: Colors.white70,
+                color: AppColors.textSecondary,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w500,
               ),
@@ -641,11 +642,11 @@ class _AddSetBottomSheetState extends ConsumerState<AddSetBottomSheet> {
         ),
         alignment: Alignment.center,
         child: icon != null
-            ? Icon(icon, color: Colors.white, size: 20.sp)
+            ? Icon(icon, color: AppColors.textPrimary, size: 20.sp)
             : Text(
                 value,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontSize: 22.sp,
                   fontWeight: FontWeight.w400,
                 ),
