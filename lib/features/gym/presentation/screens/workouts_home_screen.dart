@@ -9,6 +9,7 @@ import 'package:kaizen/features/gym/theme/gym_theme.dart';
 import 'package:kaizen/features/gym/presentation/widgets/new_workout_sheet.dart';
 import 'package:kaizen/features/gym/presentation/providers/workout_providers.dart';
 import 'package:kaizen/features/gym/presentation/providers/exercise_providers.dart';
+import 'package:kaizen/features/gym/presentation/providers/gym_providers.dart';
 import 'package:kaizen/core/widgets/streak_badge.dart';
 
 
@@ -19,6 +20,8 @@ class WorkoutsHomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentStreak = ref.watch(currentStreakProvider);
+
     return GlassScaffold(
       appBar: GlassAppBar(
         title: const Text(''),
@@ -46,8 +49,8 @@ class WorkoutsHomeScreen extends ConsumerWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const StreakBadge(
-                  streak: 5,
+                StreakBadge(
+                  streak: currentStreak,
                   icon: LucideIcons.flame,
                   iconColor: GymTheme.textPrimary,
                 ),

@@ -143,3 +143,34 @@ final filteredJournalListProvider = Provider<AsyncValue<List<JournalEntry>>>((re
     return result;
   });
 });
+
+final journalStreakProvider = Provider<int>((ref) {
+  final entriesState = ref.watch(journalListProvider);
+  final entries = entriesState.value ?? [];
+  if (entries.isEmpty) return 0;
+  
+  final sortedEntries = List<JournalEntry>.from(entries)
+    ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    
+  int streak = 0;
+  final now = DateTime.now();
+  final today = DateTime(now.year, now.month, now.day);
+  
+  for (int i = 0; i < 1000; i++) {
+    final date = today.subtract(Duration(days: i));
+    final hasEntry = sortedEntries.any((e) => 
+      e.createdAt.year == date.year && 
+      e.createdAt.month == date.month && 
+      e.createdAt.day == date.day
+    );
+    
+    if (hasEntry) {
+      streak++;
+    } else {
+      if (i == 0) continue; 
+      break;
+    }
+  }
+  
+  return streak;
+});

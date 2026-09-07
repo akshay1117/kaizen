@@ -25,6 +25,7 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
     final entries = ref.watch(filteredJournalListProvider);
     final filterState = ref.watch(journalFilterProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final journalStreak = ref.watch(journalStreakProvider);
 
     return GlassScaffold(
       backgroundColor: isDark ? const Color(0xFF141415) : Colors.grey[100],
@@ -48,10 +49,10 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
                     style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                   ),
                   actions: [
-                    const Padding(
-                      padding: EdgeInsets.only(right: 8.0, top: 8.0, bottom: 8.0),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0, top: 8.0, bottom: 8.0),
                       child: StreakBadge(
-                        streak: 2,
+                        streak: journalStreak,
                         icon: Icons.edit_note,
                         iconColor: AppColors.textPrimary,
                       ),

@@ -13,6 +13,8 @@ import 'package:kaizen/core/widgets/streak_badge.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:kaizen/features/dashboard/presentation/providers/tracker_providers.dart';
 import 'package:kaizen/features/dashboard/presentation/screens/calorie_tracking_screen.dart';
+import 'package:kaizen/features/gym/presentation/providers/gym_providers.dart';
+import 'package:kaizen/features/journal/providers/journal_provider.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -276,6 +278,9 @@ class _StreaksRow extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final globalStreakAsync = ref.watch(globalHabitStreakProvider);
     final globalHabitStreak = globalStreakAsync.value ?? 0;
+    
+    final gymStreak = ref.watch(currentStreakProvider);
+    final journalStreak = ref.watch(journalStreakProvider);
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -284,8 +289,8 @@ class _StreaksRow extends ConsumerWidget {
         children: [
           GestureDetector(
             onTap: () => context.goNamed('fitness'),
-            child: const StreakBadge(
-              streak: 5,
+            child: StreakBadge(
+              streak: gymStreak,
               icon: LucideIcons.flame,
               iconColor: AppColors.accentViolet,
             ),
@@ -300,8 +305,8 @@ class _StreaksRow extends ConsumerWidget {
           ),
           GestureDetector(
             onTap: () => context.goNamed('journal'),
-            child: const StreakBadge(
-              streak: 3,
+            child: StreakBadge(
+              streak: journalStreak,
               icon: Icons.edit_note,
               iconColor: AppColors.accentVelvet,
             ),
@@ -312,11 +317,14 @@ class _StreaksRow extends ConsumerWidget {
   }
 }
 
-class _CircularProgressOverlay extends StatelessWidget {
+class _CircularProgressOverlay extends ConsumerWidget {
   const _CircularProgressOverlay();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final percentageAsync = ref.watch(dailyHabitCompletionPercentageProvider);
+    final percentage = percentageAsync.value ?? 0.0;
+    
     return Container(
       width: 48,
       height: 48,
@@ -331,22 +339,22 @@ class _CircularProgressOverlay extends StatelessWidget {
           ),
         ],
       ),
-      child: const Stack(
+      child: Stack(
         alignment: Alignment.center,
         children: [
           SizedBox(
             width: 40,
             height: 40,
             child: CircularProgressIndicator(
-              value: 0.85,
+              value: percentage,
               strokeWidth: 3,
               backgroundColor: AppColors.surfaceElevatedMid,
               color: AppColors.accentViolet,
             ),
           ),
           Text(
-            '85%',
-            style: TextStyle(
+            '${(percentage * 100).toInt()}%',
+            style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.bold,
               color: AppColors.textPrimary,

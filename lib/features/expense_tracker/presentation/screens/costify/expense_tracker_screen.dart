@@ -10,6 +10,7 @@ import 'package:kaizen/features/expense_tracker/presentation/screens/costify/qui
 import 'package:kaizen/features/expense_tracker/presentation/screens/costify/tracker_drawer.dart';
 import 'package:kaizen/features/expense_tracker/presentation/widgets/donut_chart_widget.dart';
 import 'package:kaizen/features/expense_tracker/presentation/screens/costify/new_tracker_modal.dart';
+import 'package:kaizen/features/expense_tracker/presentation/screens/costify/expense_detailed_screen.dart';
 
 class ExpenseTrackerScreen extends ConsumerStatefulWidget {
   const ExpenseTrackerScreen({super.key});
@@ -106,7 +107,17 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 16),
-                        const DonutChartWidget(),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ExpenseDetailedScreen(),
+                              ),
+                            );
+                          },
+                          child: const DonutChartWidget(),
+                        ),
                         const SizedBox(height: 24),
                         _buildTimePeriodSelector(),
                         const SizedBox(height: 24),
@@ -127,7 +138,7 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        padding: const EdgeInsets.only(bottom: 90.0, left: 24.0, right: 24.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -157,7 +168,7 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Builder(
             builder: (context) => IconButton(
@@ -165,29 +176,6 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
               onPressed: () => Scaffold.of(context).openDrawer(),
             ),
           ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: const BoxDecoration(
-              color: AppColors.surfaceObsidian,
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(Icons.wallet, color: AppColors.textPrimary, size: 20),
-          ),
-          const Row(
-            children: [
-              CircleAvatar(
-                radius: 16,
-                backgroundColor: AppColors.surfaceObsidian,
-                child: Icon(Icons.person, color: AppColors.textPrimary, size: 16),
-              ),
-              SizedBox(width: 8),
-              CircleAvatar(
-                radius: 16,
-                backgroundColor: AppColors.surfaceObsidian,
-                child: Icon(Icons.person_outline, color: AppColors.textPrimary, size: 16),
-              ),
-            ],
-          )
         ],
       ),
     );

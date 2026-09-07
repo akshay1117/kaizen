@@ -73,6 +73,36 @@ final weeklyReportProvider = StreamProvider<Map<DateTime, int>>((ref) {
   });
 });
 
+final dailyHabitCompletionPercentageProvider = StreamProvider<double>((ref) {
+  final dao = ref.watch(habitsDaoProvider);
+  final now = DateTime.now();
+  final today = DateTime(now.year, now.month, now.day);
+  
+  final habitsAsync = ref.watch(activeHabitsProvider(today));
+  
+  if (!habitsAsync.hasValue || habitsAsync.value!.isEmpty) {
+    return Stream.value(0.0);
+  }
+  
+  final activeHabits = habitsAsync.value!;
+  
+  return dao.watchLogsBetweenAll(today, today).map((logs) {
+    int completedCount = 0;
+    
+    for (var habit in activeHabits) {
+      final log = logs.where((l) => l.habitId == habit.id).firstOrNull;
+      final progress = log?.progress ?? 0;
+      final target = habit.targetValue;
+      
+      if (progress >= target) {
+        completedCount++;
+      }
+    }
+    
+    return completedCount / activeHabits.length;
+  });
+});
+
 // Notifier for adding habits
 class HabitNotifier extends AsyncNotifier<void> {
   @override
