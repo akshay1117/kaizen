@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter/foundation.dart';
 import 'package:kaizen/services/router.dart';
 import 'package:kaizen/core/theme/app_theme.dart';
 
@@ -35,7 +36,7 @@ class KaizenApp extends ConsumerWidget {
       },
     );
 
-    if (Theme.of(context).platform == TargetPlatform.android) {
+    if (kIsWeb || Theme.of(context).platform == TargetPlatform.android) {
       return materialApp;
     }
 
