@@ -1,11 +1,7 @@
-import 'dart:io';
-
 import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
-import 'package:drift/native.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
 import 'package:kaizen/features/expense_tracker/data/expense_dao.dart';
+import 'package:kaizen/core/database/connection/connection.dart' as connection;
 
 part 'expense_database.g.dart';
 
@@ -117,7 +113,7 @@ class ExpenseTransactions extends Table {
   ExpenseTransactions,
 ], daos: [ExpenseDao])
 class ExpenseDatabase extends _$ExpenseDatabase {
-  ExpenseDatabase([String? userId]) : super(_openConnection(userId));
+  ExpenseDatabase([String? userId]) : super(connection.openConnection('kaizen_expense', userId));
 
   @override
   int get schemaVersion => 3;
@@ -176,12 +172,5 @@ class ExpenseDatabase extends _$ExpenseDatabase {
   );
 }
 
-LazyDatabase _openConnection([String? userId]) {
-  return LazyDatabase(() async {
-    final dbFolder = await getApplicationDocumentsDirectory();
-    final suffix = (userId != null && userId.isNotEmpty) ? '_$userId' : '';
-    final file = File(p.join(dbFolder.path, 'kaizen_expense$suffix.sqlite'));
-    return NativeDatabase.createInBackground(file);
-  });
-}
+
 

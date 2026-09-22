@@ -1,11 +1,8 @@
-import 'dart:io';
 import 'package:uuid/uuid.dart';
 import 'package:kaizen/features/habits/data/habits_dao.dart';
 
 import 'package:drift/drift.dart';
-import 'package:drift/native.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
+import 'package:kaizen/core/database/connection/connection.dart' as connection;
 
 part 'database.g.dart';
 
@@ -78,7 +75,7 @@ class CalorieEntries extends Table {
 
 @DriftDatabase(tables: [Habits, HabitLogs, JournalEntries, WaterEntries, SleepRecords, CalorieEntries], daos: [HabitsDao])
 class AppDatabase extends _$AppDatabase {
-  AppDatabase([String? userId]) : super(_openConnection(userId));
+  AppDatabase([String? userId]) : super(connection.openConnection('kaizen', userId));
 
   @override
   int get schemaVersion => 4;
@@ -106,13 +103,4 @@ class AppDatabase extends _$AppDatabase {
           }
         },
       );
-}
-
-LazyDatabase _openConnection([String? userId]) {
-  return LazyDatabase(() async {
-    final dbFolder = await getApplicationDocumentsDirectory();
-    final suffix = (userId != null && userId.isNotEmpty) ? '_$userId' : '';
-    final file = File(p.join(dbFolder.path, 'kaizen$suffix.sqlite'));
-    return NativeDatabase.createInBackground(file);
-  });
 }

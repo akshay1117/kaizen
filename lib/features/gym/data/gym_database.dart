@@ -1,12 +1,8 @@
-import 'dart:io';
-
 import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
-import 'package:drift/native.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
 import 'package:kaizen/features/gym/data/daos/workout_dao.dart';
 import 'package:kaizen/features/gym/data/daos/exercise_dao.dart';
+import 'package:kaizen/core/database/connection/connection.dart' as connection;
 
 part 'gym_database.g.dart';
 
@@ -209,7 +205,7 @@ class GymSettingsTable extends Table {
   GymSettingsTable,
 ], daos: [WorkoutDao, ExerciseDao])
 class GymDatabase extends _$GymDatabase {
-  GymDatabase([String? userId]) : super(_openConnection(userId));
+  GymDatabase([String? userId]) : super(connection.openConnection('kaizen_gym', userId));
 
   @override
   int get schemaVersion => 2;
@@ -238,11 +234,4 @@ class GymDatabase extends _$GymDatabase {
   );
 }
 
-LazyDatabase _openConnection([String? userId]) {
-  return LazyDatabase(() async {
-    final dbFolder = await getApplicationDocumentsDirectory();
-    final suffix = (userId != null && userId.isNotEmpty) ? '_$userId' : '';
-    final file = File(p.join(dbFolder.path, 'kaizen_gym$suffix.sqlite'));
-    return NativeDatabase.createInBackground(file);
-  });
-}
+
