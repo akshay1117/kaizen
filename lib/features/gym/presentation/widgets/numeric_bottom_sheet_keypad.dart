@@ -39,7 +39,7 @@ class NumericBottomSheetKeypad extends StatelessWidget {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -50,7 +50,7 @@ class NumericBottomSheetKeypad extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           Text(
             initialValue,
             style: GymTheme.tabularStyle(
@@ -59,7 +59,7 @@ class NumericBottomSheetKeypad extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           // A simple 3x3 grid for numbers + bottom row
           GridView.builder(
             shrinkWrap: true,
@@ -83,7 +83,7 @@ class NumericBottomSheetKeypad extends StatelessWidget {
               }
             },
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           SizedBox(
             width: double.infinity,
             height: 56,
@@ -98,7 +98,7 @@ class NumericBottomSheetKeypad extends StatelessWidget {
               child: const Icon(Icons.check, color: AppColors.textPrimary, size: 32),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
         ],
       ),
     );

@@ -51,7 +51,7 @@ class _IconPickerSheetState extends State<IconPickerSheet> {
             child: Column(
               children: [
                 // Drag Handle
-                const SizedBox(height: 12),
+                const SizedBox(height: AppSpacing.sm * 1.5),
                 Container(
                   width: 40,
                   height: 4,
@@ -60,7 +60,7 @@ class _IconPickerSheetState extends State<IconPickerSheet> {
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.md),
                 
                 // Header (changes style if needed, but keeping it simple for now)
                 LayoutBuilder(
@@ -77,12 +77,12 @@ class _IconPickerSheetState extends State<IconPickerSheet> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: AppSpacing.xs),
                           const Text(
                             'Select an icon for the category',
                             style: TextStyle(color: AppColors.textTertiary, fontSize: 13),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppSpacing.md),
                           
                           // Search Bar
                           Container(
@@ -113,7 +113,7 @@ class _IconPickerSheetState extends State<IconPickerSheet> {
                     );
                   }
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.md),
                 
                 // Body
                 Expanded(

@@ -59,17 +59,17 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.account_balance_wallet_outlined, size: 64, color: AppColors.textPrimary.withValues(alpha: 0.2)),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppSpacing.md),
                           const Text(
                             'No trackers found',
                             style: TextStyle(color: AppColors.textPrimary, fontSize: 20, fontWeight: FontWeight.bold),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: AppSpacing.sm),
                           const Text(
                             'Create a tracker to start managing your expenses.',
                             style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
                           ),
-                          const SizedBox(height: 24),
+                          const SizedBox(height: AppSpacing.lg),
                           ElevatedButton(
                             onPressed: () {
                               showModalBottomSheet(
@@ -106,7 +106,7 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppSpacing.md),
                         GestureDetector(
                           onTap: () {
                             Navigator.push(
@@ -118,11 +118,11 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
                           },
                           child: const DonutChartWidget(),
                         ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: AppSpacing.lg),
                         _buildTimePeriodSelector(),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: AppSpacing.lg),
                         _buildCategoryChips(),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppSpacing.md),
                         _buildExpenseList(),
                         const SizedBox(height: 100), // padding for bottom nav
                       ],
@@ -187,7 +187,7 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
 
     return transactionsAsync.when(
       data: (transactions) {
-        if (transactions.isEmpty) return const SizedBox(height: 40);
+        if (transactions.isEmpty) return const SizedBox(height: AppSpacing.xxl);
 
         final categoryTotals = <String, double>{};
         final categoryColors = <String, Color>{};
@@ -215,7 +215,7 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             scrollDirection: Axis.horizontal,
             itemCount: sortedCategories.length,
-            separatorBuilder: (_, __) => const SizedBox(width: 8),
+            separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.sm),
             itemBuilder: (context, index) {
               final cat = sortedCategories[index];
               final color = categoryColors[cat.key] ?? Colors.grey;
@@ -238,7 +238,7 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
         );
       },
       loading: () => const SizedBox(height: 40, child: Center(child: CircularProgressIndicator())),
-      error: (_, __) => const SizedBox(height: 40),
+      error: (_, __) => const SizedBox(height: AppSpacing.xxl),
     );
   }
 
@@ -287,12 +287,12 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(Icons.receipt_long, size: 48, color: AppColors.textSecondary.withValues(alpha: 0.5)),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.md),
                   const Text(
                     'No expenses found',
                     style: TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppSpacing.sm),
                   const Text(
                     'Try changing the period or add a new expense.',
                     textAlign: TextAlign.center,
@@ -337,7 +337,7 @@ class _ExpenseTrackerScreenState extends ConsumerState<ExpenseTrackerScreen> {
                     formatter.format(t.transaction.amount),
                     style: TextStyle(color: amountColor, fontWeight: FontWeight.bold, fontSize: 16),
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppSpacing.xs),
                   const Icon(Icons.chevron_right, color: AppColors.textSecondary),
                 ],
               ),

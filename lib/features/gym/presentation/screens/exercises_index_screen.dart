@@ -37,7 +37,7 @@ class ExercisesIndexScreen extends ConsumerWidget {
                 child: Row(
                   children: [
                     Icon(Icons.swap_vert, color: GymTheme.textPrimary, size: 20),
-                    SizedBox(width: 12),
+                    SizedBox(width: AppSpacing.sm * 1.5),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,7 +56,7 @@ class ExercisesIndexScreen extends ConsumerWidget {
                 child: Row(
                   children: [
                     Icon(Icons.help_outline, color: GymTheme.textPrimary, size: 20),
-                    SizedBox(width: 12),
+                    SizedBox(width: AppSpacing.sm * 1.5),
                     Text('Show Help', style: TextStyle(color: GymTheme.textPrimary, fontSize: 16)),
                   ],
                 ),
@@ -139,10 +139,10 @@ class ExercisesIndexScreen extends ConsumerWidget {
                                             children: [
                                               if (index == 0) ...[
                                                 const Text('Today', style: TextStyle(color: GymTheme.textSecondary, fontSize: 14)),
-                                                const SizedBox(width: 8),
+                                                const SizedBox(width: AppSpacing.sm),
                                               ],
                                               const Icon(Icons.help_outline, color: GymTheme.textSecondary, size: 20),
-                                              const SizedBox(width: 8),
+                                              const SizedBox(width: AppSpacing.sm),
                                               const Icon(Icons.chevron_right, color: GymTheme.textSecondary, size: 20),
                                             ],
                                           ),

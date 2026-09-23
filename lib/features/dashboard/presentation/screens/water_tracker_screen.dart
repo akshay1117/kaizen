@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -46,19 +47,19 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
                     padding: const EdgeInsets.only(left: 16, right: 16, bottom: 32),
                     child: Column(
                       children: [
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppSpacing.md),
                         _buildHeader(),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppSpacing.md),
                         _buildDaysSwitcher(),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppSpacing.md),
                         _buildHeroCard(),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppSpacing.md),
                         _buildIntakeDistribution(),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppSpacing.md),
                         _buildQuickActions(),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: AppSpacing.lg),
                         _buildTodaysLogs(),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: AppSpacing.lg),
                         _buildPreviousDays(),
                       ],
                     ),
@@ -88,7 +89,7 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.sm * 1.5),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -149,7 +150,7 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
               ),
               child: const Icon(Icons.water_drop, color: AppColors.accentLavender, size: 18),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -189,7 +190,7 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
           child: Row(
             children: [
               const Icon(Icons.calendar_today, size: 14, color: AppColors.accentLavender),
-              const SizedBox(width: 4),
+              const SizedBox(width: AppSpacing.xs),
               Text(
                 dateStr,
                 style: const TextStyle(
@@ -198,7 +199,7 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
                   color: AppColors.textPrimary,
                 ),
               ),
-              const SizedBox(width: 4),
+              const SizedBox(width: AppSpacing.xs),
               const Icon(Icons.expand_more, size: 14, color: AppColors.textSecondary),
             ],
           ),
@@ -374,7 +375,7 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
                               shape: BoxShape.circle,
                             ),
                           ),
-                          const SizedBox(width: 4),
+                          const SizedBox(width: AppSpacing.xs),
                           Text(
                             '${(percent * 100).toInt()}% Completed',
                             style: const TextStyle(
@@ -388,7 +389,7 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.baseline,
                   textBaseline: TextBaseline.alphabetic,
@@ -402,7 +403,7 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
                         letterSpacing: -0.5,
                       ),
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppSpacing.xs),
                     const Text(
                       'L',
                       style: TextStyle(
@@ -421,7 +422,7 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppSpacing.sm * 1.5),
                 Row(
                   children: List.generate(4, (index) {
                     final blockPercent = (percent * 4) - index;
@@ -467,13 +468,13 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
                     Text('4.0 L', style: TextStyle(fontSize: 11, color: AppColors.accentLavender, fontWeight: FontWeight.bold)),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.md),
                 Row(
                   children: [
                     Expanded(
                       child: _buildMetricCard(Icons.flag, 'DAILY GOAL', '${target.toStringAsFixed(1)} Liters', AppColors.textTertiary),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppSpacing.sm),
                     Expanded(
                       child: _buildMetricCard(Icons.check_circle, 'REMAINING', '${remaining.toStringAsFixed(1)} Liters', AppColors.accentLavender),
                     ),
@@ -608,7 +609,7 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
                       shape: BoxShape.circle,
                     ),
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppSpacing.xs),
                   const Text(
                     'Hourly Pacing',
                     style: TextStyle(
@@ -621,7 +622,7 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           // Tooltip
           if (topBinVal > 0) Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -642,7 +643,7 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
                 Row(
                   children: [
                     const Icon(Icons.bolt, color: AppColors.accentLavender, size: 18),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: AppSpacing.sm),
                     RichText(
                       text: TextSpan(
                         style: const TextStyle(fontSize: 13, color: AppColors.textPrimary, fontWeight: FontWeight.w500),
@@ -672,7 +673,7 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           // Histogram Chart
           SizedBox(
             height: 180,
@@ -689,7 +690,7 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
                           painter: _DashedLinePainter(color: AppColors.textTertiary.withValues(alpha: 0.6)),
                         ),
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppSpacing.xs),
                       Text(
                         '${maxBin > 0 ? (maxBin * 0.75).toInt() : 800}ml Avg',
                         style: const TextStyle(fontSize: 11, color: AppColors.textSecondary, fontWeight: FontWeight.w600),
@@ -729,7 +730,7 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
               color: isActive ? AppColors.accentLavender : AppColors.textSecondary,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
           Flexible(
             child: LayoutBuilder(
               builder: (context, constraints) {
@@ -770,7 +771,7 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
               },
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Text(
             label,
             style: TextStyle(
@@ -810,17 +811,17 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
               Icon(Icons.speed, size: 16, color: AppColors.textSecondary),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           Row(
             children: [
               Expanded(child: _buildIncrementButton('+250 ml', '1 Glass', 250, selectedDate)),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               Expanded(child: _buildIncrementButton('+500 ml', 'Standard Flask', 500, selectedDate)),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               Expanded(child: _buildIncrementButton('+750 ml', 'Active Bottle', 750, selectedDate)),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           ElevatedButton.icon(
             onPressed: () {
               // We could show a dialog to enter custom amount
@@ -916,7 +917,7 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             ...entries.map((entry) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
@@ -959,7 +960,7 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
                 ),
                 child: Icon(icon, size: 20, color: iconColor),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppSpacing.sm * 1.5),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -973,7 +974,7 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
                           color: AppColors.textPrimary,
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: AppSpacing.sm),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
@@ -1062,7 +1063,7 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
             ],
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
@@ -1072,9 +1073,9 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
           child: Column(
             children: [
               _buildPreviousDayItem('Yesterday', '3.8 L consumed', 0.95, AppColors.accentLavender.withValues(alpha: 0.6)),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.sm * 1.5),
               _buildPreviousDayItem('Wed, Oct 22', '4.2 L consumed', 1.0, AppColors.accentLavender, isOver: true),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.sm * 1.5),
               _buildPreviousDayItem('Tue, Oct 21', '3.5 L consumed', 0.87, AppColors.textSecondary),
             ],
           ),
@@ -1142,7 +1143,7 @@ class _WaterTrackerScreenState extends ConsumerState<WaterTrackerScreen> {
                 ),
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             SizedBox(
               width: 36,
               child: Text(

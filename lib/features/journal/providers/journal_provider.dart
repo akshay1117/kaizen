@@ -1,14 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../domain/models/journal_entry.dart';
 import '../domain/repositories/journal_repository.dart';
-import '../data/datasource/journal_local_datasource.dart';
 import '../data/repositories/journal_repository_impl.dart';
-import '../../auth/presentation/providers/auth_provider.dart';
 
 final journalRepositoryProvider = Provider<JournalRepository>((ref) {
-  final user = ref.watch(currentUserProvider);
-  final userId = user?.id ?? 'anonymous';
-  return JournalRepositoryImpl(localDatasource: HiveJournalLocalDatasource(userId: userId));
+  return JournalRepositoryImpl();
 });
 
 class JournalFilterState {

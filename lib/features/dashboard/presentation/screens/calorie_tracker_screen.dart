@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -125,7 +126,7 @@ class CalorieTrackerScreen extends ConsumerWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppSpacing.xl),
             Text(
               '$remaining kCal remaining',
               style: const TextStyle(
@@ -133,7 +134,7 @@ class CalorieTrackerScreen extends ConsumerWidget {
                 color: AppColors.textPrimary,
               ),
             ),
-            const SizedBox(height: 48),
+            const SizedBox(height: AppSpacing.xxl),
             ElevatedButton.icon(
               onPressed: () => _showInputDialog(context, ref),
               icon: const Icon(LucideIcons.plus, size: 24),

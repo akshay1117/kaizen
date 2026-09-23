@@ -91,7 +91,7 @@ class _WorkoutDetailScreenState extends ConsumerState<WorkoutDetailScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, size: 16, color: isSelected ? GymTheme.pillTextSelected : GymTheme.textSecondary),
-            const SizedBox(width: 4),
+            const SizedBox(width: AppSpacing.xs),
             Text(
               label,
               style: TextStyle(
@@ -172,7 +172,7 @@ class _WorkoutDetailScreenState extends ConsumerState<WorkoutDetailScreen> {
                   ),
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: () {},
@@ -207,13 +207,13 @@ class _WorkoutDetailScreenState extends ConsumerState<WorkoutDetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Icon(Icons.article, color: GymTheme.textSecondary),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppSpacing.sm * 1.5),
               const Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('Add Useful Notes', style: TextStyle(color: GymTheme.textPrimary, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 4),
+                    SizedBox(height: AppSpacing.xs),
                     Text('Set goals or targets, list instructions, or add reminders.', style: TextStyle(color: GymTheme.textSecondary, fontSize: 13)),
                   ],
                 ),
@@ -225,10 +225,10 @@ class _WorkoutDetailScreenState extends ConsumerState<WorkoutDetailScreen> {
             ],
           ),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: AppSpacing.lg),
         
         Text('${widget.workoutName} Description', style: const TextStyle(color: GymTheme.textPrimary, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
@@ -246,9 +246,9 @@ class _WorkoutDetailScreenState extends ConsumerState<WorkoutDetailScreen> {
           ),
         ),
         
-        const SizedBox(height: 24),
+        const SizedBox(height: AppSpacing.lg),
         const Text('Exercises', style: TextStyle(color: GymTheme.textPrimary, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
@@ -269,7 +269,7 @@ class _WorkoutDetailScreenState extends ConsumerState<WorkoutDetailScreen> {
                 ),
               ),
               Divider(color: GymTheme.pillUnselected),
-              SizedBox(height: 8),
+              SizedBox(height: AppSpacing.sm),
               Text('Squat', style: TextStyle(color: GymTheme.textPrimary)),
               TextField(
                 style: TextStyle(color: GymTheme.textPrimary),

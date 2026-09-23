@@ -3,9 +3,8 @@ import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kaizen/core/database/database.dart';
+import 'package:kaizen/core/models/habit_model.dart';
 import 'package:kaizen/features/habits/application/habit_stats_provider.dart';
-
 import 'package:kaizen/features/habits/utils/icon_utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -90,7 +89,7 @@ class HabitDetailScreen extends ConsumerWidget {
                             size: 28,
                           ),
                         ),
-                        const SizedBox(width: 16),
+                        const SizedBox(width: AppSpacing.md),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,7 +102,7 @@ class HabitDetailScreen extends ConsumerWidget {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              const SizedBox(height: 4),
+                              const SizedBox(height: AppSpacing.xs),
                               Row(
                                 children: [
                                   Text(
@@ -111,11 +110,11 @@ class HabitDetailScreen extends ConsumerWidget {
                                     style: const TextStyle(color: AppColors.textSecondary, fontSize: 14),
                                   ),
                                   if (habit.reminderTime != null) ...[
-                                    const SizedBox(width: 8),
+                                    const SizedBox(width: AppSpacing.sm),
                                     const Text('·', style: TextStyle(color: AppColors.textSecondary)),
-                                    const SizedBox(width: 8),
+                                    const SizedBox(width: AppSpacing.sm),
                                     const Icon(Icons.alarm, color: AppColors.textSecondary, size: 14),
-                                    const SizedBox(width: 4),
+                                    const SizedBox(width: AppSpacing.xs),
                                     Text(
                                       habit.reminderTime!,
                                       style: const TextStyle(color: AppColors.textSecondary, fontSize: 14),
@@ -128,7 +127,7 @@ class HabitDetailScreen extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: AppSpacing.xl),
 
                     // Content loaded from provider
                     statsAsync.when(
@@ -154,7 +153,7 @@ class HabitDetailScreen extends ConsumerWidget {
                                     label: 'Current streak',
                                   ),
                                 ),
-                                const SizedBox(width: 16),
+                                const SizedBox(width: AppSpacing.md),
                                 Expanded(
                                   child: _StatCard(
                                     icon: Icons.emoji_events,
@@ -165,7 +164,7 @@ class HabitDetailScreen extends ConsumerWidget {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: AppSpacing.md),
 
                             // Consistency Heatmap
                             Container(
@@ -190,12 +189,12 @@ class HabitDetailScreen extends ConsumerWidget {
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: 16),
+                                  const SizedBox(height: AppSpacing.md),
                                   _ConsistencyHeatmap(heatmapData: heatmapData, habitColor: habitColor),
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: AppSpacing.md),
 
                             // Total / Completion Row
                             Row(
@@ -206,7 +205,7 @@ class HabitDetailScreen extends ConsumerWidget {
                                     label: 'Total check-ins',
                                   ),
                                 ),
-                                const SizedBox(width: 16),
+                                const SizedBox(width: AppSpacing.md),
                                 Expanded(
                                   child: _StatCard(
                                     value: '$completionRate%',
@@ -255,7 +254,7 @@ class _StatCard extends StatelessWidget {
         children: [
           if (icon != null) ...[
             Icon(icon, color: iconColor, size: 24),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
           ],
           Text(
             value,
@@ -265,7 +264,7 @@ class _StatCard extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
           Text(
             label,
             style: const TextStyle(

@@ -1,11 +1,11 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:kaizen/features/dashboard/presentation/providers/tracker_providers.dart';
 import 'package:intl/intl.dart';
-import 'package:kaizen/core/database/database.dart';
-
+import 'package:kaizen/core/models/health_models.dart';
 class _Tokens {
   static const Color background = Color(0xFF121318);
   static const Color surfaceContainerLowest = Color(0xFF0D0E13);
@@ -74,21 +74,21 @@ class CalorieTrackingScreen extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppSpacing.sm),
                         _buildHeader(context, selectedDate),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppSpacing.md),
                         _buildDaySwitcher(selectedDate, ref),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: AppSpacing.lg),
                         _buildSummaryHeroCard(dailyTotal, dailyGoal),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppSpacing.md),
                         _buildDailyDistribution(),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: AppSpacing.lg),
                         _buildMealLogsSection(calorieEntriesAsync),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppSpacing.md),
                         _buildWeeklyHistory(),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: AppSpacing.lg),
                         _buildBottomActions(ref, selectedDate),
-                        const SizedBox(height: 40),
+                        const SizedBox(height: AppSpacing.xxl),
                       ],
                     ),
                   ),
@@ -164,7 +164,7 @@ class CalorieTrackingScreen extends ConsumerWidget {
                 color: _Tokens.primary,
               ),
             ),
-            SizedBox(height: 4),
+            SizedBox(height: AppSpacing.xs),
             Text(
               'Calorie Tracking',
               style: TextStyle(
@@ -185,7 +185,7 @@ class CalorieTrackingScreen extends ConsumerWidget {
           child: Row(
             children: [
               const Icon(LucideIcons.calendar, size: 15, color: _Tokens.primary),
-              const SizedBox(width: 4),
+              const SizedBox(width: AppSpacing.xs),
               Text(
                 'Today, ${DateFormat('MMM d').format(selectedDate)}',
                 style: const TextStyle(
@@ -194,7 +194,7 @@ class CalorieTrackingScreen extends ConsumerWidget {
                   color: _Tokens.onSurface,
                 ),
               ),
-              const SizedBox(width: 4),
+              const SizedBox(width: AppSpacing.xs),
               const Icon(Icons.expand_more, size: 16, color: _Tokens.outline),
             ],
           ),
@@ -310,7 +310,7 @@ class CalorieTrackingScreen extends ConsumerWidget {
                             color: _Tokens.outline,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppSpacing.xs),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.baseline,
                           textBaseline: TextBaseline.alphabetic,
@@ -367,7 +367,7 @@ class CalorieTrackingScreen extends ConsumerWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.md),
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
@@ -383,7 +383,7 @@ class CalorieTrackingScreen extends ConsumerWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.md),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -406,7 +406,7 @@ class CalorieTrackingScreen extends ConsumerWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 Container(
                   height: 10,
                   decoration: BoxDecoration(
@@ -442,7 +442,7 @@ class CalorieTrackingScreen extends ConsumerWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppSpacing.sm * 1.5),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -471,7 +471,7 @@ class CalorieTrackingScreen extends ConsumerWidget {
             color: _Tokens.outline,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppSpacing.xs),
         Row(
           crossAxisAlignment: CrossAxisAlignment.baseline,
           textBaseline: TextBaseline.alphabetic,
@@ -484,7 +484,7 @@ class CalorieTrackingScreen extends ConsumerWidget {
                 color: valueColor,
               ),
             ),
-            const SizedBox(width: 4),
+            const SizedBox(width: AppSpacing.xs),
             const Text(
               'kcal',
               style: TextStyle(
@@ -556,7 +556,7 @@ class CalorieTrackingScreen extends ConsumerWidget {
               const Row(
                 children: [
                   Icon(LucideIcons.barChart2, color: _Tokens.primary, size: 20),
-                  SizedBox(width: 8),
+                  SizedBox(width: AppSpacing.sm),
                   Text(
                     'Daily Distribution',
                     style: TextStyle(
@@ -570,7 +570,7 @@ class CalorieTrackingScreen extends ConsumerWidget {
               Row(
                 children: [
                   Container(width: 8, height: 2, color: _Tokens.outline),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppSpacing.xs),
                   const Text(
                     'TARGET PACE',
                     style: TextStyle(
@@ -583,7 +583,7 @@ class CalorieTrackingScreen extends ConsumerWidget {
               )
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.lg),
           SizedBox(
             height: 144,
             child: Stack(
@@ -655,7 +655,7 @@ class CalorieTrackingScreen extends ConsumerWidget {
               color: isPending ? _Tokens.outline : (valueColor ?? _Tokens.primary),
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
           LayoutBuilder(
             builder: (context, constraints) {
               return Container(
@@ -669,7 +669,7 @@ class CalorieTrackingScreen extends ConsumerWidget {
               );
             }
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Text(
             label,
             style: TextStyle(
@@ -717,7 +717,7 @@ class CalorieTrackingScreen extends ConsumerWidget {
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.md),
         if (entries.isEmpty)
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 24),
@@ -766,7 +766,7 @@ class CalorieTrackingScreen extends ConsumerWidget {
                 ),
                 child: Icon(icon, color: _Tokens.primary, size: 20),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: AppSpacing.sm * 1.5),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -781,7 +781,7 @@ class CalorieTrackingScreen extends ConsumerWidget {
                             color: _Tokens.onSurface,
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppSpacing.sm),
                         Text(
                           time,
                           style: const TextStyle(
@@ -826,7 +826,7 @@ class CalorieTrackingScreen extends ConsumerWidget {
               )
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.sm * 1.5),
           Container(
             padding: const EdgeInsets.only(top: 12),
             decoration: const BoxDecoration(
@@ -838,9 +838,9 @@ class CalorieTrackingScreen extends ConsumerWidget {
                 Row(
                   children: [
                     _buildMacroText('P: ', p, _Tokens.primary),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: AppSpacing.md),
                     _buildMacroText('C: ', c, _Tokens.secondary),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: AppSpacing.md),
                     _buildMacroText('F: ', f, _Tokens.tertiary),
                   ],
                 ),
@@ -908,7 +908,7 @@ class CalorieTrackingScreen extends ConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.sm * 1.5),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -940,7 +940,7 @@ class CalorieTrackingScreen extends ConsumerWidget {
               borderRadius: const BorderRadius.vertical(top: Radius.circular(2)),
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
           Text(
             day,
             style: TextStyle(
@@ -980,7 +980,7 @@ class CalorieTrackingScreen extends ConsumerWidget {
             shadowColor: _Tokens.primary.withValues(alpha: 0.25),
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.sm * 1.5),
         TextButton(
           onPressed: () {},
           child: const Text(

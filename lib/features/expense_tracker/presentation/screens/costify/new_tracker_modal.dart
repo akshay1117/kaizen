@@ -38,7 +38,7 @@ class _NewTrackerModalState extends ConsumerState<NewTrackerModal> {
       child: Column(
         children: [
           // Handle
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Container(
             width: 32,
             height: 4,
@@ -87,7 +87,7 @@ class _NewTrackerModalState extends ConsumerState<NewTrackerModal> {
                     child: const Icon(Icons.account_balance_wallet, color: AppColors.accentViolet, size: 32),
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.lg),
                 
                 // Titles
                 const Text(
@@ -99,7 +99,7 @@ class _NewTrackerModalState extends ConsumerState<NewTrackerModal> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 const Text(
                   'Give your tracker a clear name, e.g. "Bali 2025" or "Business expenses".',
                   style: TextStyle(
@@ -108,7 +108,7 @@ class _NewTrackerModalState extends ConsumerState<NewTrackerModal> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: AppSpacing.xl),
                 
                 // Form Fields (Tracker Name, Budget, Cycle)
                 Container(
@@ -147,7 +147,7 @@ class _NewTrackerModalState extends ConsumerState<NewTrackerModal> {
                         child: Row(
                           children: [
                             Text('Budget (₹)', style: TextStyle(color: AppColors.textPrimary.withValues(alpha: 0.7), fontSize: 14)),
-                            const SizedBox(width: 4),
+                            const SizedBox(width: AppSpacing.xs),
                             Icon(Icons.info_outline, color: AppColors.textPrimary.withValues(alpha: 0.5), size: 14),
                           ],
                         ),
@@ -176,7 +176,7 @@ class _NewTrackerModalState extends ConsumerState<NewTrackerModal> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('Budget Cycle', style: TextStyle(color: AppColors.textPrimary.withValues(alpha: 0.7), fontSize: 14)),
-                            const SizedBox(height: 12),
+                            const SizedBox(height: AppSpacing.sm * 1.5),
                             Row(
                               children: [
                                 Expanded(
@@ -203,7 +203,7 @@ class _NewTrackerModalState extends ConsumerState<NewTrackerModal> {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(width: 8),
+                                const SizedBox(width: AppSpacing.sm),
                                 Expanded(
                                   child: GestureDetector(
                                     onTap: () => setState(() => _budgetCycle = 'Monthly'),
@@ -237,7 +237,7 @@ class _NewTrackerModalState extends ConsumerState<NewTrackerModal> {
                   ),
                 ),
                 
-                const SizedBox(height: 32),
+                const SizedBox(height: AppSpacing.xl),
                 
                 // Create Tracker Button
                 SizedBox(
@@ -291,7 +291,7 @@ class _NewTrackerModalState extends ConsumerState<NewTrackerModal> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: AppSpacing.xl),
               ],
             ),
           ),

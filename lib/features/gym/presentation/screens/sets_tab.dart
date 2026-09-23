@@ -17,14 +17,14 @@ class SetsTab extends StatelessWidget {
           'My Workouts',
           style: theme.textTheme.displayMedium,
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: AppSpacing.lg),
         
         // Quick Actions
         _buildActionTile(context, Icons.add, 'New Workout...', 'e.g., Upper Body, Leg Day, Monday Routine'),
         _buildActionTile(context, Icons.auto_graph, 'New Custom Plan...', null),
         _buildActionTile(context, Icons.menu_book, 'My Exercises', null, trailingText: '24 >'),
         
-        const SizedBox(height: 32),
+        const SizedBox(height: AppSpacing.xl),
         
         // Templates Section
         Row(
@@ -34,7 +34,7 @@ class SetsTab extends StatelessWidget {
             Icon(Icons.keyboard_arrow_down, color: isDark ? GymTheme.textSecondary : GymTheme.lightTextSecondary),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.md),
         
         // Templates Grid
         GridView.count(
@@ -63,14 +63,14 @@ class SetsTab extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, color: theme.primaryColor),
-          const SizedBox(width: 16),
+          const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title, style: theme.textTheme.bodyLarge),
                 if (subtitle != null) ...[
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppSpacing.xs),
                   Text(subtitle, style: theme.textTheme.bodyMedium),
                 ],
               ],
@@ -97,7 +97,7 @@ class SetsTab extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(title, style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold)),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Text(subtitle, style: theme.textTheme.bodyMedium),
         ],
       ),

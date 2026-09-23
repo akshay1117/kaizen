@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
 import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -52,7 +53,7 @@ class _EmptyStateWidgetState extends State<EmptyStateWidget> with SingleTickerPr
                   color: AppColors.accentViolet,
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppSpacing.lg),
               const Text(
                 'No Entries',
                 style: TextStyle(
@@ -61,7 +62,7 @@ class _EmptyStateWidgetState extends State<EmptyStateWidget> with SingleTickerPr
                   color: AppColors.textPrimary,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.sm * 1.5),
               Text(
                 'Tap the + button to create your first journal.',
                 textAlign: TextAlign.center,

@@ -23,7 +23,7 @@ class StatMini extends StatelessWidget {
       child: Column(
         children: [
           Text(value, style: GoogleFonts.dmMono(fontSize: 20, fontWeight: FontWeight.w500, color: color)),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
           Text(label, style: const TextStyle(fontSize: 11, color: AppColors.textTertiary), textAlign: TextAlign.center),
         ],
       ),

@@ -37,7 +37,7 @@ class MultisetTemplatePickerScreen extends ConsumerWidget {
             'Choose Template',
             style: TextStyle(color: GymTheme.textPrimary, fontSize: 22, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.lg),
           _buildTemplateCard(
             context,
             icon: Icons.layers,
@@ -45,7 +45,7 @@ class MultisetTemplatePickerScreen extends ConsumerWidget {
             description: 'Two or more exercises performed back-to-back with no rest in between.',
             onTap: () {},
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           _buildTemplateCard(
             context,
             icon: Icons.arrow_drop_down_circle_outlined,
@@ -53,7 +53,7 @@ class MultisetTemplatePickerScreen extends ConsumerWidget {
             description: 'Perform an exercise to failure, reduce the weight, and continue to failure again.',
             onTap: () {},
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           _buildTemplateCard(
             context,
             icon: Icons.checklist,
@@ -61,7 +61,7 @@ class MultisetTemplatePickerScreen extends ConsumerWidget {
             description: 'A sequence of exercises where you check off each set as you go.',
             onTap: () {},
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           _buildTemplateCard(
             context,
             icon: Icons.build,
@@ -89,13 +89,13 @@ class MultisetTemplatePickerScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Icon(icon, color: GymTheme.primaryAccent, size: 28),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppSpacing.md),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(title, style: const TextStyle(color: GymTheme.textPrimary, fontSize: 18, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppSpacing.xs),
                   Text(description, style: const TextStyle(color: GymTheme.textSecondary, fontSize: 14)),
                 ],
               ),

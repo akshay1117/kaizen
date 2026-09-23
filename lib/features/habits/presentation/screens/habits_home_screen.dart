@@ -5,8 +5,7 @@ import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kaizen/features/habits/application/habit_providers.dart';
-import 'package:kaizen/core/database/database.dart';
-
+import 'package:kaizen/core/models/habit_model.dart';
 import 'package:kaizen/core/widgets/custom_bottom_nav_bar.dart';
 import 'package:kaizen/core/widgets/streak_badge.dart';
 import 'package:kaizen/features/habits/utils/habit_icons.dart';
@@ -30,9 +29,9 @@ class _HabitsHomeScreenState extends ConsumerState<HabitsHomeScreen> {
     final now = DateTime.now();
     _selectedDate = DateTime(now.year, now.month, now.day);
     
-    // Recalculate streaks in case a day passed without app opening
+    // Recalculate streaks logic moved to repository stream
     Future.microtask(() {
-      ref.read(habitsDaoProvider).recalculateAllStreaks();
+      // ref.read(habitsRepositoryProvider).recalculateAllStreaks();
     });
   }
 
@@ -282,7 +281,7 @@ class _HabitsHomeScreenState extends ConsumerState<HabitsHomeScreen> {
                                 child: Row(
                                   children: [
                                     _buildIconWidget(habit.icon, _parseColor(habit.color)),
-                                    const SizedBox(width: 12),
+                                    const SizedBox(width: AppSpacing.sm * 1.5),
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -309,7 +308,7 @@ class _HabitsHomeScreenState extends ConsumerState<HabitsHomeScreen> {
                                               const Text('·', style: TextStyle(color: AppColors.textSecondary)),
                                               const SizedBox(width: 6),
                                               const Icon(Icons.local_fire_department, color: Colors.orange, size: 14),
-                                              const SizedBox(width: 4),
+                                              const SizedBox(width: AppSpacing.xs),
                                               Text(
                                                 '${habit.currentStreak}',
                                                 style: const TextStyle(
@@ -382,7 +381,7 @@ class _TodayHabitItem extends ConsumerWidget {
         child: Row(
           children: [
             _buildIconWidget(habit.icon, habitColor),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppSpacing.sm * 1.5),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -396,11 +395,11 @@ class _TodayHabitItem extends ConsumerWidget {
                       decoration: isCompleted ? TextDecoration.lineThrough : null,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppSpacing.xs),
                   Row(
                     children: [
                       Icon(Icons.local_fire_department, color: habitColor, size: 14),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: AppSpacing.xs),
                       Text(
                         '${habit.currentStreak} days',
                         style: const TextStyle(

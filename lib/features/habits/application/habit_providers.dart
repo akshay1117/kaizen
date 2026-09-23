@@ -1,39 +1,31 @@
-import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:kaizen/core/database/database.dart';
-import 'package:kaizen/features/habits/data/habits_dao.dart';
-import 'package:kaizen/features/auth/presentation/providers/auth_provider.dart';
+import 'package:uuid/uuid.dart';
+import 'package:kaizen/core/models/habit_model.dart';
+import 'package:kaizen/features/habits/data/habits_repository.dart';
 
-final databaseProvider = Provider<AppDatabase>((ref) {
-  final user = ref.watch(currentUserProvider);
-  final db = AppDatabase(user?.id);
-  ref.onDispose(() => db.close());
-  return db;
-});
-
-final habitsDaoProvider = Provider<HabitsDao>((ref) {
-  final db = ref.watch(databaseProvider);
-  return HabitsDao(db);
+final habitsRepositoryProvider = Provider<HabitsRepository>((ref) {
+  return HabitsRepository();
 });
 
 final activeHabitsProvider = StreamProvider.family<List<Habit>, DateTime>((ref, date) {
-  final dao = ref.watch(habitsDaoProvider);
-  return dao.watchActiveHabits(date);
+  final repo = ref.watch(habitsRepositoryProvider);
+  return repo.watchActiveHabits(date);
 });
 
 final habitProgressProvider = StreamProvider.family<int, (Habit, DateTime)>((ref, args) {
   final (habit, date) = args;
-  final dao = ref.watch(habitsDaoProvider);
-  return dao.watchProgress(habit, date);
+  final repo = ref.watch(habitsRepositoryProvider);
+  return repo.watchProgress(habit, date);
 });
 
 final habitYearlyProgressProvider = StreamProvider.family<Map<DateTime, int>, String>((ref, habitId) {
-  final dao = ref.watch(habitsDaoProvider);
+  final repo = ref.watch(habitsRepositoryProvider);
   final end = DateTime.now();
   final start = end.subtract(const Duration(days: 378)); // 54 weeks * 7 days
   
-  return dao.watchLogsBetweenAll(start, end).map((logs) {
+  return repo.watchLogsBetweenAll(start, end).map((logs) {
     final Map<DateTime, int> report = {};
     for (var log in logs) {
       if (log.habitId == habitId) {
@@ -46,14 +38,13 @@ final habitYearlyProgressProvider = StreamProvider.family<Map<DateTime, int>, St
 });
 
 final weeklyReportProvider = StreamProvider<Map<DateTime, int>>((ref) {
-  final dao = ref.watch(habitsDaoProvider);
+  final repo = ref.watch(habitsRepositoryProvider);
   final now = DateTime.now();
   final today = DateTime(now.year, now.month, now.day);
   final start = today.subtract(const Duration(days: 6));
   
   final habitsAsync = ref.watch(activeHabitsProvider(today));
   
-  // Explicitly typing <DateTime, int> stops the compiler from throwing type errors
   if (!habitsAsync.hasValue) {
     return Stream.value(<DateTime, int>{});
   }
@@ -61,7 +52,7 @@ final weeklyReportProvider = StreamProvider<Map<DateTime, int>>((ref) {
   final activeHabits = habitsAsync.value!;
   final habitTargets = {for (var h in activeHabits) h.id: h.targetValue};
   
-  return dao.watchLogsBetweenAll(start, today).map((logs) {
+  return repo.watchLogsBetweenAll(start, today).map((logs) {
     final Map<DateTime, int> report = {};
     for (var log in logs) {
       final target = habitTargets[log.habitId] ?? 1;
@@ -74,7 +65,7 @@ final weeklyReportProvider = StreamProvider<Map<DateTime, int>>((ref) {
 });
 
 final dailyHabitCompletionPercentageProvider = StreamProvider<double>((ref) {
-  final dao = ref.watch(habitsDaoProvider);
+  final repo = ref.watch(habitsRepositoryProvider);
   final now = DateTime.now();
   final today = DateTime(now.year, now.month, now.day);
   
@@ -86,7 +77,7 @@ final dailyHabitCompletionPercentageProvider = StreamProvider<double>((ref) {
   
   final activeHabits = habitsAsync.value!;
   
-  return dao.watchLogsBetweenAll(today, today).map((logs) {
+  return repo.watchLogsBetweenAll(today, today).map((logs) {
     int completedCount = 0;
     
     for (var habit in activeHabits) {
@@ -103,7 +94,6 @@ final dailyHabitCompletionPercentageProvider = StreamProvider<double>((ref) {
   });
 });
 
-// Notifier for adding habits
 class HabitNotifier extends AsyncNotifier<void> {
   @override
   Future<void> build() async {}
@@ -121,62 +111,64 @@ class HabitNotifier extends AsyncNotifier<void> {
     String streakGoalInterval = 'none',
   }) async {
     state = const AsyncLoading();
-    final dao = ref.read(habitsDaoProvider);
-    final companion = HabitsCompanion(
-      name: Value(name),
-      icon: Value(icon),
-      color: Value(color),
-      frequency: Value(frequency),
-      reminderTime: reminderTime == null ? const Value.absent() : Value(reminderTime),
-      isQuantitative: Value(isQuantitative),
-      targetValue: Value(targetValue),
-      unit: unit == null ? const Value.absent() : Value(unit),
-      categories: categories == null ? const Value.absent() : Value(categories),
-      streakGoalInterval: Value(streakGoalInterval),
+    final repo = ref.read(habitsRepositoryProvider);
+    final habit = Habit(
+      id: const Uuid().v4(),
+      userId: Supabase.instance.client.auth.currentUser!.id,
+      name: name,
+      icon: icon,
+      color: color,
+      frequency: frequency,
+      reminderTime: reminderTime,
+      isQuantitative: isQuantitative,
+      targetValue: targetValue,
+      unit: unit,
+      categories: categories,
+      streakGoalInterval: streakGoalInterval,
+      createdAt: DateTime.now(),
     );
-    await dao.insertHabit(companion);
+    await repo.insertHabit(habit);
     state = const AsyncData(null);
   }
 
   Future<void> toggleCompletion(Habit habit, DateTime date, bool currentlyCompleted) async {
-    final dao = ref.read(habitsDaoProvider);
+    final repo = ref.read(habitsRepositoryProvider);
     if (!currentlyCompleted) {
-      await dao.logCompletion(habit.id, date);
+      await repo.saveProgress(habit.id, date, habit.targetValue);
     } else {
-      await dao.removeCompletionForPeriod(habit, date);
+      await repo.saveProgress(habit.id, date, 0);
     }
     state = const AsyncData(null);
   }
 
   Future<void> updateProgress(String habitId, DateTime date, int progress) async {
-    final dao = ref.read(habitsDaoProvider);
-    await dao.saveProgress(habitId, date, progress);
+    final repo = ref.read(habitsRepositoryProvider);
+    await repo.saveProgress(habitId, date, progress);
   }
 
   Future<void> deleteHabit(String habitId) async {
-    final dao = ref.read(habitsDaoProvider);
-    await dao.deleteHabit(habitId);
+    final repo = ref.read(habitsRepositoryProvider);
+    await repo.deleteHabit(habitId);
   }
 
   Future<void> archiveHabit(String habitId) async {
-    final dao = ref.read(habitsDaoProvider);
-    await dao.archiveHabit(habitId);
+    final repo = ref.read(habitsRepositoryProvider);
+    await repo.archiveHabit(habitId);
   }
 }
 
 final habitNotifierProvider = AsyncNotifierProvider<HabitNotifier, void>(() => HabitNotifier());
 
 final globalHabitStreakProvider = StreamProvider<int>((ref) {
-  final dao = ref.watch(habitsDaoProvider);
-  final allHabitsStream = dao.watchAllHabits();
-  final allLogsStream = dao.watchLogsBetweenAll(DateTime(2000, 1, 1), DateTime.now());
+  final repo = ref.watch(habitsRepositoryProvider);
+  final allHabitsStream = repo.watchAllHabits();
+  final allLogsStream = repo.watchLogsBetweenAll(DateTime(2000, 1, 1), DateTime.now());
 
   return Rx.combineLatest2(allHabitsStream, allLogsStream, (List<Habit> habits, List<HabitLog> logs) {
     int streak = 0;
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     
-    // Group logs by date and habitId
     final Map<DateTime, Set<String>> completedLogs = {};
     for (final log in logs) {
       try {
@@ -193,7 +185,6 @@ final globalHabitStreakProvider = StreamProvider<int>((ref) {
     for (int i = 0; i < 10000; i++) {
       final date = today.subtract(Duration(days: i));
       
-      // Get all active habits for this date
       final activeHabitsForDate = habits.where((h) {
         if (h.frequency != 'daily') return false; 
         

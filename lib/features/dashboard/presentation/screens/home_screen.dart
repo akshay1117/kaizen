@@ -67,7 +67,7 @@ class HomeScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppSpacing.sm * 1.5),
                 Text(
                   displayName,
                   style: const TextStyle(
@@ -76,7 +76,7 @@ class HomeScreen extends ConsumerWidget {
                     color: AppColors.textPrimary,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppSpacing.xs),
                 Text(
                   email,
                   style: const TextStyle(
@@ -84,9 +84,9 @@ class HomeScreen extends ConsumerWidget {
                     color: AppColors.textSecondary,
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.lg),
                 const Divider(color: AppColors.borderSpecular),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 Consumer(
                   builder: (context, ref, child) {
                     final syncState = ref.watch(syncServiceProvider);
@@ -144,7 +144,7 @@ class HomeScreen extends ConsumerWidget {
                     );
                   },
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 ListTile(
                   contentPadding: EdgeInsets.zero,
                   leading: Container(
@@ -196,9 +196,9 @@ class HomeScreen extends ConsumerWidget {
                   const SizedBox(height: 28),
 
                   const _StreaksRow(),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.md),
                   const _DashboardMetricsGrid(),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.md),
                 ],
               ),
             ),
@@ -253,7 +253,7 @@ class _ProfileHeader extends ConsumerWidget {
                     ),
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppSpacing.sm),
                 Text(
                   userDisplayName,
                   style: const TextStyle(
@@ -380,14 +380,14 @@ class _DashboardMetricsGrid extends StatelessWidget {
           flex: 1,
           child: _WaterIntakeCard(),
         ),
-        SizedBox(width: 16),
+        SizedBox(width: AppSpacing.md),
         // Right Column (Sleep + Calories)
         Expanded(
           flex: 1,
           child: Column(
             children: [
               _SleepCard(),
-              SizedBox(height: 16),
+              SizedBox(height: AppSpacing.md),
               _CaloriesCard(),
             ],
           ),
@@ -423,7 +423,7 @@ class _WaterIntakeCard extends ConsumerWidget {
               const Text(
                 'Water Intake',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: AppColors.textPrimary,
                 ),
@@ -434,16 +434,16 @@ class _WaterIntakeCard extends ConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
           Text(
             '${waterIntake.toStringAsFixed(1)} Liters',
             style: const TextStyle(
-              fontSize: 18,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               color: AppColors.accentNeon,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.sm * 1.5),
           const Text(
             'Real time updates',
             style: TextStyle(
@@ -452,14 +452,14 @@ class _WaterIntakeCard extends ConsumerWidget {
               height: 1.2,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.sm * 1.5),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Vertical Progress Bar
               Container(
                 width: 24,
-                height: 160,
+                height: 220,
                 decoration: BoxDecoration(
                   color: AppColors.surfaceElevatedMid,
                   borderRadius: BorderRadius.circular(12),
@@ -478,7 +478,7 @@ class _WaterIntakeCard extends ConsumerWidget {
                   ),
                 ),
               ),
-              const SizedBox(width: 20),
+              const SizedBox(width: AppSpacing.md * 1.25),
               // Timeline
               Expanded(
                 child: Column(
@@ -526,7 +526,7 @@ class _WaterIntakeCard extends ConsumerWidget {
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppSpacing.sm * 1.5),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(bottom: 12),
@@ -635,7 +635,7 @@ class _SleepCard extends ConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
           Text(
             '${hours}h ${mins}m',
             style: const TextStyle(
@@ -644,7 +644,7 @@ class _SleepCard extends ConsumerWidget {
               color: AppColors.accentNeon,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.sm * 1.5),
           SizedBox(
             height: 48,
             width: double.infinity,
@@ -754,7 +754,7 @@ class _CaloriesCard extends ConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
           Text(
             '$calories kCal',
             style: const TextStyle(
@@ -763,7 +763,7 @@ class _CaloriesCard extends ConsumerWidget {
               color: AppColors.accentNeon,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.sm * 1.5),
           Center(
             child: SizedBox(
               width: 72,

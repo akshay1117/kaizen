@@ -66,18 +66,18 @@ class _ReminderScreenState extends State<ReminderScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Icon(Icons.notifications_none, color: AppColors.textPrimary, size: 28),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: AppSpacing.md),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text('Missing permission', style: TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.w500)),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: AppSpacing.sm),
                           const Text(
                             'Give HabitKit the permission to send you notifications in order to use this feature.',
                             style: TextStyle(color: AppColors.textSecondary, fontSize: 14, height: 1.4),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppSpacing.md),
                           GestureDetector(
                             onTap: _requestPermission,
                             child: const Text('Give permission', style: TextStyle(color: Color(0xFFA855F7), fontSize: 14, fontWeight: FontWeight.w500)),
@@ -88,22 +88,22 @@ class _ReminderScreenState extends State<ReminderScreen> {
                   ],
                 ),
               ),
-            const SizedBox(height: 32),
+            const SizedBox(height: AppSpacing.xl),
             if (_selectedReminder == null)
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Icon(Icons.alarm, color: AppColors.textPrimary, size: 40),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.md),
                     const Text('No Reminders', style: TextStyle(color: AppColors.textPrimary, fontSize: 20, fontWeight: FontWeight.w600)),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppSpacing.sm),
                     const Text(
                       'Add a reminder to your habit for daily notifications.',
                       style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: AppSpacing.lg),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.accentViolet,
@@ -123,7 +123,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text('Reminder #1', style: TextStyle(color: AppColors.textPrimary, fontSize: 14, fontWeight: FontWeight.w600)),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppSpacing.sm),
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
@@ -153,7 +153,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
                               );
                             }).toList(),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: AppSpacing.md),
                           Row(
                             children: [
                               Expanded(
@@ -169,7 +169,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         const Icon(Icons.access_time, color: AppColors.textPrimary, size: 18),
-                                        const SizedBox(width: 8),
+                                        const SizedBox(width: AppSpacing.sm),
                                         Text(
                                           _formatTime(_selectedReminder!),
                                           style: const TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.w600),
@@ -179,7 +179,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 12),
+                              const SizedBox(width: AppSpacing.sm * 1.5),
                               GestureDetector(
                                 onTap: () {
                                   setState(() => _selectedReminder = null);
@@ -198,7 +198,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.md),
                     SizedBox(
                       width: double.infinity,
                       child: TextButton.icon(

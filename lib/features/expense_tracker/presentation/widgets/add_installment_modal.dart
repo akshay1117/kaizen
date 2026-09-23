@@ -110,7 +110,7 @@ class _AddInstallmentModalState extends ConsumerState<AddInstallmentModal> {
                 children: [
                   const Text('Total Amount', style: TextStyle(color: AppColors.textSecondary, fontSize: 16)),
                   Text('₹$_amount', style: const TextStyle(color: AppColors.textPrimary, fontSize: 56, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: AppSpacing.xl),
                   TextField(
                     controller: _nameController,
                     style: const TextStyle(color: AppColors.textPrimary),

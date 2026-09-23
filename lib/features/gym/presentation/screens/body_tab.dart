@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
 import 'package:flutter/material.dart';
 
 class BodyTab extends StatelessWidget {
@@ -20,7 +21,7 @@ class BodyTab extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: AppSpacing.lg),
         Container(
           height: 300,
           color: Colors.grey.withValues(alpha: 0.1),
@@ -28,7 +29,7 @@ class BodyTab extends StatelessWidget {
             child: Text('Anatomical Muscle Diagram Placeholder'),
           ),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: AppSpacing.lg),
         const ListTile(
           title: Text('Chest'),
           trailing: Text('1 min, 26 secs ago'),

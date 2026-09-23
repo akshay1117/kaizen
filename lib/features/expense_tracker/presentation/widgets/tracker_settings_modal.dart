@@ -146,7 +146,7 @@ class _TrackerSettingsModalState extends ConsumerState<TrackerSettingsModal> {
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppRadii.lg), borderSide: BorderSide.none),
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppSpacing.lg),
                   SwitchListTile(
                     title: const Text('Monthly Budget', style: TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.w500)),
                     subtitle: const Text('Set a limit for this tracker.', style: TextStyle(color: AppColors.textSecondary, fontSize: 14)),
@@ -156,7 +156,7 @@ class _TrackerSettingsModalState extends ConsumerState<TrackerSettingsModal> {
                     contentPadding: EdgeInsets.zero,
                   ),
                   if (_budgetEnabled) ...[
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.md),
                     Center(
                       child: Text('₹$_budgetAmount', style: const TextStyle(color: AppColors.textPrimary, fontSize: 48, fontWeight: FontWeight.bold)),
                     ),

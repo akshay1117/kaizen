@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
 import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
@@ -49,7 +50,7 @@ class JournalDetailScreen extends ConsumerWidget {
               // Edit functionality
             },
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppSpacing.sm),
         ],
       ),
       body: SingleChildScrollView(
@@ -64,19 +65,19 @@ class JournalDetailScreen extends ConsumerWidget {
                 imageUrl: entry.images.first,
                 heroTag: 'img_${entry.id}',
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppSpacing.lg),
             ],
 
             // Mood & Location
             Row(
               children: [
                 MoodChip(mood: entry.mood),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppSpacing.sm * 1.5),
                 if (entry.location != null && entry.location!.isNotEmpty)
                   LocationChip(location: entry.location!),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppSpacing.md * 1.25),
 
             // Title
             if (entry.title.isNotEmpty) ...[
@@ -88,13 +89,13 @@ class JournalDetailScreen extends ConsumerWidget {
                   color: textColor,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.md),
             ],
 
             // Audio Player
             if (entry.audioPath != null && entry.audioPath!.isNotEmpty) ...[
               AudioPlayerWidget(audioPath: entry.audioPath!),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppSpacing.lg),
             ],
 
             // Body
@@ -107,7 +108,7 @@ class JournalDetailScreen extends ConsumerWidget {
                   height: 1.6,
                 ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: AppSpacing.xl),
             ],
 
             // Tags
@@ -119,12 +120,12 @@ class JournalDetailScreen extends ConsumerWidget {
                   for (final tag in entry.tags) TagChip(tag: tag),
                 ],
               ),
-              const SizedBox(height: 48),
+              const SizedBox(height: AppSpacing.xxl),
             ],
 
             // Created / Updated Dates
             Divider(color: Colors.grey[800]),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.md),
             Text(
               'Created: ${DateFormat('MMMM d, yyyy • h:mm a').format(entry.createdAt)}',
               style: TextStyle(color: Colors.grey[500], fontSize: 13),

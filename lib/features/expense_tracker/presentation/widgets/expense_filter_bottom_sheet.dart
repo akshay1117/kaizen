@@ -24,7 +24,7 @@ class _ExpenseFilterBottomSheetState extends ConsumerState<ExpenseFilterBottomSh
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.sm * 1.5),
           Container(
             width: 40,
             height: 4,
@@ -69,7 +69,7 @@ class _ExpenseFilterBottomSheetState extends ConsumerState<ExpenseFilterBottomSh
             ),
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           
           // Sort By Card
           Container(
@@ -84,7 +84,7 @@ class _ExpenseFilterBottomSheetState extends ConsumerState<ExpenseFilterBottomSh
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(filterState.sortBy, style: const TextStyle(color: AppColors.textSecondary, fontSize: 16)),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppSpacing.xs),
                   const Icon(CupertinoIcons.chevron_up_chevron_down, color: AppColors.textSecondary, size: 14),
                 ],
               ),
@@ -92,7 +92,7 @@ class _ExpenseFilterBottomSheetState extends ConsumerState<ExpenseFilterBottomSh
             ),
           ),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.lg),
           
           // Toggles Card
           Container(
@@ -135,7 +135,7 @@ class _ExpenseFilterBottomSheetState extends ConsumerState<ExpenseFilterBottomSh
             ),
           ),
           
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.lg),
           
           // Members Card
           Container(
@@ -172,7 +172,7 @@ class _ExpenseFilterBottomSheetState extends ConsumerState<ExpenseFilterBottomSh
               ],
             ),
           ),
-          const SizedBox(height: 48),
+          const SizedBox(height: AppSpacing.xxl),
         ],
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
 import 'package:kaizen/core/theme/app_colors.dart';
 import 'dart:convert';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
@@ -138,7 +139,7 @@ class _AddExercisesScreenState extends ConsumerState<AddExercisesScreen> {
               _saveAndPop(myExercises);
             },
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppSpacing.sm),
         ],
       ),
       body: SafeArea(
@@ -230,7 +231,7 @@ class _AddExercisesScreenState extends ConsumerState<AddExercisesScreen> {
         child: Row(
           children: [
             const Icon(Icons.add, color: GymTheme.primaryAccent, size: 20),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppSpacing.md),
             Expanded(
               child: Text(name, style: const TextStyle(color: GymTheme.textPrimary, fontSize: 16)),
             ),

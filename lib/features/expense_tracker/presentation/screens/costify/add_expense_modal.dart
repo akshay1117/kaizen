@@ -115,7 +115,7 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -131,7 +131,7 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
                     child: const Row(
                       children: [
                         Icon(Icons.credit_card, color: AppColors.textSecondary, size: 20),
-                        SizedBox(width: 8),
+                        SizedBox(width: AppSpacing.sm),
                         Expanded(child: Text('No account (optional)', style: TextStyle(color: AppColors.textPrimary))),
                         Icon(Icons.chevron_right, color: AppColors.textSecondary, size: 20),
                       ],
@@ -141,7 +141,7 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -176,7 +176,7 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
                             child: Row(
                               children: [
                                 Text(cat.icon, style: const TextStyle(fontSize: 20)),
-                                const SizedBox(width: 12),
+                                const SizedBox(width: AppSpacing.sm * 1.5),
                                 Text(cat.name, style: const TextStyle(color: AppColors.textPrimary)),
                               ],
                             ),
@@ -193,7 +193,7 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(currentCat?.icon ?? '✨', style: const TextStyle(fontSize: 18)),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: AppSpacing.sm),
                             Text(
                               currentCat?.name ?? 'Select', 
                               style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold),
@@ -238,7 +238,7 @@ class _AddExpenseModalState extends ConsumerState<AddExpenseModal> {
               ],
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.lg),
           
           // Numpad
           Container(

@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
 import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,7 @@ class PromptCard extends StatelessWidget {
           Row(
             children: [
               const Icon(Icons.psychology_outlined, color: AppColors.accentViolet, size: 20),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               Expanded(
                 child: Text(
                   prompt,
@@ -41,7 +42,7 @@ class PromptCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.sm * 1.5),
           Text(
             response,
             style: TextStyle(

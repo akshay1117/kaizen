@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
 import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,11 +24,11 @@ class CustomNumpad extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           _buildRow(['1', '2', '3']),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           _buildRow(['4', '5', '6']),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           _buildRow(['7', '8', '9']),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

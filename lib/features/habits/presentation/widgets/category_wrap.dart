@@ -45,7 +45,7 @@ class CategoryWrap extends StatelessWidget {
                     size: 16,
                     color: isSelected ? AppColors.textPrimary : AppColors.textSecondary,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppSpacing.sm),
                   Text(
                     cat,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -78,7 +78,7 @@ class CategoryWrap extends StatelessWidget {
                   size: 16,
                   color: AppColors.textSecondary,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppSpacing.sm),
                 Text(
                   'Create your own',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(

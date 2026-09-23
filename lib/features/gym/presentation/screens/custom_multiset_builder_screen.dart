@@ -39,7 +39,7 @@ class _CustomMultisetBuilderScreenState
               Navigator.pop(context);
             },
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppSpacing.sm),
         ],
       ),
       body: ListView(
@@ -61,11 +61,11 @@ class _CustomMultisetBuilderScreenState
               ),
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.lg),
           const Text('Steps',
               style: TextStyle(
                   color: GymTheme.textPrimary, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Container(
             decoration: BoxDecoration(
               color: GymTheme.cardBackground,
@@ -101,11 +101,11 @@ class _CustomMultisetBuilderScreenState
               ],
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.lg),
           const Text('Rest',
               style: TextStyle(
                   color: GymTheme.textPrimary, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Container(
             decoration: BoxDecoration(
               color: GymTheme.cardBackground,
@@ -143,11 +143,11 @@ class _CustomMultisetBuilderScreenState
               ],
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.lg),
           const Text('Logging',
               style: TextStyle(
                   color: GymTheme.textPrimary, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Container(
             decoration: BoxDecoration(
               color: GymTheme.cardBackground,

@@ -59,7 +59,7 @@ class BalancesModal extends ConsumerWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.md),
               GridView.count(
                 crossAxisCount: 2,
                 shrinkWrap: true,
@@ -74,7 +74,7 @@ class BalancesModal extends ConsumerWidget {
                   _buildStatCard('Expenses', expenseCount.toString(), Icons.receipt_long, const Color(0xFFFF9500)),
                 ],
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppSpacing.lg),
               const Text(
                 'Members',
                 style: TextStyle(
@@ -83,9 +83,9 @@ class BalancesModal extends ConsumerWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.md),
               _buildMemberExpandableCard('Akshaykrishnantv', totalSpent, categoryTotals, formatter),
-              const SizedBox(height: 32),
+              const SizedBox(height: AppSpacing.xl),
             ],
           ),
         );
@@ -175,7 +175,7 @@ class BalancesModal extends ConsumerWidget {
                 name,
                 style: const TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               const Text(
                 'You',
                 style: TextStyle(color: AppColors.accentViolet, fontSize: 12),
@@ -195,7 +195,7 @@ class BalancesModal extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text('Details', style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppSpacing.sm),
                   ...categoryTotals.entries.map((e) => Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: Row(

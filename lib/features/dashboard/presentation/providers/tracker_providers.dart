@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kaizen/core/database/database.dart';
-import 'package:kaizen/features/habits/application/habit_providers.dart';
+import 'package:kaizen/core/models/health_models.dart';
 import 'package:kaizen/features/dashboard/data/health_repository.dart';
 
 final selectedDateProvider = StateProvider<DateTime>((ref) {
@@ -9,8 +8,7 @@ final selectedDateProvider = StateProvider<DateTime>((ref) {
 });
 
 final healthRepositoryProvider = Provider<HealthRepository>((ref) {
-  final db = ref.watch(databaseProvider);
-  return HealthRepository(db);
+  return HealthRepository();
 });
 
 // --- Water ---

@@ -17,21 +17,18 @@ class KaizenApp extends ConsumerWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return SafeArea(
-          top: true,
-          bottom: false,
-          child: MaterialApp.router(
-            title: 'Kaizen',
-            theme: AppTheme.darkTheme,
-            routerConfig: router,
-            debugShowCheckedModeBanner: false,
-            builder: (context, child) {
-              return Material(
-                type: MaterialType.transparency,
-                child: child ?? const SizedBox.shrink(),
-              );
-            },
-          ),
+        return MaterialApp.router(
+          title: 'Kaizen',
+          theme: AppTheme.darkTheme,
+          routerConfig: router,
+          debugShowCheckedModeBanner: false,
+          builder: (context, widget) {
+            return SafeArea(
+              top: true,
+              bottom: false,
+              child: widget ?? const SizedBox.shrink(),
+            );
+          },
         );
       },
     );

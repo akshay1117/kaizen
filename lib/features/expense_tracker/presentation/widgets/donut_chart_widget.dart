@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
 import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -84,7 +85,7 @@ class DonutChartWidget extends ConsumerWidget {
                       periodTitle,
                       style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppSpacing.xs),
                     const Text(
                       'Total:',
                       style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
@@ -97,7 +98,7 @@ class DonutChartWidget extends ConsumerWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.md),
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -108,7 +109,7 @@ class DonutChartWidget extends ConsumerWidget {
                             Text(formatter.format(dailyAvg), style: const TextStyle(color: AppColors.textSecondary, fontSize: 12)),
                           ],
                         ),
-                        const SizedBox(width: 24),
+                        const SizedBox(width: AppSpacing.lg),
                         Column(
                           children: [
                             const Text('ø per person:', style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),

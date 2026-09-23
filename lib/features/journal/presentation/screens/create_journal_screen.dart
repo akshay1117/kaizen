@@ -95,7 +95,7 @@ class _CreateJournalScreenState extends ConsumerState<CreateJournalScreen> {
               style: TextStyle(color: AppColors.accentViolet, fontWeight: FontWeight.bold, fontSize: 16),
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppSpacing.sm),
         ],
       ),
       body: SafeArea(
@@ -106,7 +106,7 @@ class _CreateJournalScreenState extends ConsumerState<CreateJournalScreen> {
             children: [
               // Mood selector
               const Text('How are you feeling?', style: TextStyle(color: Colors.grey, fontSize: 14)),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.sm * 1.5),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -132,7 +132,7 @@ class _CreateJournalScreenState extends ConsumerState<CreateJournalScreen> {
                   }).toList(),
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: AppSpacing.lg),
 
               // Title input
               TextField(
@@ -144,7 +144,7 @@ class _CreateJournalScreenState extends ConsumerState<CreateJournalScreen> {
                   border: InputBorder.none,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
 
               // Body input (Expanded to increase writing area)
               Expanded(
@@ -161,7 +161,7 @@ class _CreateJournalScreenState extends ConsumerState<CreateJournalScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.md),
 
               // Collapsible Add Details Section
               AnimatedSize(
@@ -184,7 +184,7 @@ class _CreateJournalScreenState extends ConsumerState<CreateJournalScreen> {
                             size: 28,
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppSpacing.sm),
                         Text(
                           _showAddDetails ? 'Hide Details' : 'Add Details',
                           style: const TextStyle(color: Colors.grey, fontSize: 15, fontWeight: FontWeight.bold),
@@ -192,7 +192,7 @@ class _CreateJournalScreenState extends ConsumerState<CreateJournalScreen> {
                       ],
                     ),
                     if (_showAddDetails) ...[
-                      const SizedBox(height: 12),
+                      const SizedBox(height: AppSpacing.sm * 1.5),
                       // Image URL
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -208,7 +208,7 @@ class _CreateJournalScreenState extends ConsumerState<CreateJournalScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: AppSpacing.sm * 1.5),
 
                       // Location
                       Container(
@@ -225,7 +225,7 @@ class _CreateJournalScreenState extends ConsumerState<CreateJournalScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: AppSpacing.sm * 1.5),
 
                       // Tags
                       Container(

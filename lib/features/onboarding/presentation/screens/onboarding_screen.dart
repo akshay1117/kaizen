@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
@@ -85,7 +86,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             color: data['color'],
                           ),
                         ),
-                        const SizedBox(height: 48),
+                        const SizedBox(height: AppSpacing.xxl),
                         Text(
                           data['title'],
                           textAlign: TextAlign.center,
@@ -95,7 +96,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             color: AppColors.textPrimary,
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppSpacing.md),
                         Text(
                           data['description'],
                           textAlign: TextAlign.center,

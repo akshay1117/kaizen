@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
 import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -45,7 +46,7 @@ class TrackerDrawer extends ConsumerWidget {
                               ),
                               child: const Icon(Icons.wallet, color: AppColors.textPrimary, size: 20),
                             ),
-                            const SizedBox(width: 12),
+                            const SizedBox(width: AppSpacing.sm * 1.5),
                             Expanded(
                               child: Text(
                                 tracker.name,
@@ -136,7 +137,7 @@ class TrackerDrawer extends ConsumerWidget {
         children: [
           Text(title, style: TextStyle(color: color, fontSize: 14)),
           if (isPro) ...[
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSpacing.sm),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
               decoration: BoxDecoration(

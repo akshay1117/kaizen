@@ -38,7 +38,7 @@ class _DropsetBuilderScreenState extends ConsumerState<DropsetBuilderScreen> {
               Navigator.pop(context);
             },
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppSpacing.sm),
         ],
       ),
       body: ListView(
@@ -74,9 +74,9 @@ class _DropsetBuilderScreenState extends ConsumerState<DropsetBuilderScreen> {
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           const Text('Exercise', style: TextStyle(color: GymTheme.textSecondary, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(

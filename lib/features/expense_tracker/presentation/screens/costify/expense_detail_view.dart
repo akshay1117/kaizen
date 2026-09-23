@@ -62,7 +62,7 @@ class ExpenseDetailView extends StatelessWidget {
                         backgroundColor: Color(0xFF000000),
                         child: Text('✨', style: TextStyle(fontSize: 20)),
                       ),
-                      SizedBox(width: 12),
+                      SizedBox(width: AppSpacing.sm * 1.5),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -72,21 +72,21 @@ class ExpenseDetailView extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.md),
                   Text(title, style: const TextStyle(color: AppColors.textPrimary, fontSize: 18, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppSpacing.xs),
                   Text(
                     amount.replaceAll('-', ''), 
                     style: const TextStyle(color: Color(0xFFF7931A), fontSize: 32, fontWeight: FontWeight.bold)
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.md),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
                           const Icon(Icons.local_offer_outlined, color: AppColors.textSecondary, size: 16),
-                          const SizedBox(width: 4),
+                          const SizedBox(width: AppSpacing.xs),
                           Text(category, style: const TextStyle(color: AppColors.textSecondary, fontSize: 12)),
                         ],
                       ),
@@ -96,7 +96,7 @@ class ExpenseDetailView extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.md),
             
             // Comments Card
             Container(
@@ -110,9 +110,9 @@ class ExpenseDetailView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text('Comments', style: TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppSpacing.sm),
                   const Text('No comments available.', style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppSpacing.sm * 1.5),
                   Row(
                     children: [
                       Expanded(
@@ -127,7 +127,7 @@ class ExpenseDetailView extends StatelessWidget {
                           child: const Text('Add a comment...', style: TextStyle(color: Color(0xFF5C5C5E), fontSize: 14)),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppSpacing.sm * 1.5),
                       Container(
                         width: 40,
                         height: 40,
@@ -142,7 +142,7 @@ class ExpenseDetailView extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.md),
             
             // Attachments Card
             Container(
@@ -156,11 +156,11 @@ class ExpenseDetailView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Attachments', style: TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 12),
+                  SizedBox(height: AppSpacing.sm * 1.5),
                   Row(
                     children: [
                       Icon(Icons.attach_file, color: AppColors.textSecondary, size: 16),
-                      SizedBox(width: 8),
+                      SizedBox(width: AppSpacing.sm),
                       Text('No attachments', style: TextStyle(color: AppColors.textSecondary, fontSize: 14)),
                     ],
                   ),
@@ -168,7 +168,7 @@ class ExpenseDetailView extends StatelessWidget {
               ),
             ),
             
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSpacing.lg),
             
             // Action Buttons
             SizedBox(
@@ -184,7 +184,7 @@ class ExpenseDetailView extends StatelessWidget {
                 onPressed: () {},
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.sm * 1.5),
             SizedBox(
               width: double.infinity,
               height: 56,
@@ -198,7 +198,7 @@ class ExpenseDetailView extends StatelessWidget {
                 onPressed: onDelete,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.md),
           ],
         ),
       ),

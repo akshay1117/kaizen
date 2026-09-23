@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
 import 'package:kaizen/core/theme/app_colors.dart';
 import 'dart:math';
 import 'package:flutter/material.dart';
@@ -84,7 +85,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with SingleTicker
                   ),
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppSpacing.md),
               // Waveform visualization simulation
               Expanded(
                 child: Row(
@@ -109,7 +110,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with SingleTicker
                   }),
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: AppSpacing.md),
               GestureDetector(
                 onTap: _toggleSpeed,
                 child: Container(
@@ -131,7 +132,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with SingleTicker
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.sm * 1.5),
           Row(
             children: [
               Text(

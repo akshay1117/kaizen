@@ -34,7 +34,7 @@ class InstallmentsBottomSheet extends ConsumerWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.sm * 1.5),
           Container(
             width: 40,
             height: 4,
@@ -88,7 +88,7 @@ class InstallmentsBottomSheet extends ConsumerWidget {
             ),
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           
           // Grid
           Padding(
@@ -96,24 +96,24 @@ class InstallmentsBottomSheet extends ConsumerWidget {
             child: Row(
               children: [
                 Expanded(child: _buildGridCard(Icons.list_alt, AppColors.textSecondary, '$activePlans', 'Active plans')),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppSpacing.sm * 1.5),
                 Expanded(child: _buildGridCard(Icons.content_paste, AppColors.textSecondary, '₹${openAmount.toStringAsFixed(2)}', 'Open amount')),
               ],
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.sm * 1.5),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
               children: [
                 Expanded(child: _buildGridCard(Icons.edit_calendar, AppColors.textSecondary, '₹${dueNextMonth.toStringAsFixed(2)}', 'Due next month')),
-                const SizedBox(width: 12),
+                const SizedBox(width: AppSpacing.sm * 1.5),
                 Expanded(child: _buildGridCard(Icons.check_circle_outline, AppColors.textSecondary, '₹${paidThisMonth.toStringAsFixed(2)}', 'Paid this month')),
               ],
             ),
           ),
           
-          const SizedBox(height: 32),
+          const SizedBox(height: AppSpacing.xl),
           
           // List or Empty state
           Expanded(
@@ -127,7 +127,7 @@ class InstallmentsBottomSheet extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.list_alt, color: AppColors.textSecondary, size: 48),
-                        SizedBox(height: 16),
+                        SizedBox(height: AppSpacing.md),
                         Text(
                           'No installment plans yet.',
                           style: TextStyle(
@@ -156,14 +156,14 @@ class InstallmentsBottomSheet extends ConsumerWidget {
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const SizedBox(height: 8),
+                          const SizedBox(height: AppSpacing.sm),
                           LinearProgressIndicator(
                             value: progress,
                             backgroundColor: AppColors.surfaceElevatedHigh,
                             valueColor: const AlwaysStoppedAnimation<Color>(AppColors.accentViolet),
                             borderRadius: BorderRadius.circular(4),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: AppSpacing.sm),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -197,11 +197,11 @@ class InstallmentsBottomSheet extends ConsumerWidget {
           Row(
             children: [
               Icon(icon, color: iconColor, size: 16),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               Expanded(child: Text(label, style: const TextStyle(color: AppColors.textSecondary, fontSize: 12), overflow: TextOverflow.ellipsis)),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.sm * 1.5),
           Text(value, style: const TextStyle(color: AppColors.textPrimary, fontSize: 24, fontWeight: FontWeight.bold)),
         ],
       ),

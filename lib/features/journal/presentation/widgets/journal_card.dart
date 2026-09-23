@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
 import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
@@ -107,12 +108,12 @@ class JournalCard extends ConsumerWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppSpacing.sm * 1.5),
 
                 // Prompt if available
                 if (entry.prompt != null && entry.prompt!.isNotEmpty) ...[
                   PromptCard(prompt: entry.prompt!, response: entry.body),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.md),
                 ] else ...[
                   // Normal Title & Body
                   if (entry.title.isNotEmpty) ...[
@@ -124,7 +125,7 @@ class JournalCard extends ConsumerWidget {
                         color: textColor,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppSpacing.sm),
                   ],
                   if (entry.body.isNotEmpty) ...[
                     Text(
@@ -135,7 +136,7 @@ class JournalCard extends ConsumerWidget {
                         height: 1.4,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.md),
                   ],
                 ],
 
@@ -145,13 +146,13 @@ class JournalCard extends ConsumerWidget {
                     imageUrl: entry.images.first,
                     heroTag: 'img_${entry.id}',
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.md),
                 ],
 
                 // Audio if available
                 if (entry.audioPath != null && entry.audioPath!.isNotEmpty) ...[
                   AudioPlayerWidget(audioPath: entry.audioPath!),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.md),
                 ],
 
                 // Tags & Location
@@ -164,7 +165,7 @@ class JournalCard extends ConsumerWidget {
                     for (final tag in entry.tags) TagChip(tag: tag),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.md),
 
                 // Timestamp
                 Text(
@@ -225,7 +226,7 @@ class BottomActionSheet extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.grey[600], borderRadius: BorderRadius.circular(2))),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.lg),
           _buildActionItem(
             icon: Icons.edit_outlined,
             title: 'Edit',

@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -46,7 +47,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
                     padding: const EdgeInsets.only(left: 16, right: 16, bottom: 32),
                     child: Column(
                       children: [
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppSpacing.md),
                         _buildMainCard(),
                       ],
                     ),
@@ -76,7 +77,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.sm * 1.5),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -96,7 +97,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
                   child: Text(
                     'Sleep Architecture Details',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 22,
                       fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
                       letterSpacing: -0.2,
@@ -104,15 +105,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                Container(
-                  width: 32,
-                  height: 32,
-                  decoration: const BoxDecoration(
-                    color: AppColors.accentLavender,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(Icons.person, color: AppColors.surfacePitchBlack, size: 18),
-                ),
+                const SizedBox(width: 44),
               ],
             ),
           ],
@@ -149,7 +142,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
                     borderRadius: BorderRadius.circular(3),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.md),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -159,21 +152,21 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
                         const Text(
                           'Sleep Analysis',
                           style: TextStyle(
-                            fontSize: 22,
+                            fontSize: 26,
                             fontWeight: FontWeight.w600,
                             color: AppColors.textPrimary,
                             letterSpacing: -0.2,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppSpacing.xs),
                         Row(
                           children: [
                             const Icon(Icons.calendar_today, size: 14, color: AppColors.accentLavender),
-                            const SizedBox(width: 4),
+                            const SizedBox(width: AppSpacing.xs),
                             Text(
                               DateFormat('EEEE, MMM d').format(ref.watch(selectedDateProvider)),
                               style: const TextStyle(
-                                fontSize: 13,
+                                fontSize: 15,
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.accentLavender,
                               ),
@@ -204,31 +197,27 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: _buildDaysSwitcher(),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: _buildHeroCard(),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: _buildArchitecture(),
-          ),
-          const SizedBox(height: 16),
+
           
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: _buildWeeklyConsistency(),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: _buildRecentSessions(),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.lg),
         ],
       ),
     );
@@ -283,7 +272,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
             day,
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 11,
+              fontSize: 13,
               fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
               color: isSelected ? AppColors.surfacePitchBlack : AppColors.textSecondary,
               letterSpacing: 0.5,
@@ -359,13 +348,13 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
                       const Text(
                         'TIME ASLEEP',
                         style: TextStyle(
-                          fontSize: 11,
+                          fontSize: 14,
                           fontWeight: FontWeight.w600,
                           color: AppColors.textSecondary,
                           letterSpacing: 1.2,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppSpacing.xs),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.baseline,
                         textBaseline: TextBaseline.alphabetic,
@@ -373,7 +362,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
                           Text(
                             hasRecord ? '${hours}h ${minutes}m' : '0h 0m',
                             style: const TextStyle(
-                              fontSize: 32,
+                              fontSize: 36,
                               fontWeight: FontWeight.bold,
                               color: AppColors.textPrimary,
                               letterSpacing: -0.5,
@@ -381,15 +370,15 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppSpacing.xs),
                       Row(
                         children: [
                           Icon(hasRecord && totalDurationHours >= 7 ? Icons.arrow_upward : Icons.arrow_downward, size: 14, color: AppColors.textSecondary),
-                          const SizedBox(width: 4),
+                          const SizedBox(width: AppSpacing.xs),
                           const Text(
                             '+24m vs 7-day average',
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 14,
                               color: AppColors.textSecondary,
                             ),
                           ),
@@ -428,7 +417,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
                                 Text(
                                   hasRecord ? score.toString() : '-',
                                   style: const TextStyle(
-                                    fontSize: 22,
+                                    fontSize: 24,
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.textPrimary,
                                     height: 1,
@@ -438,7 +427,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
                                 const Text(
                                   'SCORE',
                                   style: TextStyle(
-                                    fontSize: 9,
+                                    fontSize: 11,
                                     fontWeight: FontWeight.w600,
                                     color: AppColors.textSecondary,
                                     letterSpacing: 1,
@@ -449,7 +438,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: AppSpacing.sm),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                         decoration: BoxDecoration(
@@ -459,7 +448,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
                         child: const Text(
                           'OPTIMAL',
                           style: TextStyle(
-                            fontSize: 11,
+                            fontSize: 13,
                             fontWeight: FontWeight.bold,
                             color: AppColors.accentLavender,
                             letterSpacing: 1,
@@ -470,7 +459,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.md),
               GridView.count(
                 crossAxisCount: 2,
                 shrinkWrap: true,
@@ -506,11 +495,11 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
           Row(
             children: [
               Icon(icon, size: 16, color: AppColors.textSecondary),
-              const SizedBox(width: 4),
+              const SizedBox(width: AppSpacing.xs),
               Text(
                 title,
                 style: const TextStyle(
-                  fontSize: 11,
+                  fontSize: 13,
                   fontWeight: FontWeight.w600,
                   color: AppColors.textSecondary,
                   letterSpacing: 0.5,
@@ -521,7 +510,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
           Text(
             value,
             style: const TextStyle(
-              fontSize: 18,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               color: AppColors.textPrimary,
               letterSpacing: -0.2,
@@ -530,156 +519,12 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
           Text(
             subtitle,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: 14,
               color: highlightSubtitleColor ?? (highlightSubtitle ? AppColors.accentLavender : AppColors.textSecondary),
             ),
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildArchitecture() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.surfaceElevatedMid,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Icon(Icons.graphic_eq, color: AppColors.accentLavender, size: 20),
-                  SizedBox(width: 6),
-                  Text(
-                    'Architecture',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                ],
-              ),
-              Text(
-                'HYPNOGRAM',
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textSecondary,
-                  letterSpacing: 1,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('11:15 PM', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
-              Text('03:00 AM', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
-              Text('07:35 AM', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
-            ],
-          ),
-          const SizedBox(height: 6),
-          Container(
-            height: 96,
-            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
-            decoration: BoxDecoration(
-              color: AppColors.surfacePitchBlack,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Stack(
-              children: [
-                Positioned(top: 12, left: 0, right: 0, child: CustomPaint(painter: _DashedLinePainter(color: AppColors.surfaceElevatedHigh))),
-                Positioned(top: 32, left: 0, right: 0, child: CustomPaint(painter: _DashedLinePainter(color: AppColors.surfaceElevatedHigh))),
-                Positioned(top: 52, left: 0, right: 0, child: CustomPaint(painter: _DashedLinePainter(color: AppColors.surfaceElevatedHigh))),
-                Positioned(top: 72, left: 0, right: 0, child: CustomPaint(painter: _DashedLinePainter(color: AppColors.surfaceElevatedHigh))),
-                Positioned.fill(
-                  child: CustomPaint(
-                    painter: _HypnogramPainter(color: AppColors.accentVelvet),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 8),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: SizedBox(
-              height: 12,
-              child: Row(
-                children: [
-                  Expanded(flex: 5, child: Container(color: AppColors.textSecondary)),
-                  Expanded(flex: 24, child: Container(color: AppColors.accentLavender.withValues(alpha: 0.5))),
-                  Expanded(flex: 51, child: Container(color: AppColors.accentLavender)),
-                  Expanded(flex: 20, child: Container(color: AppColors.accentVelvet)),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          GridView.count(
-            crossAxisCount: 2,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            childAspectRatio: 3.5,
-            mainAxisSpacing: 8,
-            crossAxisSpacing: 16,
-            children: [
-              _buildLegendItem(AppColors.textSecondary, 'Awake', '5% • 25m'),
-              _buildLegendItem(AppColors.accentLavender.withValues(alpha: 0.5), 'REM', '24% • 2h 00m'),
-              _buildLegendItem(AppColors.accentLavender, 'Light Sleep', '51% • 4h 15m'),
-              _buildLegendItem(AppColors.accentVelvet, 'Deep Sleep', '20% • 1h 40m'),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLegendItem(Color color, String title, String subtitle) {
-    return Row(
-      children: [
-        Container(
-          width: 10,
-          height: 10,
-          decoration: BoxDecoration(
-            color: color,
-            shape: BoxShape.circle,
-          ),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                subtitle,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: AppColors.textSecondary,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 
@@ -698,7 +543,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
               const Text(
                 'Weekly Consistency',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: FontWeight.w600,
                   color: AppColors.textPrimary,
                 ),
@@ -713,11 +558,11 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
                       shape: BoxShape.circle,
                     ),
                   ),
-                  const SizedBox(width: 4),
+                  const SizedBox(width: AppSpacing.xs),
                   const Text(
                     'TARGET 8H',
                     style: TextStyle(
-                      fontSize: 11,
+                      fontSize: 13,
                       fontWeight: FontWeight.bold,
                       color: AppColors.accentLavender,
                     ),
@@ -726,7 +571,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
               )
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           SizedBox(
             height: 144,
             child: Stack(
@@ -755,7 +600,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           Container(
             padding: const EdgeInsets.only(top: 12),
             decoration: BoxDecoration(
@@ -787,7 +632,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
             Text(
               topLabel,
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 12,
                 fontWeight: isHighlighted ? FontWeight.bold : FontWeight.normal,
                 color: isHighlighted ? AppColors.accentLavender : AppColors.textSecondary,
               ),
@@ -820,7 +665,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
             Text(
               bottomLabel,
               style: TextStyle(
-                fontSize: 11,
+                fontSize: 13,
                 fontWeight: isHighlighted ? FontWeight.bold : FontWeight.normal,
                 color: isHighlighted ? AppColors.accentLavender : AppColors.textSecondary,
               ),
@@ -837,16 +682,16 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
         Text(
           title,
           style: const TextStyle(
-            fontSize: 11,
+            fontSize: 13,
             fontWeight: FontWeight.w600,
             color: AppColors.textSecondary,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppSpacing.xs),
         Text(
           value,
           style: TextStyle(
-            fontSize: 13,
+            fontSize: 15,
             fontWeight: FontWeight.w600,
             color: valueColor,
           ),
@@ -872,7 +717,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
               Text(
                 'Recent Sessions',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: FontWeight.w600,
                   color: AppColors.textPrimary,
                 ),
@@ -880,14 +725,14 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
               Text(
                 'View All',
                 style: TextStyle(
-                  fontSize: 11,
+                  fontSize: 13,
                   fontWeight: FontWeight.w600,
                   color: AppColors.textSecondary,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           if (weeklyRecords.isEmpty)
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 24),
@@ -916,7 +761,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
                 ],
               );
             }),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           ElevatedButton.icon(
             onPressed: () {
               final selectedDate = ref.read(selectedDateProvider);
@@ -928,7 +773,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
             icon: const Icon(Icons.add_circle, size: 18),
             label: const Text(
               'Add / Adjust Sleep Record',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             ),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.surfaceElevatedHigh,
@@ -953,7 +798,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
             Text(
               date,
               style: const TextStyle(
-                fontSize: 13,
+                fontSize: 15,
                 fontWeight: FontWeight.w500,
                 color: AppColors.textPrimary,
               ),
@@ -962,7 +807,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
             Text(
               time,
               style: const TextStyle(
-                fontSize: 12,
+                fontSize: 14,
                 color: AppColors.textSecondary,
               ),
             ),
@@ -976,7 +821,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
                 Text(
                   duration,
                   style: const TextStyle(
-                    fontSize: 13,
+                    fontSize: 15,
                     fontWeight: FontWeight.w600,
                     color: AppColors.textPrimary,
                   ),
@@ -985,13 +830,13 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
                 Text(
                   status,
                   style: const TextStyle(
-                    fontSize: 12,
+                    fontSize: 14,
                     color: AppColors.textSecondary,
                   ),
                 ),
               ],
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppSpacing.md),
             Container(
               width: 32,
               height: 32,
@@ -1003,7 +848,7 @@ class _SleepTrackerScreenState extends ConsumerState<SleepTrackerScreen> {
                 child: Text(
                   score,
                   style: TextStyle(
-                    fontSize: 11,
+                    fontSize: 13,
                     fontWeight: FontWeight.bold,
                     color: scoreDimmed ? AppColors.textSecondary : AppColors.textPrimary,
                   ),
@@ -1034,55 +879,6 @@ class _DashedLinePainter extends CustomPainter {
       canvas.drawLine(Offset(startX, 0), Offset(startX + dashWidth, 0), paint);
       startX += dashWidth + dashSpace;
     }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
-
-class _HypnogramPainter extends CustomPainter {
-  final Color color;
-  _HypnogramPainter({required this.color});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()
-      ..color = color
-      ..strokeWidth = 2.5
-      ..style = PaintingStyle.stroke
-      ..strokeJoin = StrokeJoin.round;
-      
-    final Path path = Path();
-    // Recreating path from HTML:
-    // d="M0,12 L14,12 L14,52 L40,52 L40,72 L85,72 L85,52 L110,52 L110,32 L150,32 L150,52 L180,52 L180,72 L220,72 L220,32 L260,32 L260,52 L290,52 L290,12 L300,12 L300,32 L320,32"
-    // ViewBox was 320x80. We need to scale to `size.width` and `size.height`
-    double wRatio = size.width / 320;
-    double hRatio = size.height / 80;
-    
-    path.moveTo(0 * wRatio, 12 * hRatio);
-    path.lineTo(14 * wRatio, 12 * hRatio);
-    path.lineTo(14 * wRatio, 52 * hRatio);
-    path.lineTo(40 * wRatio, 52 * hRatio);
-    path.lineTo(40 * wRatio, 72 * hRatio);
-    path.lineTo(85 * wRatio, 72 * hRatio);
-    path.lineTo(85 * wRatio, 52 * hRatio);
-    path.lineTo(110 * wRatio, 52 * hRatio);
-    path.lineTo(110 * wRatio, 32 * hRatio);
-    path.lineTo(150 * wRatio, 32 * hRatio);
-    path.lineTo(150 * wRatio, 52 * hRatio);
-    path.lineTo(180 * wRatio, 52 * hRatio);
-    path.lineTo(180 * wRatio, 72 * hRatio);
-    path.lineTo(220 * wRatio, 72 * hRatio);
-    path.lineTo(220 * wRatio, 32 * hRatio);
-    path.lineTo(260 * wRatio, 32 * hRatio);
-    path.lineTo(260 * wRatio, 52 * hRatio);
-    path.lineTo(290 * wRatio, 52 * hRatio);
-    path.lineTo(290 * wRatio, 12 * hRatio);
-    path.lineTo(300 * wRatio, 12 * hRatio);
-    path.lineTo(300 * wRatio, 32 * hRatio);
-    path.lineTo(320 * wRatio, 32 * hRatio);
-    
-    canvas.drawPath(path, paint);
   }
 
   @override

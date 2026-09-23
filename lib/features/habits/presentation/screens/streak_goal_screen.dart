@@ -48,7 +48,7 @@ class _StreakGoalScreenState extends State<StreakGoalScreen> {
               'Interval',
               style: TextStyle(color: AppColors.textTertiary, fontSize: 12),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Container(
               decoration: BoxDecoration(
                 color: AppColors.surfacePitchBlack,

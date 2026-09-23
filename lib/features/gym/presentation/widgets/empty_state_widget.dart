@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:kaizen/features/gym/theme/gym_theme.dart';
 
@@ -29,13 +30,13 @@ class EmptyStateWidget extends StatelessWidget {
               size: 64,
               color: isDark ? GymTheme.textSecondary.withValues(alpha: 0.5) : GymTheme.lightTextSecondary.withValues(alpha: 0.5),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.md),
             Text(
               title,
               style: theme.textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Text(
               message,
               style: theme.textTheme.bodyMedium,

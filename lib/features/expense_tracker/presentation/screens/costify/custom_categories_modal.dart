@@ -60,7 +60,7 @@ class CustomCategoriesModal extends ConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           Expanded(
             child: categoriesAsync.when(
               data: (categories) {
@@ -168,7 +168,7 @@ class _NewCategorySheetState extends ConsumerState<NewCategorySheet> {
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.lg),
           const Text(
             'Name',
             style: TextStyle(
@@ -176,7 +176,7 @@ class _NewCategorySheetState extends ConsumerState<NewCategorySheet> {
               fontSize: 14,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           TextField(
             controller: _nameController,
             style: const TextStyle(color: AppColors.textPrimary),
@@ -191,7 +191,7 @@ class _NewCategorySheetState extends ConsumerState<NewCategorySheet> {
               ),
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.lg),
           const Text(
             'Color',
             style: TextStyle(
@@ -199,7 +199,7 @@ class _NewCategorySheetState extends ConsumerState<NewCategorySheet> {
               fontSize: 14,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           Wrap(
             spacing: 16,
             runSpacing: 16,
@@ -221,7 +221,7 @@ class _NewCategorySheetState extends ConsumerState<NewCategorySheet> {
               );
             }).toList(),
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppSpacing.xl),
           SizedBox(
             width: double.infinity,
             height: 56,

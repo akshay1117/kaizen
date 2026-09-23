@@ -108,7 +108,7 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
                           child: Row(
                             children: [
                               Icon(Icons.calendar_today, color: filterState.sortBy == 'date' ? AppColors.accentViolet : AppColors.textPrimary, size: 20),
-                              const SizedBox(width: 12),
+                              const SizedBox(width: AppSpacing.sm * 1.5),
                               Text('Sort by Date', style: TextStyle(color: filterState.sortBy == 'date' ? AppColors.accentViolet : AppColors.textPrimary)),
                             ],
                           ),
@@ -118,7 +118,7 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
                           child: Row(
                             children: [
                               Icon(Icons.sort_by_alpha, color: filterState.sortBy == 'title' ? AppColors.accentViolet : AppColors.textPrimary, size: 20),
-                              const SizedBox(width: 12),
+                              const SizedBox(width: AppSpacing.sm * 1.5),
                               Text('Sort by Title', style: TextStyle(color: filterState.sortBy == 'title' ? AppColors.accentViolet : AppColors.textPrimary)),
                             ],
                           ),
@@ -128,7 +128,7 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
                           child: Row(
                             children: [
                               Icon(filterState.favoritesOnly ? Icons.favorite : Icons.favorite_border, color: filterState.favoritesOnly ? AppColors.semanticUrgent : AppColors.textPrimary, size: 20),
-                              const SizedBox(width: 12),
+                              const SizedBox(width: AppSpacing.sm * 1.5),
                               Text('Favorites Only', style: TextStyle(color: filterState.favoritesOnly ? AppColors.semanticUrgent : AppColors.textPrimary)),
                             ],
                           ),
@@ -138,7 +138,7 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
                           child: Row(
                             children: [
                               Icon(Icons.delete_sweep, color: AppColors.semanticUrgent, size: 20),
-                              SizedBox(width: 12),
+                              SizedBox(width: AppSpacing.sm * 1.5),
                               Text('Delete All', style: TextStyle(color: AppColors.semanticUrgent)),
                             ],
                           ),
@@ -148,7 +148,7 @@ class _JournalScreenState extends ConsumerState<JournalScreen> {
                           child: Row(
                             children: [
                               Icon(Icons.settings_outlined, color: AppColors.textPrimary, size: 20),
-                              SizedBox(width: 12),
+                              SizedBox(width: AppSpacing.sm * 1.5),
                               Text('Settings', style: TextStyle(color: AppColors.textPrimary)),
                             ],
                           ),

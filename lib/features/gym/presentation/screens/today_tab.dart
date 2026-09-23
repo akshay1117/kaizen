@@ -12,7 +12,7 @@ class TodayTab extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       children: [
         Text('Today', style: theme.textTheme.displayMedium),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.md),
         // Horizontal calendar strip mock
         SizedBox(
           height: 60,
@@ -32,7 +32,7 @@ class TodayTab extends StatelessWidget {
             },
           ),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: AppSpacing.lg),
         // Metrics mock
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -41,7 +41,7 @@ class TodayTab extends StatelessWidget {
             _buildMetric(context, 'Repetitions', '48'),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.md),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [

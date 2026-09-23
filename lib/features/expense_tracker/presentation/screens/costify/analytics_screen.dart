@@ -114,7 +114,7 @@ class AnalyticsScreen extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildSelectors(context, ref, timePeriod, currentTracker),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.lg),
           
           // Overview Section
           Row(
@@ -123,7 +123,7 @@ class AnalyticsScreen extends ConsumerWidget {
                 'Overview',
                 style: TextStyle(color: AppColors.textPrimary, fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               const Icon(Icons.info_outline, color: Colors.grey, size: 18),
               const Spacer(),
               Text(
@@ -132,25 +132,25 @@ class AnalyticsScreen extends ConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           Row(
             children: [
               Expanded(child: _buildOverviewCard('Total', formatter.format(totalSpent), AppColors.textPrimary, Icons.pie_chart_outline)),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               Expanded(child: _buildOverviewCard('Daily Avg', formatter.format(dailyAvg), AppColors.textPrimary, Icons.calendar_today)),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               Expanded(child: _buildOverviewCard('Peak Day', peakDayAmount > 0 ? formatter.format(peakDayAmount) : '-', AppColors.textPrimary, Icons.local_fire_department, subText: peakDayFormatted != '-' ? peakDayFormatted : null)),
             ],
           ),
           
-          const SizedBox(height: 32),
+          const SizedBox(height: AppSpacing.xl),
           
           // Categories Section
           const Text(
             'Categories',
             style: TextStyle(color: AppColors.textPrimary, fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           
           Container(
             padding: const EdgeInsets.all(16),
@@ -190,7 +190,7 @@ class AnalyticsScreen extends ConsumerWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 16),
+                        const SizedBox(width: AppSpacing.md),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -203,10 +203,10 @@ class AnalyticsScreen extends ConsumerWidget {
                                   children: [
                                     if (icon.isNotEmpty) ...[
                                       Text(icon, style: const TextStyle(fontSize: 14)),
-                                      const SizedBox(width: 8),
+                                      const SizedBox(width: AppSpacing.sm),
                                     ] else ...[
                                       Icon(Icons.circle, color: categoryColors[e.key], size: 10),
-                                      const SizedBox(width: 8),
+                                      const SizedBox(width: AppSpacing.sm),
                                     ],
                                     Expanded(
                                       child: Text(
@@ -227,7 +227,7 @@ class AnalyticsScreen extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: AppSpacing.lg),
                     // Progress bars
                     ...sortedCategories.map((e) {
                       final color = categoryColors[e.key] ?? Colors.grey;
@@ -255,7 +255,7 @@ class AnalyticsScreen extends ConsumerWidget {
                                     formatter.format(e.value),
                                     style: const TextStyle(color: AppColors.textPrimary, fontSize: 12),
                                   ),
-                                  const SizedBox(height: 4),
+                                  const SizedBox(height: AppSpacing.xs),
                                   Stack(
                                     children: [
                                       Container(
@@ -288,14 +288,14 @@ class AnalyticsScreen extends ConsumerWidget {
                 ),
           ),
           
-          const SizedBox(height: 32),
+          const SizedBox(height: AppSpacing.xl),
           
           // Trackers Comparison
           const Text(
             'Trackers Comparison',
             style: TextStyle(color: AppColors.textPrimary, fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -312,7 +312,7 @@ class AnalyticsScreen extends ConsumerWidget {
                     Text(formatter.format(totalSpent), style: const TextStyle(color: AppColors.textPrimary)),
                   ],
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 Container(
                   height: 8,
                   decoration: BoxDecoration(
@@ -324,7 +324,7 @@ class AnalyticsScreen extends ConsumerWidget {
             ),
           ),
           
-          const SizedBox(height: 32),
+          const SizedBox(height: AppSpacing.xl),
         ],
       ),
     );
@@ -360,7 +360,7 @@ class AnalyticsScreen extends ConsumerWidget {
             ],
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: AppSpacing.md),
         // Tracker pill
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -410,19 +410,19 @@ class AnalyticsScreen extends ConsumerWidget {
           Row(
             children: [
               Icon(icon, color: Colors.grey, size: 14),
-              const SizedBox(width: 4),
+              const SizedBox(width: AppSpacing.xs),
               Text(
                 title,
                 style: const TextStyle(color: Colors.grey, fontSize: 12),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.sm * 1.5),
           Text(
             value,
             style: TextStyle(color: valueColor, fontSize: 18, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
           Text(
             subText ?? '- 0%', // Default placeholder for percentage
             style: const TextStyle(color: Colors.grey, fontSize: 12),

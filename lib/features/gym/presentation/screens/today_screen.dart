@@ -31,13 +31,13 @@ class TodayScreen extends ConsumerWidget {
         padding: const EdgeInsets.all(16.0),
         children: [
           _buildCalendarStrip(),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.lg),
           _buildStreakCard(ref),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.lg),
           _buildSummaryCard(ref),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.lg),
           const Text('Session Details', style: TextStyle(color: GymTheme.textPrimary, fontWeight: FontWeight.bold, fontSize: 18)),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           _buildSessionDetails(ref),
         ],
       ),
@@ -59,7 +59,7 @@ class TodayScreen extends ConsumerWidget {
         return Column(
           children: [
             Text(dayStr, style: const TextStyle(color: GymTheme.textSecondary, fontSize: 12)),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Container(
               width: 32,
               height: 32,
@@ -101,11 +101,11 @@ class TodayScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text('Current Streak', style: TextStyle(color: GymTheme.textSecondary)),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               Row(
                 children: [
                   const Icon(Icons.local_fire_department, color: GymTheme.primaryAccent, size: 28),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppSpacing.sm),
                   Text('$currentStreak Days', style: const TextStyle(color: GymTheme.textPrimary, fontSize: 24, fontWeight: FontWeight.bold)),
                 ],
               ),
@@ -115,7 +115,7 @@ class TodayScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               const Text('Rest Days', style: TextStyle(color: GymTheme.textSecondary)),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               Row(
                 children: List.generate(3, (index) => Padding(
                   padding: const EdgeInsets.only(left: 4),
@@ -147,7 +147,7 @@ class TodayScreen extends ConsumerWidget {
               Expanded(child: _buildSummaryStat('Exercises', stats['exercises']!)),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           Row(
             children: [
               Expanded(child: _buildSummaryStat('Volume', stats['volume']!)),
@@ -164,7 +164,7 @@ class TodayScreen extends ConsumerWidget {
     return Column(
       children: [
         Text(value, style: const TextStyle(color: GymTheme.textPrimary, fontSize: 18, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppSpacing.xs),
         Text(label, style: const TextStyle(color: GymTheme.textSecondary, fontSize: 12)),
       ],
     );

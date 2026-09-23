@@ -70,9 +70,9 @@ class SetEntryRow extends StatelessWidget {
               Row(
                 children: [
                   _buildInputBox(context, '$weightText kg'),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppSpacing.sm),
                   _buildInputBox(context, repsText),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppSpacing.sm),
                   Icon(Icons.check_circle_outline, color: theme.primaryColor),
                 ],
               ),

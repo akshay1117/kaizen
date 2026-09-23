@@ -70,7 +70,7 @@ class FitnessHubScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(icon, style: const TextStyle(fontSize: 48)),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.sm * 1.5),
             Text(
               title,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.textPrimary),

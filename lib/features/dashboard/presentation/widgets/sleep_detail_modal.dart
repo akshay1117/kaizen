@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -99,7 +100,7 @@ class SleepDetailModal extends ConsumerWidget {
                           DateFormat('MMM d, yyyy').format(selectedDate),
                           style: const TextStyle(color: Colors.white, fontSize: 13),
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: AppSpacing.xs),
                         const Icon(LucideIcons.calendar, color: Color(0xFF8B5CF6), size: 14),
                       ],
                     ),
@@ -108,7 +109,7 @@ class SleepDetailModal extends ConsumerWidget {
               ],
             ),
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppSpacing.xl),
           Stack(
             alignment: Alignment.center,
             children: [
@@ -139,7 +140,7 @@ class SleepDetailModal extends ConsumerWidget {
               Column(
                 children: [
                   const Icon(LucideIcons.moon, color: Color(0xFF8B5CF6), size: 32),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppSpacing.sm),
                   Text(
                     '${dailyTotal.floor()}h ${((dailyTotal - dailyTotal.floor()) * 60).round()}m',
                     style: const TextStyle(
@@ -162,7 +163,7 @@ class SleepDetailModal extends ConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: 40),
+          const SizedBox(height: AppSpacing.xxl),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: SizedBox(
@@ -188,7 +189,7 @@ class SleepDetailModal extends ConsumerWidget {
               ),
             ),
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppSpacing.xl),
           Expanded(
             child: Container(
               padding: const EdgeInsets.all(24),
@@ -212,7 +213,7 @@ class SleepDetailModal extends ConsumerWidget {
                       letterSpacing: 1.2,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.md),
                   Expanded(
                     child: sleepRecordsAsync.when(
                       data: (entries) {

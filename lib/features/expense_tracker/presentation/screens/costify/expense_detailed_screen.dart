@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -89,16 +90,16 @@ class _ExpenseDetailedScreenState extends ConsumerState<ExpenseDetailedScreen> {
               child: Column(
                 children: [
                   _buildHeader(),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppSpacing.sm),
                   _buildTimeRangeSelector(),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.md),
                   transactionsAsync.when(
                     data: (transactions) => Column(
                       children: [
                         _buildPrimarySummaryCard(transactions),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppSpacing.md),
                         _buildHistogramCard(transactions),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppSpacing.md),
                         _buildRecentTransactionsCard(transactions),
                       ],
                     ),
@@ -147,7 +148,7 @@ class _ExpenseDetailedScreenState extends ConsumerState<ExpenseDetailedScreen> {
           const Row(
             children: [
               Icon(Icons.calendar_month, color: _Colors.primary, size: 18),
-              SizedBox(width: 8),
+              SizedBox(width: AppSpacing.sm),
               Text(
                 'October 2024',
                 style: TextStyle(
@@ -157,7 +158,7 @@ class _ExpenseDetailedScreenState extends ConsumerState<ExpenseDetailedScreen> {
                   fontFamily: 'Inter',
                 ),
               ),
-              SizedBox(width: 8),
+              SizedBox(width: AppSpacing.sm),
               Icon(Icons.expand_more, color: _Colors.outline, size: 16),
             ],
           ),
@@ -172,7 +173,7 @@ class _ExpenseDetailedScreenState extends ConsumerState<ExpenseDetailedScreen> {
                 ),
                 child: const Icon(Icons.chevron_left, color: _Colors.onSurfaceVariant, size: 16),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               Container(
                 width: 28,
                 height: 28,
@@ -339,7 +340,7 @@ class _ExpenseDetailedScreenState extends ConsumerState<ExpenseDetailedScreen> {
                 child: const Row(
                   children: [
                     Icon(Icons.arrow_downward, color: _Colors.tertiary, size: 14),
-                    SizedBox(width: 4),
+                    SizedBox(width: AppSpacing.xs),
                     Text(
                       '3.8% vs Sep',
                       style: TextStyle(
@@ -354,7 +355,7 @@ class _ExpenseDetailedScreenState extends ConsumerState<ExpenseDetailedScreen> {
               )
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           // Donut Chart
           Center(
             child: SizedBox(
@@ -406,7 +407,7 @@ class _ExpenseDetailedScreenState extends ConsumerState<ExpenseDetailedScreen> {
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           ...chartData.map((data) {
             return _buildCategoryItem(
               iconStr: data.iconStr,
@@ -460,7 +461,7 @@ class _ExpenseDetailedScreenState extends ConsumerState<ExpenseDetailedScreen> {
                   ),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -494,7 +495,7 @@ class _ExpenseDetailedScreenState extends ConsumerState<ExpenseDetailedScreen> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               Container(
                 width: 48,
                 height: 4,
@@ -607,7 +608,7 @@ class _ExpenseDetailedScreenState extends ConsumerState<ExpenseDetailedScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.lg),
           SizedBox(
             height: 144,
             child: Stack(
@@ -755,7 +756,7 @@ class _ExpenseDetailedScreenState extends ConsumerState<ExpenseDetailedScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           if (displayTransactions.isEmpty)
              const Padding(
                padding: EdgeInsets.all(16.0),
@@ -836,7 +837,7 @@ class _ExpenseDetailedScreenState extends ConsumerState<ExpenseDetailedScreen> {
                   ),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -992,7 +993,7 @@ class _ExpenseModalState extends ConsumerState<_ExpenseModal> {
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -1032,7 +1033,7 @@ class _ExpenseModalState extends ConsumerState<_ExpenseModal> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           // Amount Input
           const Text(
             'AMOUNT',
@@ -1043,7 +1044,7 @@ class _ExpenseModalState extends ConsumerState<_ExpenseModal> {
               letterSpacing: 0.06 * 11,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
@@ -1060,7 +1061,7 @@ class _ExpenseModalState extends ConsumerState<_ExpenseModal> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppSpacing.sm),
                 Expanded(
                   child: TextField(
                     controller: _amountController,
@@ -1083,7 +1084,7 @@ class _ExpenseModalState extends ConsumerState<_ExpenseModal> {
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           // Category Pills
           const Text(
             'CATEGORY',
@@ -1123,7 +1124,7 @@ class _ExpenseModalState extends ConsumerState<_ExpenseModal> {
               );
             }),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           // Description
           const Text(
             'DESCRIPTION',
@@ -1134,7 +1135,7 @@ class _ExpenseModalState extends ConsumerState<_ExpenseModal> {
               letterSpacing: 0.06 * 11,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
             decoration: BoxDecoration(
@@ -1151,7 +1152,7 @@ class _ExpenseModalState extends ConsumerState<_ExpenseModal> {
               ),
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.lg),
           Row(
             children: [
               Expanded(
@@ -1175,7 +1176,7 @@ class _ExpenseModalState extends ConsumerState<_ExpenseModal> {
                   ),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               Expanded(
                 child: GestureDetector(
                   onTap: () async {

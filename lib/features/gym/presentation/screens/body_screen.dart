@@ -42,11 +42,11 @@ class BodyScreen extends ConsumerWidget {
               padding: const EdgeInsets.all(16.0),
               children: [
                 _buildWeightRow(),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.lg),
                 _buildLegend(),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.md),
                 _buildMuscleMap(ref),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppSpacing.lg),
                 _buildMuscleList(ref),
               ],
             ))
@@ -73,10 +73,10 @@ class BodyScreen extends ConsumerWidget {
             children: [
               const Text('75.0 kg',
                   style: TextStyle(color: GymTheme.textPrimary, fontSize: 16)),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               const Icon(Icons.show_chart,
                   color: GymTheme.primaryAccent, size: 20),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               Text('Goal: 80 kg',
                   style: TextStyle(
                       color: GymTheme.textSecondary.withValues(alpha: 0.7),
@@ -97,7 +97,7 @@ class BodyScreen extends ConsumerWidget {
         SizedBox(width: 6),
         Text('Just Trained',
             style: TextStyle(color: GymTheme.textSecondary, fontSize: 13)),
-        SizedBox(width: 16),
+        SizedBox(width: AppSpacing.md),
         Icon(Icons.circle, color: GymTheme.textSecondary, size: 12),
         SizedBox(width: 6),
         Text('Rested',
@@ -183,7 +183,7 @@ class BodyScreen extends ConsumerWidget {
           Text(timeAgo,
               style:
                   const TextStyle(color: GymTheme.textSecondary, fontSize: 13)),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppSpacing.sm),
           const Icon(Icons.chevron_right, color: GymTheme.textSecondary),
         ],
       ),

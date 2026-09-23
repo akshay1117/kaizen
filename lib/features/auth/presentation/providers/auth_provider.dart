@@ -1,7 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kaizen/services/supabase_config.dart';
-
+import 'package:flutter/foundation.dart';
 /// Stream of Supabase Auth state changes
 final authStateProvider = StreamProvider<AuthState>((ref) {
   return SupabaseConfig.client.auth.onAuthStateChange;
@@ -39,6 +40,7 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
         throw const AuthException('Invalid login credentials');
       }
     } catch (e, st) {
+      debugPrint('Email Sign-In Error: $e');
       state = AsyncValue.error(e, st);
       return false;
     }
@@ -68,6 +70,7 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
         throw const AuthException('Failed to create account');
       }
     } catch (e, st) {
+      debugPrint('Email Sign-Up Error: $e');
       state = AsyncValue.error(e, st);
       return false;
     }
@@ -98,10 +101,42 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
   Future<bool> signInWithGoogle() async {
     state = const AsyncValue.loading();
     try {
-      final response = await _client.auth.signInWithOAuth(OAuthProvider.google);
-      state = const AsyncValue.data(null);
-      return response;
+      // NOTE: Replace YOUR_GOOGLE_WEB_CLIENT_ID.apps.googleusercontent.com with your actual Web Client ID!
+      const webClientId = 'YOUR_GOOGLE_WEB_CLIENT_ID.apps.googleusercontent.com';
+      
+      final GoogleSignIn googleSignIn = GoogleSignIn(
+        clientId: webClientId,
+        serverClientId: webClientId,
+      );
+      
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      if (googleUser == null) {
+        state = const AsyncValue.data(null);
+        return false;
+      }
+      
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final String? idToken = googleAuth.idToken;
+      final String? accessToken = googleAuth.accessToken;
+
+      if (idToken == null) {
+        throw const AuthException('No ID Token found from Google Sign In.');
+      }
+
+      final response = await _client.auth.signInWithIdToken(
+        provider: OAuthProvider.google,
+        idToken: idToken,
+        accessToken: accessToken,
+      );
+      
+      if (response.user != null) {
+        state = const AsyncValue.data(null);
+        return true;
+      } else {
+        throw const AuthException('Failed to sign in with Google');
+      }
     } catch (e, st) {
+      debugPrint('Google Sign-In Error: $e');
       state = AsyncValue.error(e, st);
       return false;
     }

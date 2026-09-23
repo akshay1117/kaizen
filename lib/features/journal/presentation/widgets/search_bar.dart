@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
 import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,7 +18,7 @@ class JournalSearchBar extends ConsumerWidget {
       child: Row(
         children: [
           const Icon(Icons.search, color: Colors.grey, size: 20),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppSpacing.sm * 1.5),
           Expanded(
             child: TextField(
               style: const TextStyle(color: AppColors.textPrimary, fontSize: 16),

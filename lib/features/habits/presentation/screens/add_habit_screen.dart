@@ -96,11 +96,11 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(alignment: Alignment.center, child: Container(width: 40, height: 4, decoration: BoxDecoration(color: AppColors.borderActive, borderRadius: BorderRadius.circular(2)))),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: AppSpacing.lg),
                     Text('Categories', style: Theme.of(context).textTheme.displaySmall),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppSpacing.sm),
                     Text('Pick one or multiple categories that your habit fits in', style: Theme.of(context).textTheme.bodyMedium),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: AppSpacing.lg),
                     CategoryWrap(
                       availableCategories: _allCategories,
                       selectedCategories: _categories,
@@ -116,7 +116,7 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
                       },
                       onCreateNew: () {},
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: AppSpacing.xl),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
@@ -182,11 +182,11 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
                   // Icon / Emoji selector (Top)
                   _buildIconSelector(),
                   
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppSpacing.sm * 1.5),
                   
                   // Name Field
                   const Text('Name', style: TextStyle(color: AppColors.textSecondary, fontSize: 11, fontWeight: FontWeight.w500)),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppSpacing.xs),
                   Container(
                     height: 48,
                     decoration: BoxDecoration(
@@ -203,11 +203,11 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
                       style: const TextStyle(color: AppColors.textPrimary, fontSize: 14),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppSpacing.sm * 1.5),
                   
                   // Description Field
                   const Text('Description', style: TextStyle(color: AppColors.textSecondary, fontSize: 11, fontWeight: FontWeight.w500)),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: AppSpacing.xs),
                   Container(
                     decoration: BoxDecoration(
                       color: AppColors.surfaceObsidian,
@@ -225,13 +225,13 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
                       style: const TextStyle(color: AppColors.textPrimary, fontSize: 14),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppSpacing.sm * 1.5),
                   
                   // Color Picker
                   const Text('Color', style: TextStyle(color: AppColors.textSecondary, fontSize: 11, fontWeight: FontWeight.w500)),
                   const SizedBox(height: 6),
                   _buildCustomColorPicker(),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.md),
                   
                   // Advanced Options Toggle
                   GestureDetector(
@@ -244,7 +244,7 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
                           child: Row(
                             children: [
                               const Text('Advanced Options', style: TextStyle(color: AppColors.textTertiary, fontSize: 13)),
-                              const SizedBox(width: 4),
+                              const SizedBox(width: AppSpacing.xs),
                               Icon(_showAdvanced ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, color: AppColors.textTertiary, size: 14),
                             ],
                           ),
@@ -253,7 +253,7 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppSpacing.sm * 1.5),
                   
                   AnimatedCrossFade(
                     firstChild: const SizedBox(width: double.infinity),
@@ -267,18 +267,18 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text('Streak Goal', style: TextStyle(color: AppColors.textSecondary, fontSize: 11)),
-                                  const SizedBox(height: 4),
+                                  const SizedBox(height: AppSpacing.xs),
                                   _buildDarkRowOption(_streakGoal, onTap: _showStreakGoalPicker),
                                 ],
                               ),
                             ),
-                            const SizedBox(width: 16),
+                            const SizedBox(width: AppSpacing.md),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text('Reminder', style: TextStyle(color: AppColors.textSecondary, fontSize: 11)),
-                                  const SizedBox(height: 4),
+                                  const SizedBox(height: AppSpacing.xs),
                                   _buildDarkRowOption(_reminder ?? '0 Active Reminders', onTap: () async {
                                     final result = await Navigator.push<String>(
                                       context,
@@ -293,24 +293,24 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: AppSpacing.sm * 1.5),
                         
                         const Text('Categories', style: TextStyle(color: AppColors.textSecondary, fontSize: 11)),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppSpacing.xs),
                         _buildDarkRowOption(_categories.isEmpty ? 'None' : _categories.join(', '), onTap: _showCategoryPicker),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: AppSpacing.sm * 1.5),
                         
                         const Text('How should completions be tracked?', style: TextStyle(color: AppColors.textSecondary, fontSize: 11)),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppSpacing.xs),
                         TrackingSegmentedControl(
                           isQuantitative: _isQuantitative,
                           onChanged: (val) => setState(() => _isQuantitative = val),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppSpacing.sm),
                         const Center(
                           child: Text('Increment by 1 with each completion', style: TextStyle(color: AppColors.textQuaternary, fontSize: 11)),
                         ),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: AppSpacing.sm * 1.5),
                         
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -319,13 +319,13 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
                             Row(
                               children: [
                                 Container(width: 12, height: 12, decoration: BoxDecoration(color: AppColors.surfaceElevatedHigh, borderRadius: BorderRadius.circular(2))),
-                                const SizedBox(width: 4),
+                                const SizedBox(width: AppSpacing.xs),
                                 Container(width: 12, height: 12, decoration: BoxDecoration(color: _color, borderRadius: BorderRadius.circular(2))),
                               ],
                             )
                           ],
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppSpacing.sm),
                         Row(
                           children: [
                             Expanded(
@@ -339,23 +339,23 @@ class _AddHabitScreenState extends ConsumerState<AddHabitScreen> {
                                 child: Text('$_targetValue / Day', style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold)),
                               ),
                             ),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: AppSpacing.sm),
                             _buildDarkActionButton(Icons.remove, () {
                               if (_targetValue > 1) setState(() => _targetValue--);
                             }),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: AppSpacing.sm),
                             _buildDarkActionButton(Icons.add, () {
                               setState(() => _targetValue++);
                             }),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: AppSpacing.sm),
                             _buildDarkActionButton(Icons.edit_outlined, () {}),
                           ],
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: AppSpacing.sm),
                         const Center(
                           child: Text('The square will be filled completely when this number is met', style: TextStyle(color: AppColors.textQuaternary, fontSize: 11)),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppSpacing.md),
                       ],
                     ),
                     crossFadeState: _showAdvanced ? CrossFadeState.showSecond : CrossFadeState.showFirst,

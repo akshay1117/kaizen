@@ -1,3 +1,4 @@
+import 'package:kaizen/core/theme/app_spacing.dart';
 import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -56,7 +57,7 @@ class SubscriptionsModal extends ConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.lg),
           subscriptionsAsync.when(
             data: (subscriptions) {
               int activeCount = subscriptions.length;
@@ -105,32 +106,32 @@ class SubscriptionsModal extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: AppSpacing.xl),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Column(
                         children: [
                           const Text('Monthly total', style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: AppSpacing.xs),
                           Text(formatter.format(monthlyTotal), style: const TextStyle(color: AppColors.textPrimary, fontSize: 18, fontWeight: FontWeight.bold)),
                         ],
                       ),
                       Column(
                         children: [
                           const Text('Yearly total', style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: AppSpacing.xs),
                           Text(formatter.format(yearlyTotal), style: const TextStyle(color: AppColors.textPrimary, fontSize: 18, fontWeight: FontWeight.bold)),
                         ],
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: AppSpacing.lg),
                   const Align(
                     alignment: Alignment.centerLeft,
                     child: Text('Active', style: TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.bold)),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: AppSpacing.md),
                   if (subscriptions.isEmpty)
                     const Padding(
                       padding: EdgeInsets.symmetric(vertical: 32.0),
@@ -157,7 +158,7 @@ class SubscriptionsModal extends ConsumerWidget {
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (err, stack) => Center(child: Text('Error: $err', style: const TextStyle(color: AppColors.semanticUrgent))),
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppSpacing.xl),
         ],
       ),
     );
