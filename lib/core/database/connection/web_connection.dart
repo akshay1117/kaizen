@@ -1,10 +1,14 @@
 import 'package:drift/drift.dart';
-// ignore: deprecated_member_use
-import 'package:drift/web.dart';
+import 'package:drift/wasm.dart';
 
 LazyDatabase openConnection(String dbName, [String? userId]) {
   return LazyDatabase(() async {
     final suffix = (userId != null && userId.isNotEmpty) ? '_$userId' : '';
-    return WebDatabase.withStorage(await DriftWebStorage.indexedDbIfSupported('$dbName$suffix'));
+    final result = await WasmDatabase.open(
+      databaseName: '$dbName$suffix',
+      sqlite3Uri: Uri.parse('sqlite3.wasm'),
+      driftWorkerUri: Uri.parse('drift_worker.dart.js'),
+    );
+    return result.resolvedExecutor;
   });
 }

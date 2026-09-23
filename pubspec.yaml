@@ -55,6 +55,7 @@ dependencies:
   flutter_screenutil: ^5.9.3
   flutter_slidable: ^4.0.3
   uuid: ^4.6.0
+  permission_handler: ^13.0.2
 
 dev_dependencies:
   flutter_test:

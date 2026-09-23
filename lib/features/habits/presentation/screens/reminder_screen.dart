@@ -2,7 +2,8 @@ import 'package:kaizen/core/theme/app_spacing.dart';
 import 'package:kaizen/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
-
+import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter/foundation.dart';
 class ReminderScreen extends StatefulWidget {
   final String? initialReminder;
 
@@ -14,11 +15,27 @@ class ReminderScreen extends StatefulWidget {
 
 class _ReminderScreenState extends State<ReminderScreen> {
   String? _selectedReminder;
+  bool _hasPermission = true;
 
   @override
   void initState() {
     super.initState();
     _selectedReminder = widget.initialReminder;
+    _checkPermission();
+  }
+
+  Future<void> _checkPermission() async {
+    final status = await Permission.notification.status;
+    setState(() {
+      _hasPermission = status.isGranted;
+    });
+  }
+
+  Future<void> _requestPermission() async {
+    final status = await Permission.notification.request();
+    setState(() {
+      _hasPermission = status.isGranted;
+    });
   }
 
   @override
@@ -39,40 +56,39 @@ class _ReminderScreenState extends State<ReminderScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
         child: Column(
           children: [
-            Container(
-              padding: const EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: AppColors.surfacePitchBlack,
-                borderRadius: BorderRadius.circular(AppRadii.md),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Icon(Icons.notifications_none, color: AppColors.textPrimary, size: 28),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Missing permission', style: TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.w500)),
-                        const SizedBox(height: 8),
-                        const Text(
-                          'Give HabitKit the permission to send you notifications in order to use this feature.',
-                          style: TextStyle(color: AppColors.textSecondary, fontSize: 14, height: 1.4),
-                        ),
-                        const SizedBox(height: 16),
-                        GestureDetector(
-                          onTap: () {
-                            // Request permission logic here
-                          },
-                          child: const Text('Give permission', style: TextStyle(color: Color(0xFFA855F7), fontSize: 14, fontWeight: FontWeight.w500)),
-                        ),
-                      ],
+            if (!_hasPermission)
+              Container(
+                padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: AppColors.surfacePitchBlack,
+                  borderRadius: BorderRadius.circular(AppRadii.md),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(Icons.notifications_none, color: AppColors.textPrimary, size: 28),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Missing permission', style: TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.w500)),
+                          const SizedBox(height: 8),
+                          const Text(
+                            'Give HabitKit the permission to send you notifications in order to use this feature.',
+                            style: TextStyle(color: AppColors.textSecondary, fontSize: 14, height: 1.4),
+                          ),
+                          const SizedBox(height: 16),
+                          GestureDetector(
+                            onTap: _requestPermission,
+                            child: const Text('Give permission', style: TextStyle(color: Color(0xFFA855F7), fontSize: 14, fontWeight: FontWeight.w500)),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
             const SizedBox(height: 32),
             if (_selectedReminder == null)
               Expanded(
