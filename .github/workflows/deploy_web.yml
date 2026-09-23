@@ -33,7 +33,7 @@ jobs:
       - name: Build Web App
         # The --base-href flag is CRITICAL for GitHub pages. 
         # It MUST match your repository name! E.g., if your repo is github.com/username/optimos, use "/optimos/"
-        run: flutter build web --release --base-href "/kaizen/"
+        run: flutter build web --release --web-renderer canvaskit --base-href "/kaizen/"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
